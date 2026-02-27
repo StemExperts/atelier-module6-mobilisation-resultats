@@ -301,10 +301,11 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div class="summary-card geo">
       <div class="sc-label">Moyenne Géométrique</div>
-      <div class="sc-score" id="geoMean">—<span class="sc-denom">/10</span></div>
-      <div class="sc-sub"></div>
+      <div class="sc-score"><span id="geoMean">—</span>%</div>
+      <div class="sc-sub" style="margin-top:10px;font-size:11px;line-height:1.5;color:#888;">
+        Contrairement à la moyenne arithmétique, la moyenne géométrique amplifie l'impact de vos scores les plus bas. Elle vous maintient responsable même lorsque la majorité de vos réponses sont élevées.
+      </div>
     </div>
-  </div>
 
   <!-- Gauge -->
   <div class="gauge-wrap">
@@ -555,10 +556,10 @@ function geoMean(vals) {
 }
 
 function scoreColor(pct) {
-  if (pct >= 80) return '#95c11f';
-  if (pct >= 60) return '#ffb300';
-  if (pct >= 40) return '#e06b00';
-  return '#e53935';
+  if (pct >= 80) return '#95c11f';   // vert → mobilisation élevée
+  if (pct >= 60) return '#0090ac';   // teal → bonne mobilisation
+  if (pct >= 40) return '#ffed00';   // jaune → mobilisation modérée
+  return '#1d71b8';                   // bleu → mobilisation faible
 }
 
 function setText(id, val) {
