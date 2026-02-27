@@ -202,21 +202,6 @@ body::before {
   height: 100%; border-radius: 4px;
   transition: width 1s ease;
 }
-
-/* ── Radar chart ─────────────────────────────────────────── */
-.radar-wrap {
-  background: var(--white);
-  border-radius: 16px; padding: 28px 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
-  animation: fadeUp .65s .32s ease both;
-}
-.radar-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px; font-weight: 700; margin-bottom: 4px;
-}
-.radar-sub { font-size: 12px; color: #888; margin-bottom: 20px; }
-
 /* ── Score table ─────────────────────────────────────────── */
 .table-wrap {
   background: var(--white);
@@ -334,6 +319,32 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
+   <!-- Interpretation -->
+  <div class="legend-wrap">
+    <div class="legend-title">Guide d'Interprétation</div>
+    <div class="legend-grid">
+      <div class="legend-item li-red">
+        <strong>0 – 60 pts (&lt;40%)</strong>
+        Mobilisation faible. Des interventions urgentes sont nécessaires pour réengager l'équipe.
+      </div>
+      <div class="legend-item li-orange">
+        <strong>61 – 90 pts (40–60%)</strong>
+        Mobilisation modérée. Des améliorations ciblées peuvent avoir un impact significatif.
+      </div>
+      <div class="legend-item li-yellow">
+        <strong>91 – 120 pts (61–80%)</strong>
+        Bonne mobilisation. L'équipe est engagée, mais il reste des opportunités de croissance.
+      </div>
+      <div class="legend-item li-green">
+        <strong>121 – 150 pts (&gt;80%)</strong>
+        Mobilisation élevée. L'équipe performe à un haut niveau d'engagement et d'énergie.
+      </div>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-top:16px;">
+      Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
+    </p>
+  </div>
+  
   <!-- 5 section cards -->
   <div class="sections-grid">
 
@@ -480,13 +491,6 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
-  <!-- Radar chart -->
-  <div class="radar-wrap">
-    <div class="radar-title">Profil de Mobilisation par Dimension</div>
-    <div class="radar-sub">Score moyen /10 pour chaque dimension (sur 30 pts)</div>
-    <canvas id="radarChart" height="300"></canvas>
-  </div>
-
   <!-- Detailed table -->
   <div class="table-wrap">
     <div class="table-title">Tableau Détaillé des Résultats</div>
@@ -502,32 +506,6 @@ tr:last-child td { border-bottom: none; }
       </thead>
       <tbody id="detailTable"></tbody>
     </table>
-  </div>
-
-  <!-- Interpretation -->
-  <div class="legend-wrap">
-    <div class="legend-title">Guide d'Interprétation</div>
-    <div class="legend-grid">
-      <div class="legend-item li-red">
-        <strong>0 – 60 pts (&lt;40%)</strong>
-        Mobilisation faible. Des interventions urgentes sont nécessaires pour réengager l'équipe.
-      </div>
-      <div class="legend-item li-orange">
-        <strong>61 – 90 pts (40–60%)</strong>
-        Mobilisation modérée. Des améliorations ciblées peuvent avoir un impact significatif.
-      </div>
-      <div class="legend-item li-yellow">
-        <strong>91 – 120 pts (61–80%)</strong>
-        Bonne mobilisation. L'équipe est engagée, mais il reste des opportunités de croissance.
-      </div>
-      <div class="legend-item li-green">
-        <strong>121 – 150 pts (&gt;80%)</strong>
-        Mobilisation élevée. L'équipe performe à un haut niveau d'engagement et d'énergie.
-      </div>
-    </div>
-    <p style="font-size:11px;color:#aaa;margin-top:16px;">
-      Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
-    </p>
   </div>
 
   <div class="footer">
@@ -685,36 +663,6 @@ window.addEventListener('DOMContentLoaded', () => {
       cutout: '72%',
       plugins: { legend: { display: false }, tooltip: { enabled: false } },
       animation: { animateRotate: true, duration: 1200 }
-    }
-  });
-
-  // Radar chart
-  const radarCtx = document.getElementById('radarChart').getContext('2d');
-  new Chart(radarCtx, {
-    type: 'radar',
-    data: {
-      labels: ['Performance','Énergie','Lien affectif','Ancrage','Engagement'],
-      datasets: [{
-        label: 'Votre équipe (moy. /10)',
-        data: [s1/3, s2/3, s3/3, s4/3, s5/3],
-        backgroundColor: 'rgba(29,113,184,0.15)',
-        borderColor: '#1d71b8',
-        pointBackgroundColor: '#1d71b8',
-        pointRadius: 5,
-        borderWidth: 2,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        r: {
-          min: 0, max: 10,
-          ticks: { stepSize: 2, font: { size: 10 } },
-          pointLabels: { font: { size: 12, family: 'DM Sans' } },
-          grid: { color: '#e8ecf2' },
-        }
-      },
-      plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } }
     }
   });
 
