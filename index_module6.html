@@ -165,7 +165,7 @@ body::before {
 }
 .sc1::before { background: linear-gradient(90deg,#1d71b8,#4a90d9); }
 .sc2::before { background: linear-gradient(90deg,#95c11f,#b8df60); }
-.sc3::before { background: linear-gradient(90deg,#e06b00,#f5a040); }
+.sc3::before { background: linear-gradient(90deg,#ffed00,#f7d911); }
 .sc4::before { background: linear-gradient(90deg,#6d2e8a,#9d5ac4); }
 .sc5::before { background: linear-gradient(90deg,#0090ac,#00b8d4); }
 
@@ -297,12 +297,12 @@ tr:last-child td { border-bottom: none; }
     <div class="summary-card arith">
       <div class="sc-label">Moyenne Arithmétique</div>
       <div class="sc-score" id="arithMean">—<span class="sc-denom">/10</span></div>
-      <div class="sc-sub">Moyenne simple /10</div>
+      <div class="sc-sub"></div>
     </div>
     <div class="summary-card geo">
       <div class="sc-label">Moyenne Géométrique</div>
       <div class="sc-score" id="geoMean">—<span class="sc-denom">/10</span></div>
-      <div class="sc-sub">Moyenne géo /10</div>
+      <div class="sc-sub"></div>
     </div>
   </div>
 
@@ -324,25 +324,22 @@ tr:last-child td { border-bottom: none; }
     <div class="legend-title">Guide d'Interprétation</div>
     <div class="legend-grid">
       <div class="legend-item li-red">
-        <strong>0 – 60 pts (&lt;40%)</strong>
+        <strong>0 - 60 pts (&lt;40%)</strong>
         Mobilisation faible. Des interventions urgentes sont nécessaires pour réengager l'équipe.
       </div>
       <div class="legend-item li-orange">
-        <strong>61 – 90 pts (40–60%)</strong>
+        <strong>61 - 90 pts (40-60%)</strong>
         Mobilisation modérée. Des améliorations ciblées peuvent avoir un impact significatif.
       </div>
       <div class="legend-item li-yellow">
-        <strong>91 – 120 pts (61–80%)</strong>
+        <strong>91 - 120 pts (61-80%)</strong>
         Bonne mobilisation. L'équipe est engagée, mais il reste des opportunités de croissance.
       </div>
       <div class="legend-item li-green">
-        <strong>121 – 150 pts (&gt;80%)</strong>
+        <strong>121 - 150 pts (&gt;80%)</strong>
         Mobilisation élevée. L'équipe performe à un haut niveau d'engagement et d'énergie.
       </div>
     </div>
-    <p style="font-size:11px;color:#aaa;margin-top:16px;">
-      Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
-    </p>
   </div>
   
   <!-- 5 section cards -->
@@ -414,21 +411,21 @@ tr:last-child td { border-bottom: none; }
           <span>Attachement au travail</span>
           <span class="q-val" id="q7v">—</span>
         </div>
-        <div class="bar-track"><div class="bar-fill" id="q7b" style="background:#e06b00;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="q7b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
         <div class="q-label">
           <span>Attachement à la direction</span>
           <span class="q-val" id="q8v">—</span>
         </div>
-        <div class="bar-track"><div class="bar-fill" id="q8b" style="background:#e06b00;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="q8b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
         <div class="q-label">
           <span>Attachement à la collectivité</span>
           <span class="q-val" id="q9v">—</span>
         </div>
-        <div class="bar-track"><div class="bar-fill" id="q9b" style="background:#e06b00;width:0%"></div></div>
+        <div class="bar-track"><div class="bar-fill" id="q9b" style="background:#ffed00;width:0%"></div></div>
       </div>
     </div>
 
@@ -509,8 +506,8 @@ tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="footer">
-    Formation Pratique en Gestion · Module 6 – La Mobilisation<br>
-    Résultats générés automatiquement · Confidentiel
+    Formation Pratique en Gestion · Module 6 - La Mobilisation<br>
+    Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
   </div>
 </div>
 
@@ -687,7 +684,7 @@ window.addEventListener('DOMContentLoaded', () => {
       total: s2
     },
     {
-      name: 'Le Lien Affectif', color: '#e06b00',
+      name: 'Le Lien Affectif', color: '#ffed00',
       questions: [
         { label: 'Niveau d\'attachement au travail',        val: p.q7 },
         { label: 'Niveau d\'attachement à la haute direction', val: p.q8 },
