@@ -292,19 +292,17 @@ tr:last-child td { border-bottom: none; }
   <div class="summary-row">
     <div class="summary-card total">
       <div class="sc-label">Score Total</div>
-      <div class="sc-score" id="totalScore">—</div>
-      <div class="sc-sub">sur <strong>150</strong> points</div>
-      <div class="sc-sub" id="totalPct">—%</div>
+      <div class="sc-score"><span id="totalScore">—</span> / 150</div>
     </div>
     <div class="summary-card arith">
       <div class="sc-label">Moyenne Arithmétique</div>
-      <div class="sc-score" id="arithMean">—<span class="sc-denom">%</span></div>
-      <div class="sc-sub">Moyenne simple sur 15 critères</div>
+      <div class="sc-score" id="arithMean">—<span class="sc-denom">/10</span></div>
+      <div class="sc-sub">Moyenne simple /10</div>
     </div>
     <div class="summary-card geo">
       <div class="sc-label">Moyenne Géométrique</div>
-      <div class="sc-score" id="geoMean">—<span class="sc-denom">%</span></div>
-      <div class="sc-sub">Moyenne géo sur 15 critères</div>
+      <div class="sc-score" id="geoMean">—<span class="sc-denom">/10</span></div>
+      <div class="sc-sub">Moyenne géo /10</div>
     </div>
   </div>
 
@@ -316,6 +314,7 @@ tr:last-child td { border-bottom: none; }
       <div class="gauge-center-text">
         <div class="gauge-pct" id="gaugePct">—</div>
         <div class="gauge-pct-label">sur 150 points</div>
+        <div class="gauge-pct-label" id="gaugePctPct" style="font-size:15px;font-weight:600;color:var(--ink);margin-top:2px;">—%</div>
       </div>
     </div>
   </div>
@@ -605,10 +604,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Summary
   setText('totalScore', total);
-  setText('totalPct', totalPct + '%');
   setText('arithMean', Math.round(arith / 10 * 100));
   setText('geoMean', Math.round(geo / 10 * 100));
   setText('gaugePct', total);
+  setText('gaugePctPct', totalPct + '%');
 
   // Section totals
   const sdata = [
