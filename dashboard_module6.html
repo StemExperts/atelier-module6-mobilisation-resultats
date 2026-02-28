@@ -20,15 +20,15 @@
   --green-light: #e8f5c0;
   --teal:        #0090ac;
   --teal-light:  #d0eef3;
-  --orange:      #e06b00;
-  --purple:      #6d2e8a;
+  --orange:      #ffed00;
+  --purple:      #002169;
   --white:       #ffffff;
   --shadow:      0 4px 28px rgba(0,33,105,0.10);
   --shadow-lg:   0 10px 48px rgba(0,33,105,0.18);
   --c1: #1d71b8;
   --c2: #95c11f;
-  --c3: #e06b00;
-  --c4: #6d2e8a;
+  --c3: #ffed00;
+  --c4: #002169;
   --c5: #0090ac;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -220,12 +220,12 @@ tr:last-child td{border-bottom:none;}
       </div>
     </div>
 
-    <!-- Charts row: radar + distribution -->
+    <!-- Charts row: horizontal bars + distribution -->
     <div class="charts-row">
       <div class="chart-card">
-        <div class="chart-title">Profil Radar du Groupe</div>
-        <div class="chart-sub">Moyenne /10 par dimension</div>
-        <canvas id="radarChart" height="260"></canvas>
+        <div class="chart-title">Forces et Faiblesses par Dimension</div>
+        <div class="chart-sub">Score moyen du groupe /30 · couleur selon le niveau</div>
+        <div id="dimBarsChart" style="display:flex;flex-direction:column;gap:14px;margin-top:8px;"></div>
       </div>
       <div class="chart-card">
         <div class="chart-title">Scores par Critère (Groupe)</div>
@@ -239,6 +239,28 @@ tr:last-child td{border-bottom:none;}
       <div class="chart-title">Distribution des Scores Totaux</div>
       <div class="chart-sub">Nombre de participants par tranche de score (/150)</div>
       <canvas id="distChart" height="160"></canvas>
+    </div>
+
+    <!-- Criteria table BEFORE participant table -->
+    <div class="section-header">
+      <h2>Analyse par Critère</h2>
+      <p>Moyenne, min, max pour chacun des 15 critères</p>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Critère</th>
+            <th>Moyenne</th>
+            <th>Moy. Géo.</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th style="width:120px">Niveau du groupe</th>
+          </tr>
+        </thead>
+        <tbody id="criteriaTable"></tbody>
+      </table>
     </div>
 
     <!-- Participant table -->
@@ -280,28 +302,6 @@ tr:last-child td{border-bottom:none;}
       </table>
     </div>
 
-    <!-- Question-level heatmap table -->
-    <div class="section-header">
-      <h2>Analyse par Critère</h2>
-      <p>Moyenne, min, max pour chacun des 15 critères</p>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead>
-          <tr>
-            <th>Dimension</th>
-            <th>Critère</th>
-            <th>Moyenne</th>
-            <th>Moy. Géo.</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th style="width:120px">Niveau du groupe</th>
-          </tr>
-        </thead>
-        <tbody id="criteriaTable"></tbody>
-      </table>
-    </div>
-
     <div class="footer">
       Formation Pratique en Gestion · Module 6 – La Mobilisation · Tableau de bord animateur<br>
       Données en temps réel via Zoho Sheets · Confidentiel
@@ -333,12 +333,12 @@ const CRITERIA = [
   { dim:"L'Investissement d'Énergie",label:"Efforts d'amélioration continue",         col:'q4',  color:'#95c11f' },
   { dim:"L'Investissement d'Énergie",label:"Efforts d'alignement stratégique",        col:'q5',  color:'#95c11f' },
   { dim:"L'Investissement d'Énergie",label:"Efforts de coordination spontanée",       col:'q6',  color:'#95c11f' },
-  { dim:'Le Lien Affectif',          label:"Niveau d'attachement au travail",         col:'q7',  color:'#e06b00' },
-  { dim:'Le Lien Affectif',          label:"Niveau d'attachement à la haute direction",col:'q8', color:'#e06b00' },
-  { dim:'Le Lien Affectif',          label:"Niveau d'attachement à la collectivité",  col:'q9',  color:'#e06b00' },
-  { dim:"Les Bases de l'Ancrage",    label:'Idéal professionnel',                     col:'q10', color:'#6d2e8a' },
-  { dim:"Les Bases de l'Ancrage",    label:'Intériorisation des priorités',           col:'q11', color:'#6d2e8a' },
-  { dim:"Les Bases de l'Ancrage",    label:'Identification aux valeurs professionnelles', col:'q12', color:'#6d2e8a' },
+  { dim:'Le Lien Affectif',          label:"Niveau d'attachement au travail",         col:'q7',  color:'#ffed00' },
+  { dim:'Le Lien Affectif',          label:"Niveau d'attachement à la haute direction",col:'q8', color:'#ffed00' },
+  { dim:'Le Lien Affectif',          label:"Niveau d'attachement à la collectivité",  col:'q9',  color:'#ffed00' },
+  { dim:"Les Bases de l'Ancrage",    label:'Idéal professionnel',                     col:'q10', color:'#002169' },
+  { dim:"Les Bases de l'Ancrage",    label:'Intériorisation des priorités',           col:'q11', color:'#002169' },
+  { dim:"Les Bases de l'Ancrage",    label:'Identification aux valeurs professionnelles', col:'q12', color:'#002169' },
   { dim:"L'Engagement Global",       label:"Niveau d'engagement dans le travail",     col:'q13', color:'#0090ac' },
   { dim:"L'Engagement Global",       label:"Niveau d'engagement stratégique",         col:'q14', color:'#0090ac' },
   { dim:"L'Engagement Global",       label:"Niveau d'engagement collectif",           col:'q15', color:'#0090ac' },
@@ -348,7 +348,7 @@ const CRITERIA = [
 let allRows = [];
 let sortKey = 'name';
 let sortDir = 1;
-let radarChartInst = null, barChartInst = null, distChartInst = null;
+let barChartInst = null, distChartInst = null;
 
 // ─── CSV Parsing ────────────────────────────────────────────────────────────
 function parseCSV(text) {
@@ -454,7 +454,7 @@ function renderAll() {
   });
 
   // Charts
-  renderRadar(dims.map(d => allRows.reduce((a,r)=>a+r[d],0)/n/3));
+  renderDimBars();
   renderBar();
   renderDist();
   renderCriteriaTable();
@@ -468,9 +468,9 @@ function setText(id, val) {
 
 function scoreColor(pct) {
   if(pct>=80) return '#95c11f';
-  if(pct>=60) return '#ffb300';
-  if(pct>=40) return '#e06b00';
-  return '#e53935';
+  if(pct>=60) return '#0090ac';
+  if(pct>=40) return '#ffed00';
+  return '#1d71b8';
 }
 
 function levelBadge(pct) {
@@ -480,29 +480,25 @@ function levelBadge(pct) {
   return '<span class="td-badge badge-low">Faible</span>';
 }
 
-// ─── Radar ─────────────────────────────────────────────────────────────────
-function renderRadar(dimAvgs) {
-  const ctx = document.getElementById('radarChart').getContext('2d');
-  if(radarChartInst){ radarChartInst.destroy(); }
-  radarChartInst = new Chart(ctx, {
-    type:'radar',
-    data:{
-      labels:['Performance','Énergie','Lien affectif','Ancrage','Engagement'],
-      datasets:[{
-        label:'Groupe (moy. /10)',
-        data: dimAvgs,
-        backgroundColor:'rgba(29,113,184,0.15)',
-        borderColor:'#1d71b8',
-        pointBackgroundColor:'#1d71b8',
-        pointRadius:5,borderWidth:2,
-      }]
-    },
-    options:{
-      responsive:true,
-      scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},
-        pointLabels:{font:{size:11,family:'DM Sans'}},grid:{color:'#e8ecf2'}}},
-      plugins:{legend:{position:'bottom',labels:{font:{size:11}}}}
-    }
+// ─── Dimension horizontal bars (Option A) ──────────────────────────────────
+function renderDimBars() {
+  const n = allRows.length;
+  const dimDefs = [
+    { key:"d1", label:"La Performance",             color:"#1d71b8" },
+    { key:"d2", label:"L'Investissement d'Énergie", color:"#95c11f" },
+    { key:"d3", label:"Le Lien Affectif",            color:"#ffed00" },
+    { key:"d4", label:"Les Bases de l'Ancrage",      color:"#002169" },
+    { key:"d5", label:"L'Engagement Global",         color:"#0090ac" },
+  ];
+  const wrap = document.getElementById("dimBarsChart");
+  wrap.innerHTML = "";
+  dimDefs.forEach(d => {
+    const avg = allRows.reduce((a,r)=>a+r[d.key],0)/n;
+    const pct = Math.round(avg/30*100);
+    const col = scoreColor(pct);
+    const txtCol = col === "#ffed00" ? "#002169" : "#fff";
+    const pctCol = col === "#ffed00" ? "#7a6200" : col;
+    wrap.innerHTML += `<div style="display:grid;grid-template-columns:170px 1fr 54px;align-items:center;gap:12px;"><div style="font-size:12px;font-weight:600;text-align:right;color:${d.color};line-height:1.3">${d.label}</div><div style="height:30px;background:#e8ecf2;border-radius:15px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${col};border-radius:15px;display:flex;align-items:center;padding-left:12px;color:${txtCol};font-size:12px;font-weight:600;">${avg.toFixed(1)}/30</div></div><div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${pctCol}">${pct}%</div></div>`;
   });
 }
 
@@ -554,7 +550,7 @@ function renderDist() {
       datasets:[{
         label:'Participants',
         data:counts,
-        backgroundColor:['#e53935','#e06b00','#ffb300','#7eb62a','#95c11f'],
+        backgroundColor:['#e53935','#ffed00','#ffed00','#7eb62a','#95c11f'],
         borderRadius:6,
       }]
     },
