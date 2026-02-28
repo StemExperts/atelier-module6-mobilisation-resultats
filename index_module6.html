@@ -296,13 +296,13 @@ tr:last-child td { border-bottom: none; }
     </div>
     <div class="summary-card arith">
       <div class="sc-label">Moyenne Arithmétique</div>
-      <div class="sc-score" id="arithMean">—<span class="sc-denom">/10</span></div>
-      <div class="sc-sub"></div>
+      <div class="sc-score"><span id="arithMean">—</span>%</div>
     </div>
     <div class="summary-card geo">
       <div class="sc-label">Moyenne Géométrique</div>
       <div class="sc-score"><span id="geoMean">—</span>%</div>
     </div>
+  </div>
 
   <!-- Gauge -->
   <div class="gauge-wrap">
@@ -322,22 +322,25 @@ tr:last-child td { border-bottom: none; }
     <div class="legend-title">Guide d'Interprétation</div>
     <div class="legend-grid">
       <div class="legend-item li-red">
-        <strong>0 - 60 pts (&lt;40%)</strong>
+        <strong>0 – 60 pts (&lt;40%)</strong>
         Mobilisation faible. Des interventions urgentes sont nécessaires pour réengager l'équipe.
       </div>
       <div class="legend-item li-orange">
-        <strong>61 - 90 pts (40-60%)</strong>
+        <strong>61 – 90 pts (40–60%)</strong>
         Mobilisation modérée. Des améliorations ciblées peuvent avoir un impact significatif.
       </div>
       <div class="legend-item li-yellow">
-        <strong>91 - 120 pts (61-80%)</strong>
+        <strong>91 – 120 pts (61–80%)</strong>
         Bonne mobilisation. L'équipe est engagée, mais il reste des opportunités de croissance.
       </div>
       <div class="legend-item li-green">
-        <strong>121 - 150 pts (&gt;80%)</strong>
+        <strong>121 – 150 pts (&gt;80%)</strong>
         Mobilisation élevée. L'équipe performe à un haut niveau d'engagement et d'énergie.
       </div>
     </div>
+    <p style="font-size:11px;color:#aaa;margin-top:16px;">
+      Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
+    </p>
   </div>
   
   <!-- 5 section cards -->
@@ -349,15 +352,24 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s1total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Qualité du travail</span><span class="q-val" id="q1v">—</span></div>
+        <div class="q-label">
+          <span>Qualité du travail</span>
+          <span class="q-val" id="q1v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q1b" style="background:#1d71b8;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Travail avec valeur ajoutée</span><span class="q-val" id="q2v">—</span></div>
+        <div class="q-label">
+          <span>Travail avec valeur ajoutée</span>
+          <span class="q-val" id="q2v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q2b" style="background:#1d71b8;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Travail d'équipe</span><span class="q-val" id="q3v">—</span></div>
+        <div class="q-label">
+          <span>Travail d'équipe</span>
+          <span class="q-val" id="q3v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q3b" style="background:#1d71b8;width:0%"></div></div>
       </div>
     </div>
@@ -368,15 +380,24 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s2total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Amélioration continue</span><span class="q-val" id="q4v">—</span></div>
+        <div class="q-label">
+          <span>Amélioration continue</span>
+          <span class="q-val" id="q4v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q4b" style="background:#95c11f;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Alignement stratégique</span><span class="q-val" id="q5v">—</span></div>
+        <div class="q-label">
+          <span>Alignement stratégique</span>
+          <span class="q-val" id="q5v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q5b" style="background:#95c11f;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Coordination spontanée</span><span class="q-val" id="q6v">—</span></div>
+        <div class="q-label">
+          <span>Coordination spontanée</span>
+          <span class="q-val" id="q6v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q6b" style="background:#95c11f;width:0%"></div></div>
       </div>
     </div>
@@ -387,15 +408,24 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s3total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Attachement au travail</span><span class="q-val" id="q7v">—</span></div>
+        <div class="q-label">
+          <span>Attachement au travail</span>
+          <span class="q-val" id="q7v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q7b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Attachement à la direction</span><span class="q-val" id="q8v">—</span></div>
+        <div class="q-label">
+          <span>Attachement à la direction</span>
+          <span class="q-val" id="q8v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q8b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Attachement à la collectivité</span><span class="q-val" id="q9v">—</span></div>
+        <div class="q-label">
+          <span>Attachement à la collectivité</span>
+          <span class="q-val" id="q9v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q9b" style="background:#ffed00;width:0%"></div></div>
       </div>
     </div>
@@ -406,15 +436,24 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s4total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Idéal professionnel</span><span class="q-val" id="q10v">—</span></div>
+        <div class="q-label">
+          <span>Idéal professionnel</span>
+          <span class="q-val" id="q10v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q10b" style="background:#002169;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Intériorisation des priorités</span><span class="q-val" id="q11v">—</span></div>
+        <div class="q-label">
+          <span>Intériorisation des priorités</span>
+          <span class="q-val" id="q11v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q11b" style="background:#002169;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label"><span>Identification aux valeurs</span><span class="q-val" id="q12v">—</span></div>
+        <div class="q-label">
+          <span>Identification aux valeurs</span>
+          <span class="q-val" id="q12v">—</span>
+        </div>
         <div class="bar-track"><div class="bar-fill" id="q12b" style="background:#002169;width:0%"></div></div>
       </div>
     </div>
@@ -426,21 +465,29 @@ tr:last-child td { border-bottom: none; }
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
         <div class="q-row">
-          <div class="q-label"><span>Engagement dans le travail</span><span class="q-val" id="q13v">—</span></div>
+          <div class="q-label">
+            <span>Engagement dans le travail</span>
+            <span class="q-val" id="q13v">—</span>
+          </div>
           <div class="bar-track"><div class="bar-fill" id="q13b" style="background:#0090ac;width:0%"></div></div>
         </div>
         <div class="q-row">
-          <div class="q-label"><span>Engagement stratégique</span><span class="q-val" id="q14v">—</span></div>
+          <div class="q-label">
+            <span>Engagement stratégique</span>
+            <span class="q-val" id="q14v">—</span>
+          </div>
           <div class="bar-track"><div class="bar-fill" id="q14b" style="background:#0090ac;width:0%"></div></div>
         </div>
         <div class="q-row">
-          <div class="q-label"><span>Engagement collectif</span><span class="q-val" id="q15v">—</span></div>
+          <div class="q-label">
+            <span>Engagement collectif</span>
+            <span class="q-val" id="q15v">—</span>
+          </div>
           <div class="bar-track"><div class="bar-fill" id="q15b" style="background:#0090ac;width:0%"></div></div>
         </div>
       </div>
     </div>
-
-  </div><!-- fin sections-grid -->
+  </div>
 
   <!-- Detailed table -->
   <div class="table-wrap">
@@ -460,8 +507,8 @@ tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="footer">
-    Formation Pratique en Gestion · Module 6 - La Mobilisation<br>
-    Inspiré de : Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
+    Formation Pratique en Gestion · Module 6 – La Mobilisation<br>
+    Résultats générés automatiquement · Confidentiel
   </div>
 </div>
 
@@ -509,10 +556,10 @@ function geoMean(vals) {
 }
 
 function scoreColor(pct) {
-  if (pct >= 80) return '#95c11f';   // vert → mobilisation élevée
-  if (pct >= 60) return '#0090ac';   // teal → bonne mobilisation
-  if (pct >= 40) return '#ffed00';   // jaune → mobilisation modérée
-  return '#1d71b8';                   // bleu → mobilisation faible
+  if (pct >= 80) return '#95c11f';
+  if (pct >= 60) return '#0090ac';
+  if (pct >= 40) return '#ffed00';
+  return '#1d71b8';
 }
 
 function setText(id, val) {
@@ -647,7 +694,7 @@ window.addEventListener('DOMContentLoaded', () => {
       total: s3
     },
     {
-      name: "Les Bases de l'Ancrage", color: '#6d2e8a',
+      name: "Les Bases de l'Ancrage", color: '#002169',
       questions: [
         { label: 'Idéal professionnel',                val: p.q10 },
         { label: 'Intériorisation des priorités',      val: p.q11 },
