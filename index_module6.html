@@ -146,16 +146,10 @@ body::before {
 .sections-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px; margin-bottom: 0;
+  gap: 16px; margin-bottom: 24px;
   animation: fadeUp .65s .25s ease both;
 }
 @media(max-width:640px){ .sections-grid { grid-template-columns: 1fr; } }
-
-.sections-full {
-  margin-top: 16px;
-  margin-bottom: 24px;
-  animation: fadeUp .65s .25s ease both;
-}
 
 .section-card {
   background: var(--white);
@@ -171,7 +165,7 @@ body::before {
 }
 .sc1::before { background: linear-gradient(90deg,#1d71b8,#4a90d9); }
 .sc2::before { background: linear-gradient(90deg,#95c11f,#b8df60); }
-.sc3::before { background: linear-gradient(90deg,#ffed00,#f7d911); }
+.sc3::before { background: linear-gradient(90deg,#ffed00,#fff176); }
 .sc4::before { background: linear-gradient(90deg,#002169,#1d71b8); }
 .sc5::before { background: linear-gradient(90deg,#0090ac,#00b8d4); }
 
@@ -355,24 +349,15 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s1total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Qualité du travail</span>
-          <span class="q-val" id="q1v">—</span>
-        </div>
+        <div class="q-label"><span>Qualité du travail</span><span class="q-val" id="q1v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q1b" style="background:#1d71b8;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Travail avec valeur ajoutée</span>
-          <span class="q-val" id="q2v">—</span>
-        </div>
+        <div class="q-label"><span>Travail avec valeur ajoutée</span><span class="q-val" id="q2v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q2b" style="background:#1d71b8;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Travail d'équipe</span>
-          <span class="q-val" id="q3v">—</span>
-        </div>
+        <div class="q-label"><span>Travail d'équipe</span><span class="q-val" id="q3v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q3b" style="background:#1d71b8;width:0%"></div></div>
       </div>
     </div>
@@ -383,24 +368,15 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s2total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Amélioration continue</span>
-          <span class="q-val" id="q4v">—</span>
-        </div>
+        <div class="q-label"><span>Amélioration continue</span><span class="q-val" id="q4v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q4b" style="background:#95c11f;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Alignement stratégique</span>
-          <span class="q-val" id="q5v">—</span>
-        </div>
+        <div class="q-label"><span>Alignement stratégique</span><span class="q-val" id="q5v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q5b" style="background:#95c11f;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Coordination spontanée</span>
-          <span class="q-val" id="q6v">—</span>
-        </div>
+        <div class="q-label"><span>Coordination spontanée</span><span class="q-val" id="q6v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q6b" style="background:#95c11f;width:0%"></div></div>
       </div>
     </div>
@@ -411,24 +387,15 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s3total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Attachement au travail</span>
-          <span class="q-val" id="q7v">—</span>
-        </div>
+        <div class="q-label"><span>Attachement au travail</span><span class="q-val" id="q7v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q7b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Attachement à la direction</span>
-          <span class="q-val" id="q8v">—</span>
-        </div>
+        <div class="q-label"><span>Attachement à la direction</span><span class="q-val" id="q8v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q8b" style="background:#ffed00;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Attachement à la collectivité</span>
-          <span class="q-val" id="q9v">—</span>
-        </div>
+        <div class="q-label"><span>Attachement à la collectivité</span><span class="q-val" id="q9v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q9b" style="background:#ffed00;width:0%"></div></div>
       </div>
     </div>
@@ -439,62 +406,41 @@ tr:last-child td { border-bottom: none; }
         <div class="sc-badge" id="s4total">—<span class="sc-denom-sm">/30</span></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Idéal professionnel</span>
-          <span class="q-val" id="q10v">—</span>
-        </div>
+        <div class="q-label"><span>Idéal professionnel</span><span class="q-val" id="q10v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q10b" style="background:#002169;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Intériorisation des priorités</span>
-          <span class="q-val" id="q11v">—</span>
-        </div>
+        <div class="q-label"><span>Intériorisation des priorités</span><span class="q-val" id="q11v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q11b" style="background:#002169;width:0%"></div></div>
       </div>
       <div class="q-row">
-        <div class="q-label">
-          <span>Identification aux valeurs</span>
-          <span class="q-val" id="q12v">—</span>
-        </div>
+        <div class="q-label"><span>Identification aux valeurs</span><span class="q-val" id="q12v">—</span></div>
         <div class="bar-track"><div class="bar-fill" id="q12b" style="background:#002169;width:0%"></div></div>
       </div>
     </div>
 
-  </div><!-- fin sections-grid -->
-
-  <!-- Engagement Global — pleine largeur -->
-  <div class="sections-full">
-    <div class="section-card sc5">
+    <div class="section-card sc5" style="grid-column: span 2;">
       <div class="sc-header">
         <div class="sc-name">L'Engagement Global</div>
         <div class="sc-badge" id="s5total">—<span class="sc-denom-sm">/30</span></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
         <div class="q-row">
-          <div class="q-label">
-            <span>Engagement dans le travail</span>
-            <span class="q-val" id="q13v">—</span>
-          </div>
+          <div class="q-label"><span>Engagement dans le travail</span><span class="q-val" id="q13v">—</span></div>
           <div class="bar-track"><div class="bar-fill" id="q13b" style="background:#0090ac;width:0%"></div></div>
         </div>
         <div class="q-row">
-          <div class="q-label">
-            <span>Engagement stratégique</span>
-            <span class="q-val" id="q14v">—</span>
-          </div>
+          <div class="q-label"><span>Engagement stratégique</span><span class="q-val" id="q14v">—</span></div>
           <div class="bar-track"><div class="bar-fill" id="q14b" style="background:#0090ac;width:0%"></div></div>
         </div>
         <div class="q-row">
-          <div class="q-label">
-            <span>Engagement collectif</span>
-            <span class="q-val" id="q15v">—</span>
-          </div>
+          <div class="q-label"><span>Engagement collectif</span><span class="q-val" id="q15v">—</span></div>
           <div class="bar-track"><div class="bar-fill" id="q15b" style="background:#0090ac;width:0%"></div></div>
         </div>
       </div>
-    </div><!-- fin section-card sc5 -->
-  </div><!-- fin sections-full -->
+    </div>
+
+  </div><!-- fin sections-grid -->
 
   <!-- Detailed table -->
   <div class="table-wrap">
