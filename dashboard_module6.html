@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Tableau de bord – La Mobilisation</title>
+<title>Tableau de bord - La Mobilisation</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -131,8 +131,8 @@ tr:last-child td{border-bottom:none;}
 
 <div class="topbar">
   <div>
-    <div class="topbar-title">Tableau de bord – Module 6 · La Mobilisation</div>
-    <div class="topbar-sub">Formation Pratique en Gestion · Animateur</div>
+    <div class="topbar-title">Tableau de bord - Module 6 · La Mobilisation</div>
+    <div class="topbar-sub">Formation Pratique en Gestion</div>
   </div>
   <div class="topbar-right">
     <span class="badge-count" id="participantCount">— réponses</span>
@@ -154,21 +154,28 @@ tr:last-child td{border-bottom:none;}
       <h2>Vue d'ensemble</h2>
       <p>Indicateurs globaux basés sur l'ensemble des réponses</p>
     </div>
+
+    <!-- Filtre par date -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <label style="font-size:12px;font-weight:600;color:#888;">Filtrer par date :</label>
+      <input type="date" id="dateFrom" onchange="applyDateFilter()" style="padding:6px 10px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;outline:none;"/>
+      <button onclick="clearDateFilter()" style="padding:6px 12px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;background:var(--white);color:#888;">✕ Effacer</button>
+      <span id="dateFilterCount" style="font-size:11px;color:#aaa;"></span>
+    </div>
     <div class="kpi-row">
       <div class="kpi k1">
         <div class="kpi-label">Score moyen global</div>
-        <div class="kpi-val" id="kpiAvgTotal">—</div>
-        <div class="kpi-sub">sur 150 points</div>
+        <div class="kpi-val"><span id="kpiAvgTotal">—</span> / 150</div>
       </div>
       <div class="kpi k2">
         <div class="kpi-label">Moy. arithmétique</div>
-        <div class="kpi-val" id="kpiArith">—</div>
-        <div class="kpi-sub">sur 10 (15 critères)</div>
+        <div class="kpi-val"><span id="kpiArith">—</span>%</div>
+        <div class="kpi-sub">15 critères</div>
       </div>
       <div class="kpi k3">
         <div class="kpi-label">Moy. géométrique</div>
-        <div class="kpi-val" id="kpiGeo">—</div>
-        <div class="kpi-sub">sur 10 (15 critères)</div>
+        <div class="kpi-val"><span id="kpiGeo">—</span>%</div>
+        <div class="kpi-sub">15 critères</div>
       </div>
       <div class="kpi k4">
         <div class="kpi-label">Taux de mobilisation</div>
@@ -180,65 +187,67 @@ tr:last-child td{border-bottom:none;}
     <!-- Dimension cards -->
     <div class="section-header">
       <h2>Résultats par Dimension</h2>
-      <p>Moyenne du groupe pour chacune des 5 dimensions (sur 30 points)</p>
+      <p>Moyenne du groupe pour chacune des 5 dimensions</p>
     </div>
     <div class="dim-grid">
       <div class="dim-card dc1">
         <div class="dim-name">La Performance</div>
-        <div class="dim-score" id="d1score">—</div>
-        <div class="dim-denom">/30</div>
+        <div class="dim-score"><span id="d1score">—</span>%</div>
         <div class="dim-bar-track"><div class="dim-bar-fill" id="d1bar" style="background:var(--c1)"></div></div>
-        <div class="dim-pct" id="d1pct">—%</div>
+        <div class="dim-pct">Moy. géo. : <span id="d1geo" style="font-weight:600">—</span>%</div>
       </div>
       <div class="dim-card dc2">
         <div class="dim-name">L'Investissement d'Énergie</div>
-        <div class="dim-score" id="d2score">—</div>
-        <div class="dim-denom">/30</div>
+        <div class="dim-score"><span id="d2score">—</span>%</div>
         <div class="dim-bar-track"><div class="dim-bar-fill" id="d2bar" style="background:var(--c2)"></div></div>
-        <div class="dim-pct" id="d2pct">—%</div>
+        <div class="dim-pct">Moy. géo. : <span id="d2geo" style="font-weight:600">—</span>%</div>
       </div>
       <div class="dim-card dc3">
         <div class="dim-name">Le Lien Affectif</div>
-        <div class="dim-score" id="d3score">—</div>
-        <div class="dim-denom">/30</div>
+        <div class="dim-score"><span id="d3score">—</span>%</div>
         <div class="dim-bar-track"><div class="dim-bar-fill" id="d3bar" style="background:var(--c3)"></div></div>
-        <div class="dim-pct" id="d3pct">—%</div>
+        <div class="dim-pct">Moy. géo. : <span id="d3geo" style="font-weight:600">—</span>%</div>
       </div>
       <div class="dim-card dc4">
         <div class="dim-name">Les Bases de l'Ancrage</div>
-        <div class="dim-score" id="d4score">—</div>
-        <div class="dim-denom">/30</div>
+        <div class="dim-score"><span id="d4score">—</span>%</div>
         <div class="dim-bar-track"><div class="dim-bar-fill" id="d4bar" style="background:var(--c4)"></div></div>
-        <div class="dim-pct" id="d4pct">—%</div>
+        <div class="dim-pct">Moy. géo. : <span id="d4geo" style="font-weight:600">—</span>%</div>
       </div>
       <div class="dim-card dc5">
         <div class="dim-name">L'Engagement Global</div>
-        <div class="dim-score" id="d5score">—</div>
-        <div class="dim-denom">/30</div>
+        <div class="dim-score"><span id="d5score">—</span>%</div>
         <div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div>
-        <div class="dim-pct" id="d5pct">—%</div>
+        <div class="dim-pct">Moy. géo. : <span id="d5geo" style="font-weight:600">—</span>%</div>
       </div>
     </div>
 
-    <!-- Charts row: horizontal bars + distribution -->
+    <!-- Distributions côte à côte -->
     <div class="charts-row">
       <div class="chart-card">
-        <div class="chart-title">Forces et Faiblesses par Dimension</div>
-        <div class="chart-sub">Score moyen du groupe /30 · couleur selon le niveau</div>
-        <div id="dimBarsChart" style="display:flex;flex-direction:column;gap:14px;margin-top:8px;"></div>
+        <div class="chart-title">Distribution des Scores Totaux</div>
+        <div class="chart-sub">Participants par tranche · Moyenne arithmétique (/150)</div>
+        <canvas id="distChart" height="260"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Scores par Critère (Groupe)</div>
-        <div class="chart-sub">Moyenne /10 pour chacun des 15 critères</div>
-        <canvas id="barChart" height="260"></canvas>
+        <div class="chart-title">Distribution des Scores Géométriques</div>
+        <div class="chart-sub">Participants par tranche · Moyenne géométrique (/150)</div>
+        <canvas id="distGeoChart" height="260"></canvas>
       </div>
     </div>
 
-    <!-- Score distribution -->
+    <!-- Forces et faiblesses arith vs géo — pleine largeur -->
+    <div class="chart-card full" style="margin-bottom:24px;">
+      <div class="chart-title">Forces et Faiblesses par Dimension</div>
+      <div class="chart-sub">Arithmétique (pâle) vs Géométrique (pleine) · couleur par dimension</div>
+      <div id="dimBarsChart" style="display:flex;flex-direction:column;gap:16px;margin-top:12px;"></div>
+    </div>
+
+    <!-- Scores par critère — pleine largeur -->
     <div class="chart-card full">
-      <div class="chart-title">Distribution des Scores Totaux</div>
-      <div class="chart-sub">Nombre de participants par tranche de score (/150)</div>
-      <canvas id="distChart" height="160"></canvas>
+      <div class="chart-title">Scores par Critère (Groupe)</div>
+      <div class="chart-sub">Moyenne /10 pour chacun des 15 critères</div>
+      <canvas id="barChart" height="160"></canvas>
     </div>
 
     <!-- Criteria table BEFORE participant table -->
@@ -303,7 +312,7 @@ tr:last-child td{border-bottom:none;}
     </div>
 
     <div class="footer">
-      Formation Pratique en Gestion · Module 6 – La Mobilisation · Tableau de bord animateur<br>
+      Formation Pratique en Gestion · Module 6 - La Mobilisation · Tableau de bord animateur<br>
       Données en temps réel via Zoho Sheets · Confidentiel
     </div>
 
@@ -348,7 +357,7 @@ const CRITERIA = [
 let allRows = [];
 let sortKey = 'name';
 let sortDir = 1;
-let barChartInst = null, distChartInst = null;
+let barChartInst = null, distChartInst = null, distGeoChartInst = null;
 
 // ─── CSV Parsing ────────────────────────────────────────────────────────────
 function parseCSV(text) {
@@ -436,19 +445,26 @@ function renderAll() {
   const avgGeo   = allRows.reduce((a,r)=>a+r.geo,0)/n;
   const avgPct   = Math.round(avgTotal/150*100);
 
-  setText('kpiAvgTotal', avgTotal.toFixed(1));
-  setText('kpiArith',    avgArith.toFixed(1));
-  setText('kpiGeo',      avgGeo.toFixed(1));
-  setText('kpiPct',      avgPct + '%');
+  setText('kpiAvgTotal',    avgTotal.toFixed(1));
+  setText('kpiArith',       Math.round(avgArith/10*100));
+  setText('kpiGeo',         Math.round(avgGeo/10*100));
+  setText('kpiPct',         avgPct + '%');
   setText('participantCount', n + ' réponse' + (n>1?'s':''));
 
   // Dimension cards
+  const dimColors = ['#1d71b8','#95c11f','#ffed00','#002169','#0090ac'];
+  const dimQCols  = [['q1','q2','q3'],['q4','q5','q6'],['q7','q8','q9'],['q10','q11','q12'],['q13','q14','q15']];
   const dims = ['d1','d2','d3','d4','d5'];
   dims.forEach((d,i) => {
     const avg = allRows.reduce((a,r)=>a+r[d],0)/n;
     const pct = Math.round(avg/30*100);
-    setText(`d${i+1}score`, avg.toFixed(1));
-    setText(`d${i+1}pct`,   pct + '%');
+    // geo per dimension
+    const geoVals = dimQCols[i].map(q => allRows.reduce((a,r)=>a+r[q],0)/n);
+    const geoPos  = geoVals.map(v => v===0?0.1:v);
+    const geoDim  = Math.pow(geoPos.reduce((a,b)=>a*b,1), 1/3);
+    const geoPct  = Math.round(geoDim/10*100);
+    setText(`d${i+1}score`, pct);
+    setText(`d${i+1}geo`, geoPct);
     const bar = document.getElementById(`d${i+1}bar`);
     if(bar) bar.style.width = pct + '%';
   });
@@ -457,6 +473,7 @@ function renderAll() {
   renderDimBars();
   renderBar();
   renderDist();
+  renderDistGeo();
   renderCriteriaTable();
   renderTable();
 }
@@ -480,25 +497,46 @@ function levelBadge(pct) {
   return '<span class="td-badge badge-low">Faible</span>';
 }
 
-// ─── Dimension horizontal bars (Option A) ──────────────────────────────────
+// ─── Dimension horizontal bars - arith vs geo ──────────────────────────────
 function renderDimBars() {
   const n = allRows.length;
   const dimDefs = [
-    { key:"d1", label:"La Performance",             color:"#1d71b8" },
-    { key:"d2", label:"L'Investissement d'Énergie", color:"#95c11f" },
-    { key:"d3", label:"Le Lien Affectif",            color:"#ffed00" },
-    { key:"d4", label:"Les Bases de l'Ancrage",      color:"#002169" },
-    { key:"d5", label:"L'Engagement Global",         color:"#0090ac" },
+    { key:"d1", label:"La Performance",             color:"#1d71b8", qs:['q1','q2','q3']    },
+    { key:"d2", label:"L'Investissement d'Énergie", color:"#95c11f", qs:['q4','q5','q6']    },
+    { key:"d3", label:"Le Lien Affectif",            color:"#ffed00", qs:['q7','q8','q9']    },
+    { key:"d4", label:"Les Bases de l'Ancrage",      color:"#002169", qs:['q10','q11','q12'] },
+    { key:"d5", label:"L'Engagement Global",         color:"#0090ac", qs:['q13','q14','q15'] },
   ];
   const wrap = document.getElementById("dimBarsChart");
   wrap.innerHTML = "";
   dimDefs.forEach(d => {
-    const avg = allRows.reduce((a,r)=>a+r[d.key],0)/n;
-    const pct = Math.round(avg/30*100);
-    const col = scoreColor(pct);
-    const txtCol = col === "#ffed00" ? "#002169" : "#fff";
-    const pctCol = col === "#ffed00" ? "#7a6200" : col;
-    wrap.innerHTML += `<div style="display:grid;grid-template-columns:170px 1fr 54px;align-items:center;gap:12px;"><div style="font-size:12px;font-weight:600;text-align:right;color:${d.color};line-height:1.3">${d.label}</div><div style="height:30px;background:#e8ecf2;border-radius:15px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:${col};border-radius:15px;display:flex;align-items:center;padding-left:12px;color:${txtCol};font-size:12px;font-weight:600;">${avg.toFixed(1)}/30</div></div><div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${pctCol}">${pct}%</div></div>`;
+    const avg  = allRows.reduce((a,r)=>a+r[d.key],0)/n;
+    const pctA = Math.round(avg/30*100);
+    const geoVals = d.qs.map(q => allRows.reduce((a,r)=>a+r[q],0)/n);
+    const geoPos  = geoVals.map(v=>v===0?0.1:v);
+    const geoDim  = Math.pow(geoPos.reduce((a,b)=>a*b,1), 1/3);
+    const pctG    = Math.round(geoDim/10*100);
+    const txtCol  = d.color==="#ffed00" ? "#7a6200" : d.color;
+    wrap.innerHTML += `
+      <div style="display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:center;">
+        <div style="font-size:12px;font-weight:600;text-align:right;color:${d.color};line-height:1.3;">${d.label}</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;color:#aaa;width:90px;flex-shrink:0;">Arithmétique</span>
+            <div style="flex:1;height:14px;background:#e8ecf2;border-radius:7px;overflow:hidden;">
+              <div style="width:${pctA}%;height:100%;background:${d.color};opacity:0.4;border-radius:7px;"></div>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctA}%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;color:#aaa;width:90px;flex-shrink:0;">Géométrique</span>
+            <div style="flex:1;height:14px;background:#e8ecf2;border-radius:7px;overflow:hidden;">
+              <div style="width:${pctG}%;height:100%;background:${d.color};border-radius:7px;"></div>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctG}%</span>
+          </div>
+        </div>
+      </div>`;
   });
 }
 
@@ -534,7 +572,7 @@ function renderBar() {
 function renderDist() {
   const ctx = document.getElementById('distChart').getContext('2d');
   if(distChartInst){ distChartInst.destroy(); }
-  const buckets = ['0–29','30–59','60–89','90–119','120–150'];
+  const buckets = ['0-29','30-59','60-89','90-119','120-150'];
   const counts  = [0,0,0,0,0];
   allRows.forEach(r => {
     if(r.total < 30)       counts[0]++;
@@ -564,7 +602,41 @@ function renderDist() {
   });
 }
 
-// ─── Criteria table ────────────────────────────────────────────────────────
+// ─── Distribution géométrique ───────────────────────────────────────────────
+function renderDistGeo() {
+  const ctx = document.getElementById('distGeoChart').getContext('2d');
+  if(distGeoChartInst){ distGeoChartInst.destroy(); }
+  // geo total = geo mean * 150 (to put on same /150 scale)
+  const buckets = ['0-29','30-59','60-89','90-119','120-150'];
+  const counts  = [0,0,0,0,0];
+  allRows.forEach(r => {
+    const geoTotal = r.geo * 15; // geo mean /10 * 15 criteria = equivalent /150
+    if(geoTotal < 30)       counts[0]++;
+    else if(geoTotal < 60)  counts[1]++;
+    else if(geoTotal < 90)  counts[2]++;
+    else if(geoTotal < 120) counts[3]++;
+    else                    counts[4]++;
+  });
+  distGeoChartInst = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels:buckets,
+      datasets:[{
+        label:'Participants',
+        data:counts,
+        backgroundColor:['#e53935','#ffed00','#ffed00','#7eb62a','#95c11f'],
+        borderRadius:6,
+      }]
+    },
+    options:{
+      responsive:true,
+      scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:11}}},x:{ticks:{font:{size:12}}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{
+        label: ctx => ' ' + ctx.parsed.y + ' participant' + (ctx.parsed.y>1?'s':'')
+      }}}
+    }
+  });
+}
 function renderCriteriaTable() {
   const tbody = document.getElementById('criteriaTable');
   tbody.innerHTML = '';
@@ -584,7 +656,7 @@ function renderCriteriaTable() {
     tr.innerHTML = `
       <td>${isDimFirst ? `<span style="color:${c.color};font-weight:600">${c.dim}</span>` : ''}</td>
       <td>${c.label}</td>
-      <td style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${scoreColor(pct)}">${avg.toFixed(1)}</td>
+      <td style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:${c.color}">${avg.toFixed(1)}</td>
       <td style="color:#888;font-size:13px">${geo.toFixed(1)}</td>
       <td style="color:#e53935;font-size:13px">${min}</td>
       <td style="color:#95c11f;font-size:13px">${max}</td>
@@ -669,6 +741,49 @@ function renderTable() {
     `;
     tbody.appendChild(tr);
   });
+}
+
+// ─── Date filter ───────────────────────────────────────────────────────────
+let filteredRows = [];
+
+function parseDate(str) {
+  if (!str) return null;
+  const parts = str.includes('/') ? str.split('/') : str.split('-');
+  if (parts.length === 3) {
+    if (str.includes('/')) return new Date(parts[2], parts[1]-1, parts[0]);
+    return new Date(parts[0], parts[1]-1, parts[2]);
+  }
+  return null;
+}
+
+function applyDateFilter() {
+  const from  = document.getElementById('dateFrom').value;
+  const fromD = from ? new Date(from) : null;
+  // Match exact date (same day)
+  filteredRows = allRows.filter(r => {
+    if (!fromD) return true;
+    const d = parseDate(r.date);
+    if (!d) return true;
+    return d.toDateString() === fromD.toDateString();
+  });
+
+  const countEl = document.getElementById('dateFilterCount');
+  if (fromD) {
+    countEl.textContent = filteredRows.length + ' réponse' + (filteredRows.length>1?'s':'') + ' pour cette date';
+  } else {
+    countEl.textContent = '';
+  }
+
+  const saved = allRows;
+  allRows = filteredRows.length ? filteredRows : saved;
+  renderAll();
+  allRows = saved;
+}
+
+function clearDateFilter() {
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateFilterCount').textContent = '';
+  renderAll();
 }
 
 // ─── Init ──────────────────────────────────────────────────────────────────
