@@ -406,9 +406,9 @@ function renderDimBars(rows) {
   const wrap = document.getElementById('dimBarsChart');
   wrap.innerHTML = '';
   dimDefs.forEach(d => {
-    const avg    = allRows.reduce((a,r)=>a+r[d.key],0)/n;
+    const avg    = rows.reduce((a,r)=>a+r[d.key],0)/n;
     const pctA   = Math.round(avg/30*100);
-    const geoVals = d.qs.map(q => allRows.reduce((a,r)=>a+r[q],0)/n);
+    const geoVals = d.qs.map(q => rows.reduce((a,r)=>a+r[q],0)/n);
     const geoPos  = geoVals.map(v=>v===0?0.1:v);
     const geoDim  = Math.pow(geoPos.reduce((a,b)=>a*b,1), 1/3);
     const pctG    = Math.round(geoDim/10*100);
