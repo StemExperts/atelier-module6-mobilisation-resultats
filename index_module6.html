@@ -412,7 +412,7 @@ function params() {
     // Page 4 – Lien affectif
     q7:  +p.get('q7')  || 0,  // Attachement travail
     q8:  +p.get('q8')  || 0,  // Attachement direction
-    q9:  +p.get('q9')  || 0,  // Attachement collectivité
+    q9:  +p.get('q9')  || 0,  // Attachement aux membres de l'équipe
     // Page 5 – Bases de l'ancrage
     q10: +p.get('q10') || 0,  // Idéal professionnel
     q11: +p.get('q11') || 0,  // Intériorisation priorités
@@ -420,7 +420,7 @@ function params() {
     // Page 6 – Engagement global
     q13: +p.get('q13') || 0,  // Engagement travail
     q14: +p.get('q14') || 0,  // Engagement stratégique
-    q15: +p.get('q15') || 0,  // Engagement collectif
+    q15: +p.get('q15') || 0,  // Engagement aux valeurs collectives
   };
 }
 
@@ -601,7 +601,7 @@ window.addEventListener('DOMContentLoaded', () => {
       questions: [
         { label: 'Niveau d\'attachement au travail',        val: p.q7 },
         { label: 'Niveau d\'attachement à la haute direction', val: p.q8 },
-        { label: 'Niveau d\'attachement à la collectivité', val: p.q9 },
+        { label: 'Niveau d\'attachement aux membres de l\'équipe', val: p.q9 },
       ],
       total: s3
     },
@@ -619,7 +619,7 @@ window.addEventListener('DOMContentLoaded', () => {
       questions: [
         { label: 'Niveau d\'engagement dans le travail', val: p.q13 },
         { label: 'Niveau d\'engagement stratégique',     val: p.q14 },
-        { label: 'Niveau d\'engagement collectif',       val: p.q15 },
+        { label: 'Niveau d\'engagement aux valeurs collectives', val: p.q15 },
       ],
       total: s5
     },
