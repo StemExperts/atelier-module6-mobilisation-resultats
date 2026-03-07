@@ -194,12 +194,13 @@ tr:last-child td{border-bottom:none;}
       <div class="dim-card dc5"><div class="dim-name">L'Engagement Global</div><div class="dim-score"><span id="d5score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div><div class="dim-pct">Moy. géo. : <span id="d5geo" style="font-weight:600">—</span>%</div></div>
     </div>
 
+    <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (pleine) · couleur par dimension</div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
+
     <div class="charts-row">
       <div class="chart-card"><div class="chart-title">Distribution des Scores Totaux</div><div class="chart-sub">Participants par tranche · Moyenne arithmétique (/150)</div><canvas id="distChart" height="260"></canvas></div>
       <div class="chart-card"><div class="chart-title">Distribution des Scores Géométriques</div><div class="chart-sub">Participants par tranche · Moyenne géométrique (/150)</div><canvas id="distGeoChart" height="260"></canvas></div>
     </div>
 
-    <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (pleine) · couleur par dimension</div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
     <div class="chart-card full"><div class="chart-title">Scores par Critère (Groupe)</div><div class="chart-sub">Moyenne /10 pour chacun des 15 critères</div><canvas id="barChart" height="160"></canvas></div>
 
     <div class="section-header">
@@ -221,7 +222,7 @@ tr:last-child td{border-bottom:none;}
 
     <div class="section-header">
       <h2>Résultats Individuels</h2>
-      <p>Sélectionnez un participant pour afficher ses résultats</p>
+      <p>Cliquez sur un en-tête pour trier · Utilisez la recherche pour filtrer</p>
     </div>
     <div class="table-card">
       <div class="table-top">
@@ -232,7 +233,7 @@ tr:last-child td{border-bottom:none;}
           <option value="total_desc">Score ↓</option><option value="name">Nom</option>
         </select>
       </div>
-      <table>
+      <table id="individualTable" style="display:none;">
         <thead><tr><th>Participant</th><th>Pharmacie</th><th>Dépt.</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>Total</th><th>Niveau</th><th>Résultats</th></tr></thead>
         <tbody id="tableBody"></tbody>
       </table>
@@ -251,6 +252,7 @@ const PROXIES = [
 ];
 
 const COL = { prenom: 0, nom: 1, email: 2, poste: 3, date: 51, dept: 5, pharmacie: 6, q1:7, q2:8, q3:9, q4:10, q5:11, q6:12, q7:13, q8:14, q9:15, q10:16, q11:17, q12:18, q13:19, q14:20, q15:21 };
+const RESULT_PAGE_URL = 'https://stemexperts.github.io/atelier-module6-mobilisation-resultats/index_module6.html';
 
 const CRITERIA = [
   { dim:'La Performance', label:'Qualité du travail', col:'q1', color:'#1d71b8' },
@@ -261,13 +263,13 @@ const CRITERIA = [
   { dim:"Énergie", label:"Coordination spontanée", col:'q6', color:'#95c11f' },
   { dim:'Affectif', label:"Attachement travail", col:'q7', color:'#ffed00' },
   { dim:'Affectif', label:"Attachement direction", col:'q8', color:'#ffed00' },
-  { dim:'Affectif', label:"Attachement collectivité", col:'q9', color:'#ffed00' },
+  { dim:'Affectif', label:"Attachement aux membres de l'équipe", col:'q9', color:'#ffed00' },
   { dim:"Ancrage", label:'Idéal professionnel', col:'q10', color:'#002169' },
   { dim:"Ancrage", label:'Priorités', col:'q11', color:'#002169' },
   { dim:"Ancrage", label:'Valeurs', col:'q12', color:'#002169' },
   { dim:"Engagement", label:"Engagement travail", col:'q13', color:'#0090ac' },
   { dim:"Engagement", label:"Engagement stratégique", col:'q14', color:'#0090ac' },
-  { dim:"Engagement", label:"Engagement valeurs collectives", col:'q15', color:'#0090ac' }
+  { dim:"Engagement", label:"Engagement aux valeurs collectives", col:'q15', color:'#0090ac' }
 ];
 
 let allRows = [];
@@ -392,7 +394,7 @@ function renderAll() {
     if(bar) bar.style.width = pct + '%';
   });
 
-  renderDimBars(rows); renderBar(rows); renderDist(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect(rows); renderTable(rows);
+  renderDimBars(rows); renderBar(rows); renderDist(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect(); renderTable();
 }
 
 function renderDimBars(rows) {
@@ -431,16 +433,16 @@ function renderDimBars(rows) {
       + '<span style="font-size:13px;font-weight:700;color:'+txtCol+';">'+pctG+'%</span>';
 
     const barsWrap = document.createElement('div');
-    barsWrap.style.cssText = 'display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center;';
+    barsWrap.style.cssText = 'display:flex;gap:8px;align-items:flex-end;width:100%;justify-content:center;';
 
-    const maxH = 140;
+    const maxH = 160;
 
     const barA = document.createElement('div');
-    barA.style.cssText = 'width:28px;background:'+d.color+';opacity:0.4;border-radius:4px 4px 0 0;height:'+Math.max(4,Math.round(pctA/100*maxH))+'px;transition:height 1s ease;';
+    barA.style.cssText = 'width:44px;background:'+d.color+';opacity:0.4;border-radius:6px 6px 0 0;height:'+Math.max(4,Math.round(pctA/100*maxH))+'px;transition:height 1s ease;';
     barA.title = 'Arithmétique : '+pctA+'%';
 
     const barG = document.createElement('div');
-    barG.style.cssText = 'width:28px;background:'+d.color+';border-radius:4px 4px 0 0;height:'+Math.max(4,Math.round(pctG/100*maxH))+'px;transition:height 1s ease;';
+    barG.style.cssText = 'width:44px;background:'+d.color+';border-radius:6px 6px 0 0;height:'+Math.max(4,Math.round(pctG/100*maxH))+'px;transition:height 1s ease;';
     barG.title = 'Géométrique : '+pctG+'%';
 
     barsWrap.appendChild(barA);
@@ -497,32 +499,61 @@ function renderDistGeo(rows) {
   distGeoChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-29','30-59','60-89','90-119','120-150'], datasets:[{ data:buckets, backgroundColor:'#0090ac' }] }, options:{plugins:{legend:{display:false}}} });
 }
 
-function populateParticipantSelect(rows) {
-  rows = rows || allRows;
+function populateParticipantSelect() {
   const sel = document.getElementById('searchInput');
   const current = sel.value;
-  sel.innerHTML = '<option value="">— Sélectionner un participant —</option><option value="__tous__">Tous les participants</option>';
-  const sorted = rows.slice().sort((a,b) => a.name.localeCompare(b.name, 'fr'));
-  sorted.forEach(r => {
+  // Vider et reconstruire depuis allRows (jamais depuis rows filtrées)
+  while (sel.options.length > 0) sel.remove(0);
+  const opt0 = document.createElement('option');
+  opt0.value = ''; opt0.textContent = '— Sélectionner un participant —';
+  sel.appendChild(opt0);
+  const optAll = document.createElement('option');
+  optAll.value = '__tous__'; optAll.textContent = 'Tous les participants';
+  sel.appendChild(optAll);
+  const sorted = allRows.slice().sort((a,b) => a.name.localeCompare(b.name, 'fr'));
+  sorted.forEach(function(r) {
     const opt = document.createElement('option');
     opt.value = r.name;
     opt.textContent = r.name + (r.company ? ' — ' + r.company : '');
     sel.appendChild(opt);
   });
-  // Restaurer la sélection si elle existe encore
-  if (current && [...sel.options].some(o => o.value === current)) sel.value = current;
+  // Restaurer sélection précédente si elle existe encore
+  for (var i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value === current) { sel.value = current; break; }
+  }
 }
 
-function renderTable(rows) {
-  rows = rows || allRows;
-  const sel = document.getElementById('searchInput').value;
-  const tbody = document.getElementById('tableBody'); tbody.innerHTML = '';
-  // Tableau vide si rien de sélectionné
-  if (!sel) return;
-  const filtered = sel === '__tous__' ? rows : rows.filter(r => r.name === sel);
-  filtered.forEach(r => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><b>${r.name}</b></td><td>${r.company}</td><td>${r.dept}</td><td>${r.d1}</td><td>${r.d2}</td><td>${r.d3}</td><td>${r.d4}</td><td>${r.d5}</td><td><b style="color:#1d71b8">${r.total}</b></td><td>${r.pct}%</td><td class="td-link"><a href="#">Détails ↗</a></td>`;
+function renderTable() {
+  var selEl = document.getElementById('searchInput');
+  var sel = selEl ? selEl.value : '';
+  var tbody = document.getElementById('tableBody');
+  var tableEl = document.getElementById('individualTable');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  // Hide table if no selection
+  if (!sel) {
+    if (tableEl) tableEl.style.display = 'none';
+    return;
+  }
+  if (tableEl) tableEl.style.display = '';
+  // For "all" filter by date; for individual search in allRows
+  var rows = getFilteredRows();
+  var filtered = sel === '__tous__' ? rows : allRows.filter(function(r){ return r.name === sel; });
+  filtered.forEach(function(r) {
+    var resultURL = RESULT_PAGE_URL +
+      '?prenom=' + encodeURIComponent(r.name.split(' ')[0]||'') +
+      '&nom='    + encodeURIComponent(r.name.split(' ').slice(1).join(' ')||'') +
+      '&q1='  + r.q1  + '&q2='  + r.q2  + '&q3='  + r.q3 +
+      '&q4='  + r.q4  + '&q5='  + r.q5  + '&q6='  + r.q6 +
+      '&q7='  + r.q7  + '&q8='  + r.q8  + '&q9='  + r.q9 +
+      '&q10=' + r.q10 + '&q11=' + r.q11 + '&q12=' + r.q12 +
+      '&q13=' + r.q13 + '&q14=' + r.q14 + '&q15=' + r.q15 +
+      '&pos='     + encodeURIComponent(r.poste) +
+      '&company=' + encodeURIComponent(r.company) +
+      '&dept='    + encodeURIComponent(r.dept) +
+      '&date='    + encodeURIComponent(r.date);
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td><b>' + r.name + '</b></td><td>' + r.company + '</td><td>' + r.dept + '</td><td>' + r.d1 + '</td><td>' + r.d2 + '</td><td>' + r.d3 + '</td><td>' + r.d4 + '</td><td>' + r.d5 + '</td><td><b style="color:#1d71b8">' + r.total + '</b></td><td>' + r.pct + '%</td><td class="td-link"><a href="' + resultURL + '" target="_blank">Voir résultats ↗</a></td>';
     tbody.appendChild(tr);
   });
 }
