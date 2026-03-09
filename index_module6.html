@@ -401,26 +401,26 @@ function params() {
     pos:     p.get('Poste')      || p.get('pos')     || '',
     company: p.get('Pharmacie')  || p.get('company') || '',
     date:    p.get('Date du workshop') || p.get('date') || '',
-    // Page 2 – La Performance
-    q1:  +p.get('q1')  || 0,  // Qualité du travail
-    q2:  +p.get('q2')  || 0,  // Valeur ajoutée
+    // Page 2 – Performance Supérieure
+    q1:  +p.get('q1')  || 0,  // Travail de qualité
+    q2:  +p.get('q2')  || 0,  // Travail avec une valeur ajoutée
     q3:  +p.get('q3')  || 0,  // Travail d'équipe
-    // Page 3 – Investissement d'énergie
-    q4:  +p.get('q4')  || 0,  // Amélioration continue
-    q5:  +p.get('q5')  || 0,  // Alignement stratégique
-    q6:  +p.get('q6')  || 0,  // Coordination spontanée
-    // Page 4 – Lien affectif
-    q7:  +p.get('q7')  || 0,  // Attachement travail
-    q8:  +p.get('q8')  || 0,  // Attachement direction
-    q9:  +p.get('q9')  || 0,  // Attachement aux membres de l'équipe
+    // Page 3 – Investissement d'énergies
+    q4:  +p.get('q4')  || 0,  // Efforts d'amélioration continue
+    q5:  +p.get('q5')  || 0,  // Efforts d'alignement stratégique
+    q6:  +p.get('q6')  || 0,  // Efforts de coordination spontanée
+    // Page 4 – Points d'ancrage psychologique
+    q7:  +p.get('q7')  || 0,  // Attachement au travail
+    q8:  +p.get('q8')  || 0,  // Attachement à la haute direction
+    q9:  +p.get('q9')  || 0,  // Attachement à la collectivité
     // Page 5 – Bases de l'ancrage
     q10: +p.get('q10') || 0,  // Idéal professionnel
-    q11: +p.get('q11') || 0,  // Intériorisation priorités
-    q12: +p.get('q12') || 0,  // Identification valeurs
+    q11: +p.get('q11') || 0,  // Intériorisation des priorités
+    q12: +p.get('q12') || 0,  // Identification aux valeurs organisationnelles
     // Page 6 – Engagement global
-    q13: +p.get('q13') || 0,  // Engagement travail
+    q13: +p.get('q13') || 0,  // Engagement dans le travail
     q14: +p.get('q14') || 0,  // Engagement stratégique
-    q15: +p.get('q15') || 0,  // Engagement aux valeurs collectives
+    q15: +p.get('q15') || 0,  // Engagement collectif
   };
 }
 
@@ -494,11 +494,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Comparative arith vs geo bars per dimension
   const dimDefs = [
-    { label:'La Performance',             color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
-    { label:"L'Investissement d'Énergie", color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
-    { label:'Le Lien Affectif',           color:'#ffed00', vals:[p.q7,  p.q8,  p.q9]  },
-    { label:"Les Bases de l'Ancrage",     color:'#002169', vals:[p.q10, p.q11, p.q12] },
-    { label:"L'Engagement Global",        color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
+    { label:'Performance Supérieure',             color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
+    { label:"Investissement d'Énergie", color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
+    { label:'Points d,ancrage psychologique',   color:'#ffed00', vals:[p.q7,  p.q8,  p.q9]  },
+    { label:"Bases de l'Ancrage",     color:'#002169', vals:[p.q10, p.q11, p.q12] },
+    { label:"Engagement Global",        color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
   ];
   const wrap = document.getElementById('dimCompBars');
   dimDefs.forEach(d => {
@@ -579,16 +579,16 @@ window.addEventListener('DOMContentLoaded', () => {
   // Detailed table
   const sections = [
     {
-      name: 'La Performance', color: '#1d71b8',
+      name: 'Performance supérierue', color: '#1d71b8',
       questions: [
-        { label: 'Qualité du travail',            val: p.q1 },
+        { label: 'Travail de qualité',            val: p.q1 },
         { label: 'Travail avec une valeur ajoutée', val: p.q2 },
         { label: "Travail d'équipe",              val: p.q3 },
       ],
       total: s1
     },
     {
-      name: "L'Investissement d'Énergie", color: '#95c11f',
+      name: "Investissement d'énergies", color: '#95c11f',
       questions: [
         { label: "Efforts d'amélioration continue",   val: p.q4 },
         { label: "Efforts d'alignement stratégique",  val: p.q5 },
@@ -597,29 +597,29 @@ window.addEventListener('DOMContentLoaded', () => {
       total: s2
     },
     {
-      name: 'Le Lien Affectif', color: '#ffed00',
+      name: 'Points d\'ancrage psychologique', color: '#ffed00',
       questions: [
-        { label: 'Niveau d\'attachement au travail',        val: p.q7 },
-        { label: 'Niveau d\'attachement à la haute direction', val: p.q8 },
-        { label: 'Niveau d\'attachement aux membres de l\'équipe', val: p.q9 },
+        { label: 'Attachement au travail',        val: p.q7 },
+        { label: 'Attachement à la haute direction', val: p.q8 },
+        { label: 'Attachement à la collectivité', val: p.q9 },
       ],
       total: s3
     },
     {
-      name: "Les Bases de l'Ancrage", color: '#002169',
+      name: "Bases de l'ancrage", color: '#002169',
       questions: [
         { label: 'Idéal professionnel',                val: p.q10 },
         { label: 'Intériorisation des priorités',      val: p.q11 },
-        { label: 'Identification aux valeurs professionnelles', val: p.q12 },
+        { label: 'Identification aux valeurs organisationnelles', val: p.q12 },
       ],
       total: s4
     },
     {
-      name: "L'Engagement Global", color: '#0090ac',
+      name: "Engagement Global", color: '#0090ac',
       questions: [
-        { label: 'Niveau d\'engagement dans le travail', val: p.q13 },
-        { label: 'Niveau d\'engagement stratégique',     val: p.q14 },
-        { label: 'Niveau d\'engagement aux valeurs collectives', val: p.q15 },
+        { label: 'Engagement dans le travail', val: p.q13 },
+        { label: 'Engagement stratégique',     val: p.q14 },
+        { label: 'Engagement collectif', val: p.q15 },
       ],
       total: s5
     },
