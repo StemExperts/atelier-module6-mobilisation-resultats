@@ -187,11 +187,11 @@ tr:last-child td{border-bottom:none;}
       <p>Moyenne du groupe pour chacune des 5 dimensions</p>
     </div>
     <div class="dim-grid">
-      <div class="dim-card dc1"><div class="dim-name">La Performance</div><div class="dim-score"><span id="d1score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d1bar" style="background:var(--c1)"></div></div><div class="dim-pct">Moy. géo. : <span id="d1geo" style="font-weight:600">—</span>%</div></div>
-      <div class="dim-card dc2"><div class="dim-name">L'Investissement d'Énergie</div><div class="dim-score"><span id="d2score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d2bar" style="background:var(--c2)"></div></div><div class="dim-pct">Moy. géo. : <span id="d2geo" style="font-weight:600">—</span>%</div></div>
-      <div class="dim-card dc3"><div class="dim-name">Le Lien Affectif</div><div class="dim-score"><span id="d3score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d3bar" style="background:var(--c3)"></div></div><div class="dim-pct">Moy. géo. : <span id="d3geo" style="font-weight:600">—</span>%</div></div>
-      <div class="dim-card dc4"><div class="dim-name">Les Bases de l'Ancrage</div><div class="dim-score"><span id="d4score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d4bar" style="background:var(--c4)"></div></div><div class="dim-pct">Moy. géo. : <span id="d4geo" style="font-weight:600">—</span>%</div></div>
-      <div class="dim-card dc5"><div class="dim-name">L'Engagement Global</div><div class="dim-score"><span id="d5score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div><div class="dim-pct">Moy. géo. : <span id="d5geo" style="font-weight:600">—</span>%</div></div>
+      <div class="dim-card dc1"><div class="dim-name">Performance Supérieure</div><div class="dim-score"><span id="d1score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d1bar" style="background:var(--c1)"></div></div><div class="dim-pct">Moy. géo. : <span id="d1geo" style="font-weight:600">—</span>%</div></div>
+      <div class="dim-card dc2"><div class="dim-name">Investissement d'Énergies</div><div class="dim-score"><span id="d2score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d2bar" style="background:var(--c2)"></div></div><div class="dim-pct">Moy. géo. : <span id="d2geo" style="font-weight:600">—</span>%</div></div>
+      <div class="dim-card dc3"><div class="dim-name">Points d'Ancrage Psychologique </div><div class="dim-score"><span id="d3score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d3bar" style="background:var(--c3)"></div></div><div class="dim-pct">Moy. géo. : <span id="d3geo" style="font-weight:600">—</span>%</div></div>
+      <div class="dim-card dc4"><div class="dim-name">Bases de l'Ancrage</div><div class="dim-score"><span id="d4score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d4bar" style="background:var(--c4)"></div></div><div class="dim-pct">Moy. géo. : <span id="d4geo" style="font-weight:600">—</span>%</div></div>
+      <div class="dim-card dc5"><div class="dim-name">Engagement Global</div><div class="dim-score"><span id="d5score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div><div class="dim-pct">Moy. géo. : <span id="d5geo" style="font-weight:600">—</span>%</div></div>
     </div>
 
     <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (pleine) · couleur par dimension</div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
@@ -255,21 +255,21 @@ const COL = { prenom: 0, nom: 1, email: 2, poste: 3, date: 51, dept: 5, pharmaci
 const RESULT_PAGE_URL = 'https://stemexperts.github.io/atelier-module6-mobilisation-resultats/index_module6.html';
 
 const CRITERIA = [
-  { dim:'La Performance', label:'Qualité du travail', col:'q1', color:'#1d71b8' },
-  { dim:'La Performance', label:'Valeur ajoutée', col:'q2', color:'#1d71b8' },
-  { dim:'La Performance', label:"Travail d'équipe", col:'q3', color:'#1d71b8' },
-  { dim:"Énergie", label:"Amélioration continue", col:'q4', color:'#95c11f' },
-  { dim:"Énergie", label:"Alignement stratégique", col:'q5', color:'#95c11f' },
-  { dim:"Énergie", label:"Coordination spontanée", col:'q6', color:'#95c11f' },
-  { dim:'Affectif', label:"Attachement travail", col:'q7', color:'#ffed00' },
-  { dim:'Affectif', label:"Attachement direction", col:'q8', color:'#ffed00' },
-  { dim:'Affectif', label:"Attachement aux membres de l'équipe", col:'q9', color:'#ffed00' },
-  { dim:"Ancrage", label:'Idéal professionnel', col:'q10', color:'#002169' },
-  { dim:"Ancrage", label:'Priorités', col:'q11', color:'#002169' },
-  { dim:"Ancrage", label:'Valeurs', col:'q12', color:'#002169' },
-  { dim:"Engagement", label:"Engagement travail", col:'q13', color:'#0090ac' },
-  { dim:"Engagement", label:"Engagement stratégique", col:'q14', color:'#0090ac' },
-  { dim:"Engagement", label:"Engagement aux valeurs collectives", col:'q15', color:'#0090ac' }
+  { dim:'Performance Supérieure', label:'Travail de qualité', col:'q1', color:'#1d71b8' },
+  { dim:'Performance Supérieure', label:'Travail avec valeur ajoutée', col:'q2', color:'#1d71b8' },
+  { dim:'Performance Supérieure', label:"Travail d'équipe", col:'q3', color:'#1d71b8' },
+  { dim:"Investissement d'Énergie", label:"Amélioration continue", col:'q4', color:'#95c11f' },
+  { dim:"Investissement d'Énergie", label:"Alignement stratégique", col:'q5', color:'#95c11f' },
+  { dim:"Investissement d'Énergie", label:"Coordination spontanée", col:'q6', color:'#95c11f' },
+  { dim:"Points d'Ancrage Psychologique", label:"Attachement au travail", col:'q7', color:'#ffed00' },
+  { dim:"Points d'Ancrage Psychologique", label:"Attachement à la haute direction", col:'q8', color:'#ffed00' },
+  { dim:"Points d'Ancrage Psychologique", label:"Attachement à la collectivité", col:'q9', color:'#ffed00' },
+  { dim:"Bases de l'Ancrage", label:'Idéal professionnel', col:'q10', color:'#002169' },
+  { dim:"Bases de l'Ancrage", label:'Intériorisation des Priorités', col:'q11', color:'#002169' },
+  { dim:"Bases de l'Ancrage", label:'Identification aux valeurs organisationnelles', col:'q12', color:'#002169' },
+  { dim:"Engagement Global", label:"Engagement dans le travail", col:'q13', color:'#0090ac' },
+  { dim:"Engagement Global", label:"Engagement stratégique", col:'q14', color:'#0090ac' },
+  { dim:"Engagement Global", label:"Engagement collectif", col:'q15', color:'#0090ac' }
 ];
 
 let allRows = [];
@@ -401,11 +401,11 @@ function renderDimBars(rows) {
   rows = rows || allRows;
   const n = rows.length;
   const dimDefs = [
-    {key:'d1',label:"La Performance",            color:'#1d71b8',qs:['q1','q2','q3']},
-    {key:'d2',label:"L’Investissement d’Énergie",color:'#95c11f',qs:['q4','q5','q6']},
-    {key:'d3',label:"Le Lien Affectif",           color:'#ffed00',qs:['q7','q8','q9']},
-    {key:'d4',label:"Les Bases de l’Ancrage",     color:'#002169',qs:['q10','q11','q12']},
-    {key:'d5',label:"L’Engagement Global",        color:'#0090ac',qs:['q13','q14','q15']},
+    {key:'d1',label:"Performance Supérieure",            color:'#1d71b8',qs:['q1','q2','q3']},
+    {key:'d2',label:"Investissement d’Énergies",color:'#95c11f',qs:['q4','q5','q6']},
+    {key:'d3',label:"Points d'Ancrage Psychologique",           color:'#ffed00',qs:['q7','q8','q9']},
+    {key:'d4',label:"Bases de l’Ancrage",     color:'#002169',qs:['q10','q11','q12']},
+    {key:'d5',label:"Engagement Global",        color:'#0090ac',qs:['q13','q14','q15']},
   ];
   const wrap = document.getElementById('dimBarsChart');
   wrap.innerHTML = '';
