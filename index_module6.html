@@ -328,7 +328,7 @@ tr:last-child td { border-bottom: none; }
     <div style="background:#002169;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
       <div>
         <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Manifestation de la mobilisation</div>
-        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global </div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global</div>
       </div>
       <div id="catScore1" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
     </div>
@@ -349,6 +349,9 @@ tr:last-child td { border-bottom: none; }
       <thead><tr><th>Dimension</th><th>Critère</th><th>Score /10</th><th class="td-bar">Niveau</th><th>%</th><th>Moy. géo.</th></tr></thead>
       <tbody id="detailTable2"></tbody>
     </table>
+
+    <!-- Ligne de total global -->
+    <div id="globalTotalRow" style="background:var(--ink);border-radius:0 0 8px 8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:0;"></div>
 
   </div>
 
@@ -609,6 +612,33 @@ window.addEventListener('DOMContentLoaded', () => {
 
   fillTable('detailTable1', sections1);
   fillTable('detailTable2', sections2);
+
+  // Ligne de total global
+  const globalEl = document.getElementById('globalTotalRow');
+  if (globalEl) {
+    const arithPct = Math.round(arith / 10 * 100);
+    const geoPct   = Math.round(geo   / 10 * 100);
+    globalEl.innerHTML = `
+      <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+        Total global
+      </div>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Score</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${total}<span style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:400;"> / 150</span></div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Arith.</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${arithPct}%</div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Géo.</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${geoPct}%</div>
+        </div>
+      </div>`;
+  }
 });
 </script>
 </body>
