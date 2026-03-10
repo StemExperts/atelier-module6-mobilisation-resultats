@@ -408,7 +408,11 @@ function renderAll() {
     if(bar) bar.style.width = pct + '%';
   });
 
-  renderDimBars(rows); renderBar(rows); renderDist(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect(); renderTable();
+  renderDimBars(rows); renderBar(rows); renderDist(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect();
+  // Réinitialiser la sélection à chaque actualisation
+  var selEl = document.getElementById('searchInput');
+  if (selEl) selEl.value = '';
+  renderTable();
 }
 
 function renderDimBars(rows) {
