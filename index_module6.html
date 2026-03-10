@@ -49,8 +49,6 @@ body::before {
   padding: 48px 20px 80px;
   position: relative; z-index: 1;
 }
-
-/* ── Header ─────────────────────────────────────────────── */
 .header {
   text-align: center;
   margin-bottom: 44px;
@@ -76,8 +74,6 @@ body::before {
   background: linear-gradient(90deg, var(--gold), var(--gold-light));
   margin: 18px auto 0; border-radius: 2px;
 }
-
-/* ── Summary row ─────────────────────────────────────────── */
 .summary-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -85,7 +81,6 @@ body::before {
   animation: fadeUp .65s .1s ease both;
 }
 @media(max-width:600px){ .summary-row { grid-template-columns: 1fr; } }
-
 .summary-card {
   background: var(--white);
   border-radius: 14px; padding: 24px 18px 20px;
@@ -101,7 +96,6 @@ body::before {
 .summary-card.total::before  { background: linear-gradient(90deg,var(--ink),var(--blue)); }
 .summary-card.arith::before  { background: linear-gradient(90deg,var(--green),#5aad87); }
 .summary-card.geo::before    { background: linear-gradient(90deg,var(--teal),#00b8d4); }
-
 .sc-label {
   font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
   font-weight: 600; margin-bottom: 10px;
@@ -111,14 +105,8 @@ body::before {
   font-family: 'Playfair Display', serif;
   font-size: 42px; font-weight: 700; line-height: 1;
 }
-.sc-denom {
-  font-size: 14px; color: #777; margin-left: 2px;
-}
-.sc-sub {
-  font-size: 12px; color: #888; margin-top: 4px;
-}
-
-/* ── Gauge ────────────────────────────────────────────────── */
+.sc-denom { font-size: 14px; color: #777; margin-left: 2px; }
+.sc-sub   { font-size: 12px; color: #888; margin-top: 4px; }
 .gauge-wrap {
   background: var(--white);
   border-radius: 16px; padding: 30px 24px 20px;
@@ -141,8 +129,6 @@ body::before {
   font-size: 36px; font-weight: 700; color: var(--ink);
 }
 .gauge-pct-label { font-size: 12px; color: #888; }
-
-/* ── Section cards ───────────────────────────────────────── */
 .sections-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -150,7 +136,6 @@ body::before {
   animation: fadeUp .65s .25s ease both;
 }
 @media(max-width:640px){ .sections-grid { grid-template-columns: 1fr; } }
-
 .section-card {
   background: var(--white);
   border-radius: 14px; padding: 22px 20px 20px;
@@ -168,7 +153,6 @@ body::before {
 .sc3::before { background: linear-gradient(90deg,#ffed00,#fff176); }
 .sc4::before { background: linear-gradient(90deg,#002169,#1d71b8); }
 .sc5::before { background: linear-gradient(90deg,#0090ac,#00b8d4); }
-
 .sc-header {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 14px;
@@ -184,11 +168,7 @@ body::before {
   white-space: nowrap; margin-left: 12px;
 }
 .sc-denom-sm { font-size: 12px; color: #888; }
-
-/* Question bars */
-.q-row {
-  margin-bottom: 10px;
-}
+.q-row { margin-bottom: 10px; }
 .q-label {
   display: flex; justify-content: space-between;
   font-size: 11px; color: #555; margin-bottom: 4px;
@@ -202,7 +182,6 @@ body::before {
   height: 100%; border-radius: 4px;
   transition: width 1s ease;
 }
-/* ── Score table ─────────────────────────────────────────── */
 .table-wrap {
   background: var(--white);
   border-radius: 16px; padding: 28px 24px;
@@ -237,8 +216,6 @@ tr:last-child td { border-bottom: none; }
   background: var(--cream-dark);
   font-weight: 600;
 }
-
-/* ── Legend/interpretation ───────────────────────────────── */
 .legend-wrap {
   background: var(--white);
   border-radius: 16px; padding: 28px 24px;
@@ -264,13 +241,10 @@ tr:last-child td { border-bottom: none; }
 .li-orange { background: var(--orange-light); color: #8b3a00; }
 .li-yellow { background: var(--gold-bg); color: #7a6200; }
 .li-green  { background: var(--green-light); color: #3a5a00; }
-
-/* ── Footer ─────────────────────────────────────────────── */
 .footer {
   text-align: center; font-size: 11px; color: #aaa;
   margin-top: 48px; animation: fadeUp .65s .5s ease both;
 }
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -280,7 +254,6 @@ tr:last-child td { border-bottom: none; }
 <body>
 <div class="page">
 
-  <!-- Header -->
   <div class="header">
     <span class="eyebrow">Formation Pratique en Gestion · Module 6</span>
     <h1>Mon équipe est-elle mobilisée?</h1>
@@ -288,7 +261,6 @@ tr:last-child td { border-bottom: none; }
     <div class="divider"></div>
   </div>
 
-  <!-- Summary cards -->
   <div class="summary-row">
     <div class="summary-card total">
       <div class="sc-label">Score Total</div>
@@ -304,7 +276,6 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
-  <!-- Gauge -->
   <div class="gauge-wrap">
     <div class="gauge-title">Niveau de Mobilisation Global</div>
     <div class="gauge-canvas-wrap">
@@ -317,7 +288,6 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
-   <!-- Interpretation -->
   <div class="legend-wrap">
     <div class="legend-title">Guide d'Interprétation</div>
     <div class="legend-grid">
@@ -343,45 +313,44 @@ tr:last-child td { border-bottom: none; }
       <p style="font-size:12px;color:#555;line-height:1.6;">Contrairement à la moyenne arithmétique, la moyenne géométrique amplifie l'impact de vos scores les plus bas. Elle vous maintient responsable même lorsque la majorité de vos réponses sont élevées.</p>
     </div>
   </div>
-  
-  <!-- Comparaison Arith vs Géo par dimension -->
+
   <div class="gauge-wrap" style="margin-bottom:24px;">
     <div class="gauge-title">Moyenne Arithmétique vs Géométrique par Dimension</div>
     <div style="font-size:12px;color:#888;margin-bottom:20px;">Comparaison /10 · La différence révèle l'impact de vos scores les plus bas</div>
-
-
     <div id="dimCompBars" style="display:flex;flex-direction:column;gap:18px;"></div>
   </div>
 
-<!-- Detailed table -->
-<div class="table-wrap">
-  <div class="table-title">Tableau Détaillé des Résultats</div>
+  <!-- Detailed table -->
+  <div class="table-wrap">
+    <div class="table-title">Tableau Détaillé des Résultats</div>
 
-  <div style="background:#002169;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
-    <div>
-      <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Manifestation de la mobilisation</div>
-      <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global · Q1–Q6</div>
+    <!-- Catégorie 1 : Manifestation -->
+    <div style="background:#002169;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Manifestation de la mobilisation</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global · Q1–Q6</div>
+      </div>
+      <div id="catScore1" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
     </div>
-    <div id="catScore1" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
-  </div>
-  <table style="margin-bottom:0;">
-    <thead><tr><th>Dimension</th><th>Critère</th><th>Score /10</th><th class="td-bar">Niveau</th><th>%</th></tr></thead>
-    <tbody id="detailTable1"></tbody>
-  </table>
+    <table style="margin-bottom:0;">
+      <thead><tr><th>Dimension</th><th>Critère</th><th>Score /10</th><th class="td-bar">Niveau</th><th>%</th><th>Moy. géo.</th></tr></thead>
+      <tbody id="detailTable1"></tbody>
+    </table>
 
-  <div style="background:#0090ac;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:20px;">
-    <div>
-      <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Dimension psychologique</div>
-      <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Lien affectif vs Lien forcé · Q7–Q15</div>
+    <!-- Catégorie 2 : Dimension psychologique -->
+    <div style="background:#0090ac;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:20px;">
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Dimension psychologique</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Lien affectif vs Lien forcé · Q7–Q15</div>
+      </div>
+      <div id="catScore2" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
     </div>
-    <div id="catScore2" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
-  </div>
-  <table style="margin-bottom:0;">
-    <thead><tr><th>Dimension</th><th>Critère</th><th>Score /10</th><th class="td-bar">Niveau</th><th>%</th></tr></thead>
-    <tbody id="detailTable2"></tbody>
-  </table>
+    <table style="margin-bottom:0;">
+      <thead><tr><th>Dimension</th><th>Critère</th><th>Score /10</th><th class="td-bar">Niveau</th><th>%</th><th>Moy. géo.</th></tr></thead>
+      <tbody id="detailTable2"></tbody>
+    </table>
 
-</div>
+  </div>
 
   <div class="footer">
     Formation Pratique en Gestion · Module 6 – La Mobilisation<br>
@@ -390,7 +359,6 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <script>
-// ── Utilities ─────────────────────────────────────────────────────────────
 function params() {
   const p = new URLSearchParams(window.location.search);
   const prenom = p.get('Prénom') || p.get('prenom') || '';
@@ -403,26 +371,21 @@ function params() {
     pos:     p.get('Poste')      || p.get('pos')     || '',
     company: p.get('Pharmacie')  || p.get('company') || '',
     date:    p.get('Date du workshop') || p.get('date') || '',
-    // Page 2 – Performance Supérieure
-    q1:  +p.get('q1')  || 0,  // Travail de qualité
-    q2:  +p.get('q2')  || 0,  // Travail avec une valeur ajoutée
-    q3:  +p.get('q3')  || 0,  // Travail d'équipe
-    // Page 3 – Investissement d'énergies
-    q4:  +p.get('q4')  || 0,  // Efforts d'amélioration continue
-    q5:  +p.get('q5')  || 0,  // Efforts d'alignement stratégique
-    q6:  +p.get('q6')  || 0,  // Efforts de coordination spontanée
-    // Page 4 – Points d'ancrage psychologique
-    q7:  +p.get('q7')  || 0,  // Attachement au travail
-    q8:  +p.get('q8')  || 0,  // Attachement à la haute direction
-    q9:  +p.get('q9')  || 0,  // Attachement à la collectivité
-    // Page 5 – Bases de l'ancrage
-    q10: +p.get('q10') || 0,  // Idéal professionnel
-    q11: +p.get('q11') || 0,  // Intériorisation des priorités
-    q12: +p.get('q12') || 0,  // Identification aux valeurs organisationnelles
-    // Page 6 – Engagement global
-    q13: +p.get('q13') || 0,  // Engagement dans le travail
-    q14: +p.get('q14') || 0,  // Engagement stratégique
-    q15: +p.get('q15') || 0,  // Engagement collectif
+    q1:  +p.get('q1')  || 0,
+    q2:  +p.get('q2')  || 0,
+    q3:  +p.get('q3')  || 0,
+    q4:  +p.get('q4')  || 0,
+    q5:  +p.get('q5')  || 0,
+    q6:  +p.get('q6')  || 0,
+    q7:  +p.get('q7')  || 0,
+    q8:  +p.get('q8')  || 0,
+    q9:  +p.get('q9')  || 0,
+    q10: +p.get('q10') || 0,
+    q11: +p.get('q11') || 0,
+    q12: +p.get('q12') || 0,
+    q13: +p.get('q13') || 0,
+    q14: +p.get('q14') || 0,
+    q15: +p.get('q15') || 0,
   };
 }
 
@@ -449,11 +412,9 @@ function setBar(barId, pct, color) {
   if (el) { el.style.width = pct + '%'; el.style.background = color; }
 }
 
-// ── Main render ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const p = params();
 
-  // Participant info
   const infoLine = document.getElementById('participantLine');
   const parts = [
     `<strong>${p.name}</strong>`,
@@ -464,7 +425,6 @@ window.addEventListener('DOMContentLoaded', () => {
   ].filter(Boolean).join(' ');
   infoLine.innerHTML = parts;
 
-  // Section totals
   const s1 = p.q1 + p.q2 + p.q3;
   const s2 = p.q4 + p.q5 + p.q6;
   const s3 = p.q7 + p.q8 + p.q9;
@@ -474,33 +434,22 @@ window.addEventListener('DOMContentLoaded', () => {
   const totalPct = Math.round(total / 150 * 100);
 
   const allVals = [p.q1,p.q2,p.q3,p.q4,p.q5,p.q6,p.q7,p.q8,p.q9,p.q10,p.q11,p.q12,p.q13,p.q14,p.q15];
-  const arith  = (allVals.reduce((a,b)=>a+b,0) / allVals.length);
-  const geo    = geoMean(allVals);
+  const arith = allVals.reduce((a,b)=>a+b,0) / allVals.length;
+  const geo   = geoMean(allVals);
 
-  // Summary
-  setText('totalScore', total);
-  setText('arithMean', Math.round(arith / 10 * 100));
-  setText('geoMean', Math.round(geo / 10 * 100));
-  setText('gaugePct', total);
+  setText('totalScore',  total);
+  setText('arithMean',   Math.round(arith / 10 * 100));
+  setText('geoMean',     Math.round(geo   / 10 * 100));
+  setText('gaugePct',    total);
   setText('gaugePctPct', totalPct + '%');
 
-  // Section totals (still needed for table)
-  const sdata = [
-    { id:'s1total', val:s1 },
-    { id:'s2total', val:s2 },
-    { id:'s3total', val:s3 },
-    { id:'s4total', val:s4 },
-    { id:'s5total', val:s5 },
-  ];
-  sdata.forEach(s => setText(s.id, s.val));
-
-  // Comparative arith vs geo bars per dimension
+  // Arith vs Geo bars per dimension
   const dimDefs = [
-    { label:'Performance supérieure',             color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
-    { label:"Investissement d'énergies", color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
+    { label:'Performance supérieure',          color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
+    { label:"Investissement d'énergies",        color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
     { label:"Points d'ancrage psychologique",   color:'#ffed00', vals:[p.q7,  p.q8,  p.q9]  },
-    { label:"Bases de l'ancrage",     color:'#002169', vals:[p.q10, p.q11, p.q12] },
-    { label:"Engagement global",        color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
+    { label:"Bases de l'ancrage",               color:'#002169', vals:[p.q10, p.q11, p.q12] },
+    { label:"Engagement global",                color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
   ];
   const wrap = document.getElementById('dimCompBars');
   dimDefs.forEach(d => {
@@ -531,29 +480,6 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>`;
   });
 
-  // Individual question bars
-  const qmap = [
-    { vid:'q1v',  bid:'q1b',  val:p.q1  },
-    { vid:'q2v',  bid:'q2b',  val:p.q2  },
-    { vid:'q3v',  bid:'q3b',  val:p.q3  },
-    { vid:'q4v',  bid:'q4b',  val:p.q4  },
-    { vid:'q5v',  bid:'q5b',  val:p.q5  },
-    { vid:'q6v',  bid:'q6b',  val:p.q6  },
-    { vid:'q7v',  bid:'q7b',  val:p.q7  },
-    { vid:'q8v',  bid:'q8b',  val:p.q8  },
-    { vid:'q9v',  bid:'q9b',  val:p.q9  },
-    { vid:'q10v', bid:'q10b', val:p.q10 },
-    { vid:'q11v', bid:'q11b', val:p.q11 },
-    { vid:'q12v', bid:'q12b', val:p.q12 },
-    { vid:'q13v', bid:'q13b', val:p.q13 },
-    { vid:'q14v', bid:'q14b', val:p.q14 },
-    { vid:'q15v', bid:'q15b', val:p.q15 },
-  ];
-  qmap.forEach(q => {
-    setText(q.vid, q.val + '/10');
-    setBar(q.bid, q.val * 10, scoreColor(q.val * 10));
-  });
-
   // Gauge chart
   const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
   const gaugeVal = Math.min(total, 150);
@@ -578,7 +504,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
- // Detailed table — catégorie 1 : Manifestation (q1–q6)
+  // Scores des catégories
   const cat1Score = Math.round((s1 + s2) / 60 * 100);
   const cat2Score = Math.round((s3 + s4 + s5) / 90 * 100);
   const cat1El = document.getElementById('catScore1');
@@ -590,16 +516,16 @@ window.addEventListener('DOMContentLoaded', () => {
     {
       name: 'Performance supérieure', color: '#1d71b8',
       questions: [
-        { label: 'Travail de qualité', val: p.q1 },
+        { label: 'Travail de qualité',              val: p.q1 },
         { label: 'Travail avec une valeur ajoutée', val: p.q2 },
-        { label: "Travail d'équipe", val: p.q3 },
+        { label: "Travail d'équipe",                val: p.q3 },
       ], total: s1
     },
     {
       name: "Investissement d'énergie", color: '#95c11f',
       questions: [
-        { label: "Efforts d'amélioration continue", val: p.q4 },
-        { label: "Efforts d'alignement stratégique", val: p.q5 },
+        { label: "Efforts d'amélioration continue",    val: p.q4 },
+        { label: "Efforts d'alignement stratégique",   val: p.q5 },
         { label: "Efforts de coordination spontannée", val: p.q6 },
       ], total: s2
     },
@@ -609,16 +535,16 @@ window.addEventListener('DOMContentLoaded', () => {
     {
       name: "Points d'ancrage psychologique", color: '#b8a800',
       questions: [
-        { label: 'Attachement au travail', val: p.q7 },
-        { label: 'Attachement envers la haute direction', val: p.q8 },
-        { label: 'Attachement à la collectivité', val: p.q9 },
+        { label: 'Attachement au travail',                val: p.q7  },
+        { label: 'Attachement envers la haute direction', val: p.q8  },
+        { label: 'Attachement à la collectivité',         val: p.q9  },
       ], total: s3
     },
     {
       name: "Bases de l'ancrage", color: '#002169',
       questions: [
-        { label: 'Idéal professionnel', val: p.q10 },
-        { label: 'Intériorisation des priorités', val: p.q11 },
+        { label: 'Idéal professionnel',                            val: p.q10 },
+        { label: 'Intériorisation des priorités',                  val: p.q11 },
         { label: 'Identifications aux valeurs organisationnelles', val: p.q12 },
       ], total: s4
     },
@@ -626,8 +552,8 @@ window.addEventListener('DOMContentLoaded', () => {
       name: "Engagement global", color: '#0090ac',
       questions: [
         { label: "Niveau d'engagement dans le travail", val: p.q13 },
-        { label: "Niveau d'engagement stratégique", val: p.q14 },
-        { label: "Engagement collectif", val: p.q15 },
+        { label: "Niveau d'engagement stratégique",     val: p.q14 },
+        { label: "Engagement collectif",                val: p.q15 },
       ], total: s5
     },
   ];
@@ -642,26 +568,31 @@ window.addEventListener('DOMContentLoaded', () => {
         const pct = Math.round(q.val / 10 * 100);
         const row = document.createElement('tr');
         row.innerHTML = `
-        <td>${i === 0 ? `<span style="color:${txtCol};font-weight:600">${sec.name}</span>` : ''}</td>
-        <td>${q.label}</td>
-        <td class="td-score" style="color:${txtCol}">${q.val}</td>
-        <td class="td-bar">
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barCol}"></div></div>
-        </td>
-        <td class="td-pct">${pct}%</td>
-      `;
+          <td>${i === 0 ? `<span style="color:${txtCol};font-weight:600">${sec.name}</span>` : ''}</td>
+          <td>${q.label}</td>
+          <td class="td-score" style="color:${txtCol}">${q.val}</td>
+          <td class="td-bar">
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barCol}"></div></div>
+          </td>
+          <td class="td-pct">${pct}%</td>
+          <td></td>
+        `;
         tbody.appendChild(row);
       });
+      // Ligne sous-total avec moyenne géométrique de la dimension
+      const secGeo    = geoMean(sec.questions.map(q => q.val));
+      const secGeoPct = Math.round(secGeo / 10 * 100);
       const trow = document.createElement('tr');
       trow.className = 'section-total-row';
       trow.innerHTML = `
-      <td colspan="2" style="text-align:right;color:${txtCol}">Sous-total – ${sec.name}</td>
-      <td class="td-score" style="color:${txtCol}">${sec.total}<span class="td-pct">/30</span></td>
-      <td class="td-bar">
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(sec.total / 30 * 100)}%;background:${barCol}"></div></div>
-      </td>
-      <td class="td-pct">${Math.round(sec.total / 30 * 100)}%</td>
-    `;
+        <td colspan="2" style="text-align:right;color:${txtCol}">Sous-total – ${sec.name}</td>
+        <td class="td-score" style="color:${txtCol}">${sec.total}<span class="td-pct">/30</span></td>
+        <td class="td-bar">
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(sec.total/30*100)}%;background:${barCol}"></div></div>
+        </td>
+        <td class="td-pct">${Math.round(sec.total/30*100)}%</td>
+        <td class="td-pct" style="font-weight:700;color:${txtCol};">${secGeoPct}%</td>
+      `;
       tbody.appendChild(trow);
     });
   }
