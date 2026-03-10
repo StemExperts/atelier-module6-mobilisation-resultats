@@ -194,11 +194,11 @@ tr:last-child td{border-bottom:none;}
       <div class="dim-card dc5"><div class="dim-name">Engagement Global</div><div class="dim-score"><span id="d5score">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div><div class="dim-pct">Moy. géo. : <span id="d5geo" style="font-weight:600">—</span>%</div></div>
     </div>
 
-    <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (pleine) · couleur par dimension</div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
+    <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (foncé) </div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
 
     <div class="charts-row">
-      <div class="chart-card"><div class="chart-title">Distribution des Scores Totaux</div><div class="chart-sub">Participants par tranche · Moyenne arithmétique (/150)</div><canvas id="distChart" height="260"></canvas></div>
-      <div class="chart-card"><div class="chart-title">Distribution des Scores Géométriques</div><div class="chart-sub">Participants par tranche · Moyenne géométrique (/150)</div><canvas id="distGeoChart" height="260"></canvas></div>
+      <div class="chart-card"><div class="chart-title">Distribution des Scores Totaux</div><div class="chart-sub">Participants par tranche · Moyenne arithmétique (/100)</div><canvas id="distChart" height="260"></canvas></div>
+      <div class="chart-card"><div class="chart-title">Distribution des Scores Géométriques</div><div class="chart-sub">Participants par tranche · Moyenne géométrique (/100)</div><canvas id="distGeoChart" height="260"></canvas></div>
     </div>
 
     <div class="chart-card full"><div class="chart-title">Scores par Critère (Groupe)</div><div class="chart-sub">Moyenne /10 pour chacun des 15 critères</div><canvas id="barChart" height="160"></canvas></div>
@@ -486,8 +486,8 @@ function renderDist(rows) {
   const ctx = document.getElementById('distChart').getContext('2d');
   if(distChartInst) distChartInst.destroy();
   const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const i = Math.min(4, Math.floor(r.total/30)); buckets[i]++; });
-  distChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-29','30-59','60-89','90-119','120-150'], datasets:[{ data:buckets, backgroundColor:'#1d71b8' }] }, options:{plugins:{legend:{display:false}}} });
+  rows.forEach(r => { const i = Math.min(4, Math.floor(r.total/20)); buckets[i]++; });
+  distChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-19%','20-39%','40-59%','60-79%','80-100%'], datasets:[{ data:buckets, backgroundColor:'#1d71b8' }] }, options:{plugins:{legend:{display:false}}} });
 }
 
 function renderDistGeo(rows) {
@@ -495,8 +495,8 @@ function renderDistGeo(rows) {
   const ctx = document.getElementById('distGeoChart').getContext('2d');
   if(distGeoChartInst) distGeoChartInst.destroy();
   const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const i = Math.min(4, Math.floor((r.geo*15)/30)); buckets[i]++; });
-  distGeoChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-29','30-59','60-89','90-119','120-150'], datasets:[{ data:buckets, backgroundColor:'#0090ac' }] }, options:{plugins:{legend:{display:false}}} });
+  rows.forEach(r => { const i = Math.min(4, Math.floor((r.geo/2)); buckets[i]++; });
+  distGeoChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-19%','20-39%','40-59%','60-79%','80-100%'], datasets:[{ data:buckets, backgroundColor:'#0090ac' }] }, options:{plugins:{legend:{display:false}}} });
 }
 
 function populateParticipantSelect() {
