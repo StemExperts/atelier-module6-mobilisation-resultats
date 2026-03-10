@@ -495,7 +495,7 @@ function renderDistGeo(rows) {
   const ctx = document.getElementById('distGeoChart').getContext('2d');
   if(distGeoChartInst) distGeoChartInst.destroy();
   const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const i = Math.min(4, Math.floor((r.geo/2)); buckets[i]++; });
+  rows.forEach(r => { const i = Math.min(4, Math.floor(r.geo/2)); buckets[i]++; });
   distGeoChartInst = new Chart(ctx, { type:'bar', data:{ labels:['0-19%','20-39%','40-59%','60-79%','80-100%'], datasets:[{ data:buckets, backgroundColor:'#0090ac' }] }, options:{plugins:{legend:{display:false}}} });
 }
 
