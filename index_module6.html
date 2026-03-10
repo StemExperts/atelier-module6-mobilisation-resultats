@@ -328,7 +328,7 @@ tr:last-child td { border-bottom: none; }
     <div style="background:#002169;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
       <div>
         <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Manifestation de la mobilisation</div>
-        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global · Q1–Q6</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Résultat global </div>
       </div>
       <div id="catScore1" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
     </div>
@@ -341,7 +341,7 @@ tr:last-child td { border-bottom: none; }
     <div style="background:#0090ac;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:20px;">
       <div>
         <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Dimension psychologique</div>
-        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Lien affectif vs Lien forcé · Q7–Q15</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Lien affectif vs Lien forcé</div>
       </div>
       <div id="catScore2" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
     </div>
@@ -504,13 +504,23 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Scores des catégories
+  // Scores des catégories — arithmétique + géométrique
   const cat1Score = Math.round((s1 + s2) / 60 * 100);
   const cat2Score = Math.round((s3 + s4 + s5) / 90 * 100);
+  const cat1Geo   = Math.round(geoMean([p.q1,p.q2,p.q3,p.q4,p.q5,p.q6]) / 10 * 100);
+  const cat2Geo   = Math.round(geoMean([p.q7,p.q8,p.q9,p.q10,p.q11,p.q12,p.q13,p.q14,p.q15]) / 10 * 100);
   const cat1El = document.getElementById('catScore1');
   const cat2El = document.getElementById('catScore2');
-  if (cat1El) cat1El.textContent = cat1Score + '%';
-  if (cat2El) cat2El.textContent = cat2Score + '%';
+  if (cat1El) cat1El.innerHTML = `
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Score}%</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Geo}%</span></div>
+    </div>`;
+  if (cat2El) cat2El.innerHTML = `
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Score}%</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Geo}%</span></div>
+    </div>`;
 
   const sections1 = [
     {
