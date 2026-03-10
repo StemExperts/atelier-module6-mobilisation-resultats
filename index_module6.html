@@ -565,115 +565,96 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Detailed table
-  const sections = [
+ // Detailed table — catégorie 1 : Manifestation (q1–q6)
+  const cat1Score = Math.round((s1 + s2) / 60 * 100);
+  const cat2Score = Math.round((s3 + s4 + s5) / 90 * 100);
+  const cat1El = document.getElementById('catScore1');
+  const cat2El = document.getElementById('catScore2');
+  if (cat1El) cat1El.textContent = cat1Score + '%';
+  if (cat2El) cat2El.textContent = cat2Score + '%';
+
+  const sections1 = [
     {
-      name: 'Performance supérierue', color: '#1d71b8',
+      name: 'Performance supérieure', color: '#1d71b8',
       questions: [
-        { label: 'Travail de qualité',            val: p.q1 },
+        { label: 'Travail de qualité', val: p.q1 },
         { label: 'Travail avec une valeur ajoutée', val: p.q2 },
-        { label: "Travail d'équipe",              val: p.q3 },
-      ],
-      total: s1
+        { label: "Travail d'équipe", val: p.q3 },
+      ], total: s1
     },
     {
-      name: "Investissement d'énergies", color: '#95c11f',
+      name: "Investissement d'énergie", color: '#95c11f',
       questions: [
-        { label: "Efforts d'amélioration continue",   val: p.q4 },
-        { label: "Efforts d'alignement stratégique",  val: p.q5 },
-        { label: "Efforts de coordination spontanée", val: p.q6 },
-      ],
-      total: s2
+        { label: "Efforts d'amélioration continue", val: p.q4 },
+        { label: "Efforts d'alignement stratégique", val: p.q5 },
+        { label: "Efforts de coordination spontannée", val: p.q6 },
+      ], total: s2
     },
+  ];
+
+  const sections2 = [
     {
-      name: 'Points d\'ancrage psychologique', color: '#ffed00',
+      name: "Points d'ancrage psychologique", color: '#b8a800',
       questions: [
-        { label: 'Attachement au travail',        val: p.q7 },
-        { label: 'Attachement à la haute direction', val: p.q8 },
+        { label: 'Attachement au travail', val: p.q7 },
+        { label: 'Attachement envers la haute direction', val: p.q8 },
         { label: 'Attachement à la collectivité', val: p.q9 },
-      ],
-      total: s3
+      ], total: s3
     },
     {
       name: "Bases de l'ancrage", color: '#002169',
       questions: [
-        { label: 'Idéal professionnel',                val: p.q10 },
-        { label: 'Intériorisation des priorités',      val: p.q11 },
-        { label: 'Identification aux valeurs organisationnelles', val: p.q12 },
-      ],
-      total: s4
+        { label: 'Idéal professionnel', val: p.q10 },
+        { label: 'Intériorisation des priorités', val: p.q11 },
+        { label: 'Identifications aux valeurs organisationnelles', val: p.q12 },
+      ], total: s4
     },
     {
-      name: "Engagement Global", color: '#0090ac',
+      name: "Engagement global", color: '#0090ac',
       questions: [
-        { label: 'Engagement dans le travail', val: p.q13 },
-        { label: 'Engagement stratégique',     val: p.q14 },
-        { label: 'Engagement collectif', val: p.q15 },
-      ],
-      total: s5
+        { label: "Niveau d'engagement dans le travail", val: p.q13 },
+        { label: "Niveau d'engagement stratégique", val: p.q14 },
+        { label: "Engagement collectif", val: p.q15 },
+      ], total: s5
     },
   ];
 
-  const tbody = document.getElementById('detailTable');
-  sections.forEach(sec => {
-    sec.questions.forEach((q, i) => {
-      const pct = Math.round(q.val / 10 * 100);
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${i === 0 ? `<span style="color:${sec.color};font-weight:600">${sec.name}</span>` : ''}</td>
+  function fillTable(tbodyId, sections) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    sections.forEach(sec => {
+      const txtCol = sec.color === '#b8a800' ? '#b8a800' : sec.color;
+      const barCol = sec.color === '#b8a800' ? '#ffed00' : sec.color;
+      sec.questions.forEach((q, i) => {
+        const pct = Math.round(q.val / 10 * 100);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${i === 0 ? `<span style="color:${txtCol};font-weight:600">${sec.name}</span>` : ''}</td>
         <td>${q.label}</td>
-        <td class="td-score" style="color:${sec.color}">${q.val}</td>
+        <td class="td-score" style="color:${txtCol}">${q.val}</td>
         <td class="td-bar">
-          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${sec.color}"></div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barCol}"></div></div>
         </td>
         <td class="td-pct">${pct}%</td>
       `;
-      tbody.appendChild(row);
-    });
-    // Section total row
-    const trow = document.createElement('tr');
-    trow.className = 'section-total-row';
-    trow.innerHTML = `
-      <td colspan="2" style="text-align:right;color:${sec.color}">Sous-total – ${sec.name}</td>
-      <td class="td-score" style="color:${sec.color}">${sec.total}<span class="td-pct">/30</span></td>
+        tbody.appendChild(row);
+      });
+      const trow = document.createElement('tr');
+      trow.className = 'section-total-row';
+      trow.innerHTML = `
+      <td colspan="2" style="text-align:right;color:${txtCol}">Sous-total – ${sec.name}</td>
+      <td class="td-score" style="color:${txtCol}">${sec.total}<span class="td-pct">/30</span></td>
       <td class="td-bar">
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(sec.total/30*100)}%;background:${sec.color}"></div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.round(sec.total / 30 * 100)}%;background:${barCol}"></div></div>
       </td>
-      <td class="td-pct">${Math.round(sec.total/30*100)}%</td>
+      <td class="td-pct">${Math.round(sec.total / 30 * 100)}%</td>
     `;
-    tbody.appendChild(trow);
-  });
+      tbody.appendChild(trow);
+    });
+  }
 
-  // Grand total row
-  const grandRow = document.createElement('tr');
-  grandRow.innerHTML = `
-    <td colspan="2" style="font-weight:700;font-size:14px;color:var(--ink)">TOTAL GLOBAL</td>
-    <td class="td-score" style="color:var(--ink)">${total}<span class="td-pct">/150</span></td>
-    <td class="td-bar">
-      <div class="bar-track"><div class="bar-fill" style="width:${totalPct}%;background:${scoreColor(totalPct)}"></div></div>
-    </td>
-    <td class="td-pct">${totalPct}%</td>
-  `;
-  grandRow.style.background = '#f0f4ff';
-  grandRow.style.fontWeight = '700';
-  tbody.appendChild(grandRow);
-
-  // Arith / geo rows
-  const arithRow = document.createElement('tr');
-  arithRow.innerHTML = `
-    <td colspan="2" style="font-size:13px;color:#555">Moyenne arithmétique (/10)</td>
-    <td class="td-score" style="font-size:16px">${arith.toFixed(2)}</td>
-    <td colspan="2" class="td-pct">sur 15 critères</td>
-  `;
-  tbody.appendChild(arithRow);
-
-  const geoRow = document.createElement('tr');
-  geoRow.innerHTML = `
-    <td colspan="2" style="font-size:13px;color:#555">Moyenne géométrique (/10)</td>
-    <td class="td-score" style="font-size:16px">${geo.toFixed(2)}</td>
-    <td colspan="2" class="td-pct">sur 15 critères</td>
-  `;
-  tbody.appendChild(geoRow);
+  fillTable('detailTable1', sections1);
+  fillTable('detailTable2', sections2);
 });
 </script>
 </body>
