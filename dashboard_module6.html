@@ -248,7 +248,18 @@ tr:last-child td{border-bottom:none;}
         </select>
       </div>
       <table id="individualTable" style="display:none;">
-        <thead><tr><th>Participant</th><th>Pharmacie</th><th>Dépt.</th><th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th><th>Total</th><th>Niveau</th><th>Résultats</th></tr></thead>
+        <thead><tr>
+          <th>Participant</th>
+          <th>Pharmacie</th>
+          <th>Dépt.</th>
+          <th style="white-space:normal;min-width:72px;">Date<br>de l'atelier</th>
+          <th style="white-space:normal;min-width:72px;">Date<br>soumise</th>
+          <th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th>
+          <th>Total</th>
+          <th>%<br>Arith.</th>
+          <th>%<br>Géo.</th>
+          <th>Résultats</th>
+        </tr></thead>
         <tbody id="tableBody"></tbody>
       </table>
     </div>
@@ -266,6 +277,8 @@ const PROXIES = [
 ];
 
 const COL = { prenom: 0, nom: 1, email: 2, poste: 3, date: 51, dept: 5, pharmacie: 6, q1:7, q2:8, q3:9, q4:10, q5:11, q6:12, q7:13, q8:14, q9:15, q10:16, q11:17, q12:18, q13:19, q14:20, q15:21 };
+const COL_DATE_ATELIER = 4;   // "Date de l'atelier" (col E)
+const COL_DATE_SOUMISE = 51;  // "La réponse est terminée" (col BD)
 const RESULT_PAGE_URL = 'https://stemexperts.github.io/atelier-module6-mobilisation-resultats/index_module6.html';
 
 const CRITERIA = [
@@ -331,7 +344,10 @@ function rowToParticipant(r) {
   const arith = all15.reduce((a,b)=>a+b,0)/15;
   const pos15 = all15.map(v=>v===0?0.1:v);
   const geo = Math.pow(pos15.reduce((a,b)=>a*b,1), 1/15);
-  return { name:[(r[COL.prenom]||''),(r[COL.nom]||'')].join(' ').trim(), company:r[COL.pharmacie]||'', dept:r[COL.dept]||'', poste:r[COL.poste]||'', date:r[COL.date]||'', d1,d2,d3,d4,d5,total, arith, geo, pct:Math.round(total/150*100), q1:q('q1'),q2:q('q2'),q3:q('q3'),q4:q('q4'),q5:q('q5'),q6:q('q6'),q7:q('q7'),q8:q('q8'),q9:q('q9'),q10:q('q10'),q11:q('q11'),q12:q('q12'),q13:q('q13'),q14:q('q14'),q15:q('q15') };
+  const dateSoumiseBrut = r[COL_DATE_SOUMISE] || '';
+  const dateSoumise = dateSoumiseBrut.split(',')[0].trim();
+  const dateAtelier = r[COL_DATE_ATELIER] || '';
+  return { name:[(r[COL.prenom]||''),(r[COL.nom]||'')].join(' ').trim(), company:r[COL.pharmacie]||'', dept:r[COL.dept]||'', poste:r[COL.poste]||'', date:r[COL.date]||'', dateAtelier, dateSoumise, d1,d2,d3,d4,d5,total, arith, geo, pct:Math.round(total/150*100), q1:q('q1'),q2:q('q2'),q3:q('q3'),q4:q('q4'),q5:q('q5'),q6:q('q6'),q7:q('q7'),q8:q('q8'),q9:q('q9'),q10:q('q10'),q11:q('q11'),q12:q('q12'),q13:q('q13'),q14:q('q14'),q15:q('q15') };
 }
 
 async function loadData() {
@@ -504,7 +520,7 @@ function renderDist(rows) {
   const ctx = document.getElementById('distChart').getContext('2d');
   if(distChartInst) distChartInst.destroy();
   const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const i = Math.min(4, Math.floor(r.total / 20)); buckets[i]++; });
+  rows.forEach(r => { const pct = r.total / 150 * 100; const i = Math.min(4, Math.floor(pct / 20)); buckets[i]++; });
   distChartInst = new Chart(ctx, { type: 'bar', data: { labels: ['0-19%', '20-39%', '40-59%', '60-79%', '80-100%'], datasets: [{ data: buckets, backgroundColor: '#1d71b8' }] }, options: { plugins: { legend: { display: false } } } });
 }
 
@@ -513,7 +529,7 @@ function renderDistGeo(rows) {
   const ctx = document.getElementById('distGeoChart').getContext('2d');
   if(distGeoChartInst) distGeoChartInst.destroy();
   const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const i = Math.min(4, Math.floor(r.geo / 2)); buckets[i]++; });
+  rows.forEach(r => { const pct = r.geo / 10 * 100; const i = Math.min(4, Math.floor(pct / 20)); buckets[i]++; });
   distGeoChartInst = new Chart(ctx, { type: 'bar', data: { labels: ['0-19%', '20-39%', '40-59%', '60-79%', '80-100%'], datasets: [{ data: buckets, backgroundColor: '#0090ac' }] }, options: { plugins: { legend: { display: false } } } });
 }
 
@@ -570,8 +586,9 @@ function renderTable() {
       '&company=' + encodeURIComponent(r.company) +
       '&dept='    + encodeURIComponent(r.dept) +
       '&date='    + encodeURIComponent(r.date);
+    var geoPct = Math.round(r.geo / 10 * 100);
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td><b>' + r.name + '</b></td><td>' + r.company + '</td><td>' + r.dept + '</td><td>' + r.d1 + '</td><td>' + r.d2 + '</td><td>' + r.d3 + '</td><td>' + r.d4 + '</td><td>' + r.d5 + '</td><td><b style="color:#1d71b8">' + r.total + '</b></td><td>' + r.pct + '%</td><td class="td-link"><a href="' + resultURL + '" target="_blank">Voir résultats ↗</a></td>';
+    tr.innerHTML = '<td><b>' + r.name + '</b></td><td>' + r.company + '</td><td>' + r.dept + '</td><td style="font-size:12px;color:#555;">' + r.dateAtelier + '</td><td style="font-size:12px;color:#555;">' + r.dateSoumise + '</td><td>' + r.d1 + '</td><td>' + r.d2 + '</td><td>' + r.d3 + '</td><td>' + r.d4 + '</td><td>' + r.d5 + '</td><td><b style="color:#1d71b8">' + r.total + '</b></td><td>' + r.pct + '%</td><td>' + geoPct + '%</td><td class="td-link"><a href="' + resultURL + '" target="_blank">Voir résultats ↗</a></td>';
     tbody.appendChild(tr);
   });
 }
@@ -727,9 +744,12 @@ function processCSVFileM6(file) {
     showUploadStatusM6('✓ ' + allRows.length + ' participant' + (allRows.length>1?'s':'') + ' chargé' + (allRows.length>1?'s':'') + ' depuis le fichier CSV', true);
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('mainContent').style.display  = 'block';
-    const now = new Date();
-    const todayISO = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-    document.getElementById('dateFrom').value = todayISO;
+    // Sélectionner la date la plus récente présente dans le fichier
+    const nowFallback = new Date();
+    const todayISO = nowFallback.getFullYear() + '-' + String(nowFallback.getMonth()+1).padStart(2,'0') + '-' + String(nowFallback.getDate()).padStart(2,'0');
+    const datesInFile = rows.map(r => zohoDateToISO(r[COL_DATE_SOUMISE])).filter(Boolean);
+    const mostRecent = datesInFile.sort().pop();
+    document.getElementById('dateFrom').value = mostRecent || todayISO;
     renderAll();
   };
   reader.readAsText(file, 'UTF-8');
