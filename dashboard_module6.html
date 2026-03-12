@@ -272,8 +272,11 @@ tr:last-child td{border-bottom:none;}
 const BASE_ZOHO_URL = 'https://sheet.zohopublic.com/sheet/published/8zzs36a766c97f4074fe7be9772346b5c57cc?download=csv&sheetname=Feuille1';
 
 const PROXIES = [
-  url => 'https://corsproxy.io/?url=' + encodeURIComponent(url),
-  url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url)
+  url => 'https://api.allorigins.win/raw?url='       + encodeURIComponent(url),
+  url => 'https://corsproxy.io/?url='                + encodeURIComponent(url),
+  url => 'https://api.codetabs.com/v1/proxy?quest='  + encodeURIComponent(url),
+  url => 'https://thingproxy.freeboard.io/fetch/'    + url,
+  url => 'https://jsonp.afeld.me/?url='              + encodeURIComponent(url),
 ];
 
 const COL = { prenom: 0, nom: 1, email: 2, poste: 3, date: 51, dept: 5, pharmacie: 6, q1:7, q2:8, q3:9, q4:10, q5:11, q6:12, q7:13, q8:14, q9:15, q10:16, q11:17, q12:18, q13:19, q14:20, q15:21 };
@@ -354,13 +357,19 @@ async function loadData() {
   document.getElementById('loadingState').style.display='block';
   document.getElementById('mainContent').style.display='none';
   
-  const urlWithBust = BASE_ZOHO_URL + '&t=' + Date.now();
+  const urlWithBust = BASE_ZOHO_URL + '&_t=' + Date.now();
   let text = null;
   for (const proxy of PROXIES) {
     try {
-      const res = await fetch(proxy(urlWithBust), { cache: 'no-store' });
-      if (res.ok) { text = await res.text(); break; }
-    } catch(e) {}
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 7000); // 7s max par proxy
+      const res = await fetch(proxy(urlWithBust), { cache: 'no-store', signal: controller.signal });
+      clearTimeout(timer);
+      if (res.ok) {
+        const t = await res.text();
+        if (t && t.length > 100) { text = t; break; }
+      }
+    } catch(e) { continue; }
   }
 
   if (text) {
