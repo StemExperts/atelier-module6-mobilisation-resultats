@@ -212,6 +212,61 @@ tr:last-child td { border-bottom: none; }
 .td-score { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
 .td-bar { width: 120px; }
 .td-pct { font-size: 12px; color: #888; }
+
+/* ── Radar + Profil ── */
+.radar-profile-wrap {
+  max-width: 860px; margin: 32px auto 0; padding: 0 20px; margin-bottom: 32px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.radar-card, .profile-card {
+  background: var(--white); border-radius: 18px;
+  padding: 28px 24px; box-shadow: 0 4px 28px rgba(0,33,105,0.09);
+}
+.radar-card-title {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--ink); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+}
+.radar-card-title-dot {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--blue); flex-shrink: 0;
+}
+.profile-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+}
+.profile-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--ink);
+  line-height: 1.2; margin-bottom: 14px;
+}
+.profile-section-title {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: #aaa; margin: 14px 0 6px;
+}
+.profile-text {
+  font-size: 13px; color: #555; line-height: 1.6;
+}
+.profile-interventions {
+  background: var(--cream); border-radius: 10px;
+  padding: 12px 14px; margin-top: 10px;
+}
+.profile-interventions li {
+  font-size: 12px; color: var(--ink); line-height: 1.7;
+  margin-left: 16px;
+}
+.zone-legend {
+  display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;
+}
+.zone-dot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: #888;
+}
+.zone-dot span {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+
 .section-total-row td {
   background: var(--cream-dark);
   font-weight: 600;
@@ -288,24 +343,52 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
+  <!-- ── RADAR + PROFIL ── -->
+  <div class="radar-profile-wrap">
+
+    <!-- Radar pleine largeur -->
+    <div class="radar-card">
+      <div class="radar-card-title">
+        <span class="radar-card-title-dot"></span>
+        Profil radar | 5 dimensions
+      </div>
+      <canvas id="radarChart" style="max-height:460px;width:100%;"></canvas>
+      <div class="zone-legend">
+        <div class="zone-dot"><span style="background:#95c11f;"></span> Zone verte (21-30)</div>
+        <div class="zone-dot"><span style="background:#ffc107;"></span> Zone jaune (11-20)</div>
+        <div class="zone-dot"><span style="background:#e53e3e;"></span> Zone rouge (0-10)</div>
+      </div>
+    </div>
+
+    <!-- Profil pleine largeur -->
+    <div class="profile-card">
+      <div class="radar-card-title">
+        <span class="radar-card-title-dot" style="background:#0090ac;"></span>
+        Profil de mobilisation de l'équipe
+      </div>
+      <div id="profileContent"></div>
+    </div>
+
+  </div>
+
   <div class="legend-wrap">
     <div class="legend-title">Guide d'Interprétation</div>
     <div class="legend-grid">
       <div class="legend-item li-red">
-        <strong>0 – 60 pts (&lt;40%)</strong>
-        Mobilisation faible. Des interventions urgentes sont nécessaires pour réengager l'équipe.
+        <strong>0 - 59 pts | Équipe démobilisée</strong>
+        Des interventions urgentes sont nécessaires pour reconstruire les bases de l'ancrage psychologique et rétablir la confiance.
       </div>
       <div class="legend-item li-orange">
-        <strong>61 – 90 pts (40–60%)</strong>
-        Mobilisation modérée. Des améliorations ciblées peuvent avoir un impact significatif.
+        <strong>60 - 89 pts | Mobilisation faible</strong>
+        Le gestionnaire doit clarifier les attentes, renforcer l'organisation du travail et rétablir l'engagement des employés.
       </div>
       <div class="legend-item li-yellow">
-        <strong>91 – 120 pts (61–80%)</strong>
-        Bonne mobilisation. L'équipe est engagée, mais il reste des opportunités de croissance.
+        <strong>90 - 119 pts | Mobilisation fragile</strong>
+        Identifier les dimensions les plus faibles et intervenir rapidement afin d'éviter une détérioration de la mobilisation.
       </div>
       <div class="legend-item li-green">
-        <strong>121 – 150 pts (&gt;80%)</strong>
-        Mobilisation élevée. L'équipe performe à un haut niveau d'engagement et d'énergie.
+        <strong>120 - 150 pts | Équipe mobilisée</strong>
+        Maintenir les conditions favorables : reconnaissance, développement des compétences et consolidation de la culture organisationnelle.
       </div>
     </div>
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--cream-dark);">
@@ -612,6 +695,140 @@ window.addEventListener('DOMContentLoaded', () => {
 
   fillTable('detailTable1', sections1);
   fillTable('detailTable2', sections2);
+
+  // ── RADAR CHART ─────────────────────────────────────────────────────────────
+  const radarCtx = document.getElementById('radarChart').getContext('2d');
+
+  const radarZonePlugin = {
+    id: 'radarZones',
+    beforeDraw(chart) {
+      const { ctx, scales } = chart;
+      const scale = scales.r;
+      if (!scale) return;
+      const center = { x: scale.xCenter, y: scale.yCenter };
+      const getR = val => scale.getDistanceFromCenterForValue(val);
+      const zones = [
+        { max: 30, color: 'rgba(149,193,31,0.12)' },
+        { max: 20, color: 'rgba(255,193,7,0.15)'  },
+        { max: 10, color: 'rgba(229,62,62,0.13)'  },
+      ];
+      zones.forEach(z => {
+        const r = getR(z.max);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = z.color;
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+  };
+
+  new Chart(radarCtx, {
+    type: 'radar',
+    plugins: [radarZonePlugin],
+    data: {
+      labels: ['Performance\nsupérieure', "Investissement\nd'énergie", "Points d'ancrage\npsychologiques", "Bases de\nl'ancrage", 'Engagement\nglobal'],
+      datasets: [{
+        data: [s1, s2, s3, s4, s5],
+        backgroundColor: 'rgba(29,113,184,0.18)',
+        borderColor: '#1d71b8',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#1d71b8',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 30,
+          ticks: { stepSize: 10, font: { size: 10 }, color: '#aaa', backdropColor: 'transparent', callback: v => v },
+          pointLabels: { font: { size: 11, family: "'DM Sans', sans-serif" }, color: '#002169' },
+          grid: { color: 'rgba(0,33,105,0.08)' },
+          angleLines: { color: 'rgba(0,33,105,0.1)' },
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' / 30' } }
+      },
+      animation: { duration: 1000 }
+    }
+  });
+
+  // ── PROFIL DE L'EQUIPE ───────────────────────────────────────────────────────
+  function zone(score) {
+    if (score <= 10) return 0; // Faible
+    if (score <= 20) return 1; // Moyen
+    return 2;                  // Eleve
+  }
+  const F = 0, M = 1, E = 2;
+  const zones5 = [s1, s2, s3, s4, s5].map(zone);
+
+  const PROFILES = [
+    { id:1, name:"Équipe pleinement mobilisée", criteria:[E,E,E,E,E], badgeColor:'#e8f5c0', badgeText:'#3a7000',
+      interpretation:"L'équipe démontre une cohérence entre la qualité du travail, l'énergie investie et l'adhésion aux priorités et aux valeurs organisationnelles. Les employés s'identifient à leur travail et contribuent activement à la réussite collective.",
+      interventions:["Maintenir les conditions favorables à la mobilisation","Soutenir le développement professionnel","Renforcer la culture organisationnelle"] },
+    { id:2, name:"Équipe performante mais fragile", criteria:[E,E,F,F,M], badgeColor:'#fff3cd', badgeText:'#7a4f00',
+      interpretation:"Les résultats sont bons et l'énergie est présente, mais l'attachement à l'organisation demeure limité. Les employés peuvent performer davantage par sens du devoir, pression opérationnelle ou exigences professionnelles. Risques : roulement du personnel, fatigue organisationnelle, tensions internes.",
+      interventions:["Renforcer la reconnaissance","Redonner du sens au travail","Renforcer l'identité collective de l'équipe"] },
+    { id:3, name:"Équipe attachée mais peu performante", criteria:[F,-1,E,E,M], criteriaExtra:{1:[0,1]}, badgeColor:'#d0e4f5', badgeText:'#1a4a7a',
+      interpretation:"Les employés apprécient leur milieu de travail et entretiennent des relations positives, mais l'effort collectif et la performance demeurent limités. Cette situation peut refléter une faible exigence organisationnelle ou un manque de rigueur opérationnelle.",
+      interventions:["Renforcer la responsabilisation individuelle","Clarifier les attentes","Renforcer la rigueur dans l'organisation du travail"] },
+    { id:4, name:"Équipe désalignée", criteria:[M,E,M,F,E], badgeColor:'#fde8e8', badgeText:'#8b1a1a',
+      interpretation:"Les employés travaillent activement et démontrent un engagement dans leur travail, mais les priorités organisationnelles ne sont pas pleinement intégrées. Les efforts peuvent être dispersés ou mal orientés.",
+      interventions:["Clarifier les priorités stratégiques","Améliorer la communication organisationnelle","Renforcer l'alignement des actions"] },
+    { id:5, name:"Équipe engagée mais désillusionnée", criteria:[M,M,F,F,-1], criteriaExtra:{4:[1,2]}, badgeColor:'#f3e8fd', badgeText:'#5a1a8b',
+      interpretation:"Les employés continuent d'accomplir leur travail et de contribuer aux activités de l'équipe, mais leur attachement psychologique à l'organisation s'est affaibli. Cette situation peut apparaître après des changements organisationnels difficiles, des conflits internes ou une perte de confiance envers la direction.",
+      interventions:["Rétablir la confiance","Réaffirmer les valeurs organisationnelles","Restaurer les bases de l'ancrage psychologique"] },
+    { id:6, name:"Équipe démobilisée", criteria:[F,F,F,F,F], badgeColor:'#fde8e8', badgeText:'#8b0000',
+      interpretation:"Les employés investissent peu d'énergie dans leur travail, ne se reconnaissent plus dans les priorités organisationnelles et entretiennent un détachement envers leur travail et leur équipe. La mobilisation collective est fortement affaiblie.",
+      interventions:["Reconstruire les bases de l'ancrage psychologique","Restaurer la confiance organisationnelle","Redonner un sens clair au travail et aux priorités"] },
+  ];
+
+  function profileDistance(profile) {
+    let dist = 0;
+    profile.criteria.forEach((expected, i) => {
+      if (expected === -1) {
+        const extra = profile.criteriaExtra && profile.criteriaExtra[i];
+        if (extra && !extra.includes(zones5[i])) dist += 1;
+      } else {
+        if (zones5[i] !== expected) dist += 1;
+      }
+    });
+    return dist;
+  }
+
+  let bestProfile = PROFILES[0];
+  let bestDist = profileDistance(PROFILES[0]);
+  PROFILES.forEach(p => { const d = profileDistance(p); if (d < bestDist) { bestDist = d; bestProfile = p; } });
+
+  // Zone globale basée sur le score /150
+  let zoneLabel, zoneBadgeColor, zoneBadgeText;
+  if (total >= 120) {
+    zoneLabel = 'Zone verte | Équipe mobilisée';
+    zoneBadgeColor = '#e8f5c0'; zoneBadgeText = '#3a7000';
+  } else if (total >= 90) {
+    zoneLabel = 'Zone jaune | Mobilisation fragile';
+    zoneBadgeColor = '#fff3cd'; zoneBadgeText = '#7a4f00';
+  } else if (total >= 60) {
+    zoneLabel = 'Zone orange | Mobilisation faible';
+    zoneBadgeColor = '#ffe8cc'; zoneBadgeText = '#8b3a00';
+  } else {
+    zoneLabel = 'Zone rouge | Équipe démobilisée';
+    zoneBadgeColor = '#fde8e8'; zoneBadgeText = '#8b0000';
+  }
+  document.getElementById('profileContent').innerHTML =
+    '<span class="profile-badge" style="background:' + zoneBadgeColor + ';color:' + zoneBadgeText + ';">' + zoneLabel + ' | ' + total + ' / 150</span>' +
+    '<div class="profile-name">' + bestProfile.name + '</div>' +
+    '<div class="profile-section-title">Interprétation</div>' +
+    '<div class="profile-text">' + bestProfile.interpretation + '</div>' +
+    '<div class="profile-section-title">Interventions de gestion recommandées</div>' +
+    '<div class="profile-interventions"><ul>' +
+    bestProfile.interventions.map(i => '<li>' + i + '</li>').join('') +
+    '</ul></div>';
 
   // Ligne de total global
   const globalEl = document.getElementById('globalTotalRow');
