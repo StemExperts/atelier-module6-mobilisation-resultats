@@ -355,7 +355,7 @@ tr:last-child td { border-bottom: none; }
       <canvas id="radarChart" style="max-height:460px;width:100%;"></canvas>
       <div class="zone-legend">
         <div class="zone-dot"><span style="background:#95c11f;"></span>  Élevé (21–30)</div>
-        <div class="zone-dot"><span style="background:#ffc107;"></span>  Moyen (11–20)</div>
+        <div class="zone-dot"><span style="background:#ffed00;"></span>  Moyen (11–20)</div>
         <div class="zone-dot"><span style="background:#e53e3e;"></span>  Faible (0–10)</div>
       </div>
     </div>
@@ -708,9 +708,9 @@ window.addEventListener('DOMContentLoaded', () => {
       const center = { x: scale.xCenter, y: scale.yCenter };
       const getR = val => scale.getDistanceFromCenterForValue(val);
       const zones = [
-        { max: 30, color: 'rgba(149,193,31,0.12)' },
-        { max: 20, color: 'rgba(255,193,7,0.15)'  },
-        { max: 10, color: 'rgba(229,62,62,0.13)'  },
+        { max: 30, color: 'rgba(149,193,31,0.34)' },
+        { max: 20, color: 'rgba(255,193,7,0.38)'  },
+        { max: 10, color: 'rgba(220,38,38,0.40)'  },
       ];
       zones.forEach(z => {
         const r = getR(z.max);
