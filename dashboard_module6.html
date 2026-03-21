@@ -236,6 +236,20 @@ tr:last-child td{border-bottom:none;}
       <div class="chart-card"><div class="chart-title">Distribution des Scores Géométriques</div><div class="chart-sub">Participants par tranche · Moyenne géométrique (/100)</div><canvas id="distGeoChart" height="260"></canvas></div>
     </div>
 
+    <!-- Radar groupe -->
+    <div class="radar-group-wrap">
+      <div class="radar-group-card">
+        <div class="radar-group-title"><span class="radar-group-dot" style="background:#1d71b8;"></span>Profil radar du groupe | 5 dimensions</div>
+        <canvas id="radarGroupChart" style="max-height:480px;width:100%;"></canvas>
+        <div class="zone-legend-dash">
+          <div class="zone-dot-dash"><span style="background:#95c11f;"></span> Élevé (21-30)</div>
+          <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Moyen (11-20)</div>
+          <div class="zone-dot-dash"><span style="background:#e53e3e;"></span> Faible (0-10)</div>
+        </div>
+        <div id="radarZoneBadge" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--cream-dark);"></div>
+      </div>
+    </div>
+
     <div class="section-header">
       <h2>Analyse par Critère</h2>
       <p>15 critères</p>
@@ -251,20 +265,6 @@ tr:last-child td{border-bottom:none;}
         </thead>
         <tbody id="criteriaTable"></tbody>
       </table>
-    </div>
-
-    <!-- Radar groupe + Répartition -->
-    <div class="radar-group-wrap">
-      <div class="radar-group-card">
-        <div class="radar-group-title"><span class="radar-group-dot" style="background:#1d71b8;"></span>Profil radar du groupe | 5 dimensions</div>
-        <canvas id="radarGroupChart" style="max-height:480px;width:100%;"></canvas>
-        <div class="zone-legend-dash">
-          <div class="zone-dot-dash"><span style="background:#95c11f;"></span> Élevé (21-30)</div>
-          <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Moyen (11-20)</div>
-          <div class="zone-dot-dash"><span style="background:#e53e3e;"></span> Faible (0-10)</div>
-        </div>
-        <div id="radarZoneBadge" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--cream-dark);"></div>
-      </div>
     </div>
 
     <div class="chart-card full"><div class="chart-title">Scores par Critère (Groupe)</div><div class="chart-sub">Moyenne /10 pour chacun des 15 critères</div><canvas id="barChart" height="160"></canvas></div>
