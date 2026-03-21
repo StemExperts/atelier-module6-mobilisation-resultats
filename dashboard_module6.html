@@ -263,6 +263,7 @@ tr:last-child td{border-bottom:none;}
           <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Moyen (11-20)</div>
           <div class="zone-dot-dash"><span style="background:#e53e3e;"></span> Faible (0-10)</div>
         </div>
+        <div id="radarZoneBadge" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--cream-dark);"></div>
       </div>
     </div>
 
@@ -765,6 +766,40 @@ function renderGroupRadarAndProfile(rows) {
     }
   });
 
+  // Badges de zone (seuils du document convertis en %)
+  function zoneFromPct(pct) {
+    if (pct >= 80) return { label:'Zone verte | Équipe mobilisée',    bg:'#e8f5c0', txt:'#3a7000' };
+    if (pct >= 60) return { label:'Zone jaune | Mobilisation fragile', bg:'#fff3cd', txt:'#7a4f00' };
+    if (pct >= 40) return { label:'Zone orange | Mobilisation faible', bg:'#ffe8cc', txt:'#8b3a00' };
+    return             { label:'Zone rouge | Équipe démobilisée',      bg:'#fde8e8', txt:'#8b0000' };
+  }
+
+  function badgeHTML(zone, value, unit) {
+    return '<span style="display:inline-block;background:' + zone.bg + ';color:' + zone.txt + ';'
+      + 'font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;'
+      + 'padding:6px 16px;border-radius:20px;">'
+      + zone.label + ' | ' + value + unit + '</span>';
+  }
+
+  const arithPct  = Math.round(avgTotal / 150 * 100);
+  const geoPctVal = Math.round(rows.reduce((a,r) => a + r.geo, 0) / n / 10 * 100);
+  const zoneArith = zoneFromPct(arithPct);
+  const zoneGeo   = zoneFromPct(geoPctVal);
+
+  const badgeEl = document.getElementById('radarZoneBadge');
+  if (badgeEl) {
+    badgeEl.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">'
+      + '<div style="display:flex;flex-direction:column;gap:4px;">'
+      + '<span style="font-size:10px;color:#aaa;letter-spacing:.08em;text-transform:uppercase;">Arithmétique</span>'
+      + badgeHTML(zoneArith, arithPct, '%')
+      + '</div>'
+      + '<div style="display:flex;flex-direction:column;gap:4px;">'
+      + '<span style="font-size:10px;color:#aaa;letter-spacing:.08em;text-transform:uppercase;">Géométrique</span>'
+      + badgeHTML(zoneGeo, geoPctVal, '%')
+      + '</div>'
+      + '</div>';
+  }
 }
 
 loadData();
