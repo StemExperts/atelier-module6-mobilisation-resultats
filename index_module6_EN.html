@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Results – Mobilization</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --ink:         #002169;
+  --ink-soft:    #1d71b8;
+  --cream:       #f5f7fa;
+  --cream-dark:  #e8ecf2;
+  --gold:        #ffed00;
+  --gold-light:  #fff176;
+  --gold-bg:     #fffde7;
+  --blue:        #1d71b8;
+  --blue-light:  #d0e4f5;
+  --green:       #95c11f;
+  --green-light: #e8f5c0;
+  --teal:        #0090ac;
+  --teal-light:  #d0eef3;
+  --purple:      #6d2e8a;
+  --purple-light:#ead6f5;
+  --orange:      #e06b00;
+  --orange-light:#fde8cc;
+  --white:       #ffffff;
+  --shadow:      0 4px 28px rgba(0,33,105,0.10);
+  --shadow-lg:   0 10px 48px rgba(0,33,105,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed; top: -180px; right: -180px;
+  width: 520px; height: 520px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.09) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  position: relative; z-index: 1;
+}
+.header {
+  text-align: center;
+  margin-bottom: 44px;
+  animation: fadeUp .65s ease both;
+}
+.eyebrow {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600; margin-bottom: 12px;
+  display: block;
+}
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px,5vw,42px); font-weight: 700;
+  line-height: 1.2; margin-bottom: 10px;
+}
+.participant-line {
+  font-size: 14px; color: var(--ink-soft);
+  margin-top: 6px;
+}
+.participant-line strong { color: var(--blue); font-weight: 600; }
+.divider {
+  width: 52px; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  margin: 18px auto 0; border-radius: 2px;
+}
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin-bottom: 24px;
+  animation: fadeUp .65s .1s ease both;
+}
+@media(max-width:600px){ .summary-row { grid-template-columns: 1fr; } }
+.summary-card {
+  background: var(--white);
+  border-radius: 14px; padding: 24px 18px 20px;
+  box-shadow: var(--shadow); text-align: center;
+  position: relative; overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.summary-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.summary-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+}
+.summary-card.total::before  { background: linear-gradient(90deg,var(--ink),var(--blue)); }
+.summary-card.arith::before  { background: linear-gradient(90deg,var(--green),#5aad87); }
+.summary-card.geo::before    { background: linear-gradient(90deg,var(--teal),#00b8d4); }
+.sc-label {
+  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 10px;
+  color: var(--ink-soft);
+}
+.sc-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px; font-weight: 700; line-height: 1;
+}
+.sc-denom { font-size: 14px; color: #777; margin-left: 2px; }
+.sc-sub   { font-size: 12px; color: #888; margin-top: 4px; }
+.gauge-wrap {
+  background: var(--white);
+  border-radius: 16px; padding: 30px 24px 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  text-align: center;
+  animation: fadeUp .65s .18s ease both;
+}
+.gauge-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; margin-bottom: 20px;
+}
+.gauge-canvas-wrap { position: relative; max-width: 340px; margin: 0 auto; }
+.gauge-center-text {
+  position: absolute; bottom: 16px; left: 0; right: 0;
+  text-align: center;
+}
+.gauge-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 700; color: var(--ink);
+}
+.gauge-pct-label { font-size: 12px; color: #888; }
+.sections-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+  animation: fadeUp .65s .25s ease both;
+}
+@media(max-width:640px){ .sections-grid { grid-template-columns: 1fr; } }
+.section-card {
+  background: var(--white);
+  border-radius: 14px; padding: 22px 20px 20px;
+  box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
+  transition: transform .2s;
+}
+.section-card:hover { transform: translateY(-2px); }
+.section-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+}
+.sc1::before { background: linear-gradient(90deg,#1d71b8,#4a90d9); }
+.sc2::before { background: linear-gradient(90deg,#95c11f,#b8df60); }
+.sc3::before { background: linear-gradient(90deg,#ffed00,#fff176); }
+.sc4::before { background: linear-gradient(90deg,#002169,#1d71b8); }
+.sc5::before { background: linear-gradient(90deg,#0090ac,#00b8d4); }
+.sc-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 14px;
+}
+.sc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; font-weight: 700; line-height: 1.3;
+  flex: 1;
+}
+.sc-badge {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700;
+  white-space: nowrap; margin-left: 12px;
+}
+.sc-denom-sm { font-size: 12px; color: #888; }
+.q-row { margin-bottom: 10px; }
+.q-label {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: #555; margin-bottom: 4px;
+}
+.q-label .q-val { font-weight: 600; color: var(--ink); }
+.bar-track {
+  height: 8px; background: var(--cream-dark);
+  border-radius: 4px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 1s ease;
+}
+.table-wrap {
+  background: var(--white);
+  border-radius: 16px; padding: 28px 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  animation: fadeUp .65s .38s ease both;
+  overflow-x: auto;
+}
+.table-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; margin-bottom: 16px;
+}
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  text-align: left; padding: 8px 12px;
+  background: var(--cream); font-weight: 600;
+  font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-soft);
+}
+td {
+  padding: 10px 12px; border-bottom: 1px solid var(--cream-dark);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+.td-score { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+.td-bar { width: 120px; }
+.td-pct { font-size: 12px; color: #888; }
+
+/* ── Radar + Profil ── */
+.radar-profile-wrap {
+  max-width: 860px; margin: 32px auto 0; padding: 0 20px; margin-bottom: 32px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+.radar-card, .profile-card {
+  background: var(--white); border-radius: 18px;
+  padding: 28px 24px; box-shadow: 0 4px 28px rgba(0,33,105,0.09);
+}
+.radar-card-title {
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--ink); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+}
+.radar-card-title-dot {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--blue); flex-shrink: 0;
+}
+.profile-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+}
+.profile-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--ink);
+  line-height: 1.2; margin-bottom: 14px;
+}
+.profile-section-title {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 700; color: #aaa; margin: 14px 0 6px;
+}
+.profile-text {
+  font-size: 13px; color: #555; line-height: 1.6;
+}
+.profile-interventions {
+  background: var(--cream); border-radius: 10px;
+  padding: 12px 14px; margin-top: 10px;
+}
+.profile-interventions li {
+  font-size: 12px; color: var(--ink); line-height: 1.7;
+  margin-left: 16px;
+}
+.zone-legend {
+  display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;
+}
+.zone-dot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: #888;
+}
+.zone-dot span {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+
+.section-total-row td {
+  background: var(--cream-dark);
+  font-weight: 600;
+}
+.legend-wrap {
+  background: var(--white);
+  border-radius: 16px; padding: 28px 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  animation: fadeUp .65s .44s ease both;
+}
+.legend-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700; margin-bottom: 16px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.legend-item {
+  border-radius: 10px; padding: 14px 16px;
+  font-size: 12px; line-height: 1.5;
+}
+.legend-item strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.li-red    { background: #fde8e8; color: #8b1a1a; }
+.li-orange { background: var(--orange-light); color: #8b3a00; }
+.li-yellow { background: var(--gold-bg); color: #7a6200; }
+.li-green  { background: var(--green-light); color: #3a5a00; }
+.footer {
+  text-align: center; font-size: 11px; color: #aaa;
+  margin-top: 48px; animation: fadeUp .65s .5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <span class="eyebrow">Practical Management Training · Module 6</span>
+    <h1>Is my team mobilized?</h1>
+    <p class="participant-line" id="participantLine"></p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card total">
+      <div class="sc-label">Total Score</div>
+      <div class="sc-score"><span id="totalScore">—</span> / 150</div>
+    </div>
+    <div class="summary-card arith">
+      <div class="sc-label">Arithmetic Mean</div>
+      <div class="sc-score"><span id="arithMean">—</span>%</div>
+    </div>
+    <div class="summary-card geo">
+      <div class="sc-label">Geometric Mean</div>
+      <div class="sc-score"><span id="geoMean">—</span>%</div>
+    </div>
+  </div>
+
+  <div class="gauge-wrap">
+    <div class="gauge-title">Overall Mobilization Level</div>
+    <div class="gauge-canvas-wrap">
+      <canvas id="gaugeChart" height="180"></canvas>
+      <div class="gauge-center-text">
+        <div class="gauge-pct" id="gaugePct">—</div>
+        <div class="gauge-pct-label">out of 150 points</div>
+        <div class="gauge-pct-label" id="gaugePctPct" style="font-size:15px;font-weight:600;color:var(--ink);margin-top:2px;">—%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RADAR + PROFIL ── -->
+  <div class="radar-profile-wrap">
+
+    <!-- Radar pleine largeur -->
+    <div class="radar-card">
+      <div class="radar-card-title">
+        <span class="radar-card-title-dot"></span>
+        Radar Profile | 5 dimensions
+      </div>
+      <canvas id="radarChart" style="max-height:460px;width:100%;"></canvas>
+      <div class="zone-legend">
+        <div class="zone-dot"><span style="background:#95c11f;"></span>  High (≥ 9/10 geo.)</div>
+        <div class="zone-dot"><span style="background:#ffed00;"></span>  Medium (5–8.9/10 geo.)</div>
+        <div class="zone-dot"><span style="background:#e53e3e;"></span>  Low (&lt; 5/10 geo.)</div>
+      </div>
+      <div id="zoneBadgeRadar" style="margin-top:16px;"></div>
+    </div>
+
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend-title">Interpretation Guide</div>
+    <div class="legend-grid">
+      <div class="legend-item li-green">
+        <strong>Mobilized Team: 90% – 100%</strong>
+        The team demonstrates consistency between work quality, invested energy and adherence to values. Employees identify with their work and actively contribute to collective success.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#3a5a00;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Maintain favourable conditions for mobilization</li>
+          <li>Support professional development</li>
+          <li>Strengthen organizational culture</li>
+        </ul>
+      </div>
+      <div class="legend-item li-yellow">
+        <strong>Fragile Mobilization: 75% – 89%</strong>
+        Results are present, but some dimensions show weaknesses. Attachment to the organization or strategic alignment may be fragile. Risk of deterioration if left unaddressed.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#7a6200;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Identify the weakest dimensions and intervene quickly</li>
+          <li>Strengthen recognition and sense of purpose</li>
+          <li>Consolidate the team's collective identity</li>
+        </ul>
+      </div>
+      <div class="legend-item li-orange">
+        <strong>Weak Mobilization: 45% – 74%</strong>
+        Employees complete their work without genuine commitment to organizational priorities or values. Engagement may be superficial or driven by external pressures.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b3a00;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Clarify expectations and strategic priorities</li>
+          <li>Strengthen individual accountability</li>
+          <li>Improve organizational communication</li>
+        </ul>
+      </div>
+      <div class="legend-item li-red">
+        <strong>Demobilized Team: 0% – 44%</strong>
+        Employees invest little energy, no longer identify with priorities, and maintain detachment from their team. Urgent interventions are required.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b1a1a;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Rebuild the foundations of psychological anchoring</li>
+          <li>Restore organizational trust</li>
+          <li>Restore clear meaning to work and priorities</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--cream-dark);">
+      <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;margin-bottom:6px;">Geometric Mean</div>
+      <p style="font-size:12px;color:#555;line-height:1.6;">Unlike the arithmetic mean, the geometric mean amplifies the impact of your lowest scores. It keeps you accountable even when most of your responses are high. It determines your mobilization zone.</p>
+    </div>
+  </div>
+
+  <div class="gauge-wrap" style="margin-bottom:24px;">
+    <div class="gauge-title">Arithmetic vs Geometric Mean by Dimension</div>
+    <div style="font-size:12px;color:#888;margin-bottom:20px;">Comparison /10 · The difference reveals the impact of your lowest scores</div>
+    <div id="dimCompBars" style="display:flex;flex-direction:column;gap:18px;"></div>
+  </div>
+
+  <!-- Detailed table -->
+  <div class="table-wrap">
+    <div class="table-title">Detailed Results Table</div>
+
+    <!-- Catégorie 1 : Manifestation -->
+    <div style="background:#002169;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Reflection of Mobilization</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Overall Result</div>
+      </div>
+      <div id="catScore1" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
+    </div>
+    <table style="margin-bottom:0;">
+      <thead><tr><th>Dimension</th><th>Criterion</th><th>Score /10</th><th class="td-bar">Level</th><th>%</th><th>Geo. mean</th></tr></thead>
+      <tbody id="detailTable1"></tbody>
+    </table>
+
+    <!-- Catégorie 2 : Dimension psychologique -->
+    <div style="background:#0090ac;border-radius:8px 8px 0 0;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:20px;">
+      <div>
+        <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">Psychological Dimension</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:11px;margin-top:2px;">Emotional Bond vs. Forced Bond</div>
+      </div>
+      <div id="catScore2" style="color:#ffed00;font-size:28px;font-weight:700;line-height:1;"></div>
+    </div>
+    <table style="margin-bottom:0;">
+      <thead><tr><th>Dimension</th><th>Criterion</th><th>Score /10</th><th class="td-bar">Level</th><th>%</th><th>Geo. mean</th></tr></thead>
+      <tbody id="detailTable2"></tbody>
+    </table>
+
+    <!-- Ligne de total global -->
+    <div id="globalTotalRow" style="background:var(--ink);border-radius:0 0 8px 8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-top:0;"></div>
+
+  </div>
+
+  <div class="footer">
+    Practical Management Training · Module 6 – Mobilization<br>
+    Inspired by: Tremblay, Michel. <em>Mobilisation des personnes au travail.</em> HEC Montréal, 2012.
+  </div>
+</div>
+
+<script>
+function params() {
+  const p = new URLSearchParams(window.location.search);
+  const prenom = p.get('Prénom') || p.get('prenom') || '';
+  const nom    = p.get('Nom')    || p.get('nom')    || '';
+  const full   = [prenom, nom].filter(Boolean).join(' ');
+  return {
+    name:    full    || p.get('name')    || 'Participant',
+    email:   p.get('E-mail')     || p.get('email')   || '',
+    dept:    p.get('Département') || p.get('dept')   || '',
+    pos:     p.get('Poste')      || p.get('pos')     || '',
+    company: p.get('Pharmacie')  || p.get('company') || '',
+    date:    p.get('Date du workshop') || p.get('date') || '',
+    q1:  +p.get('q1')  || 0,
+    q2:  +p.get('q2')  || 0,
+    q3:  +p.get('q3')  || 0,
+    q4:  +p.get('q4')  || 0,
+    q5:  +p.get('q5')  || 0,
+    q6:  +p.get('q6')  || 0,
+    q7:  +p.get('q7')  || 0,
+    q8:  +p.get('q8')  || 0,
+    q9:  +p.get('q9')  || 0,
+    q10: +p.get('q10') || 0,
+    q11: +p.get('q11') || 0,
+    q12: +p.get('q12') || 0,
+    q13: +p.get('q13') || 0,
+    q14: +p.get('q14') || 0,
+    q15: +p.get('q15') || 0,
+  };
+}
+
+function geoMean(vals) {
+  const pos = vals.map(v => v === 0 ? 0.1 : v);
+  const product = pos.reduce((a,b) => a * b, 1);
+  return Math.pow(product, 1 / pos.length);
+}
+
+function scoreColor(pct) {
+  if (pct >= 80) return '#95c11f';
+  if (pct >= 60) return '#0090ac';
+  if (pct >= 40) return '#ffed00';
+  return '#1d71b8';
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function setBar(barId, pct, color) {
+  const el = document.getElementById(barId);
+  if (el) { el.style.width = pct + '%'; el.style.background = color; }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const p = params();
+
+  const infoLine = document.getElementById('participantLine');
+  const parts = [
+    `<strong>${p.name}</strong>`,
+    p.pos     ? `<span>· ${p.pos}</span>`     : '',
+    p.company ? `<span>· ${p.company}</span>` : '',
+    p.dept    ? `<span>· ${p.dept}</span>`    : '',
+    p.date    ? `<span>· ${p.date}</span>`    : '',
+  ].filter(Boolean).join(' ');
+  infoLine.innerHTML = parts;
+
+  const s1 = p.q1 + p.q2 + p.q3;
+  const s2 = p.q4 + p.q5 + p.q6;
+  const s3 = p.q7 + p.q8 + p.q9;
+  const s4 = p.q10 + p.q11 + p.q12;
+  const s5 = p.q13 + p.q14 + p.q15;
+  const total = s1 + s2 + s3 + s4 + s5;
+  const totalPct = Math.round(total / 150 * 100);
+
+  const allVals = [p.q1,p.q2,p.q3,p.q4,p.q5,p.q6,p.q7,p.q8,p.q9,p.q10,p.q11,p.q12,p.q13,p.q14,p.q15];
+  const arith = allVals.reduce((a,b)=>a+b,0) / allVals.length;
+  const geo   = geoMean(allVals);
+  const geoPctGlobal = Math.round(geo / 10 * 100);
+
+  setText('totalScore',  total);
+  setText('arithMean',   Math.round(arith / 10 * 100));
+  setText('geoMean',     Math.round(geo   / 10 * 100));
+  setText('gaugePct',    total);
+  setText('gaugePctPct', totalPct + '%');
+
+  // Arith vs Geo bars per dimension
+  const dimDefs = [
+    { label:'Superior Performance',          color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
+    { label:"Energy Investment",        color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
+    { label:"Psychological Anchoring",   color:'#ffed00', vals:[p.q7,  p.q8,  p.q9]  },
+    { label:"Anchoring Foundations",               color:'#002169', vals:[p.q10, p.q11, p.q12] },
+    { label:"Overall Engagement",                color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
+  ];
+  const wrap = document.getElementById('dimCompBars');
+  dimDefs.forEach(d => {
+    const avg   = d.vals.reduce((a,b)=>a+b,0) / d.vals.length;
+    const geo_d = geoMean(d.vals);
+    const pctA  = Math.round(avg   * 10);
+    const pctG  = Math.round(geo_d * 10);
+    const txtCol = d.color === '#ffed00' ? '#7a6200' : d.color;
+    wrap.innerHTML += `
+      <div style="display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;">
+        <div style="font-size:12px;font-weight:600;color:${d.color};text-align:right;line-height:1.3;">${d.label}</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;color:#aaa;width:110px;flex-shrink:0;">Arith. mean</span>
+            <div style="flex:1;height:14px;background:var(--cream-dark);border-radius:7px;overflow:hidden;">
+              <div style="width:${pctA}%;height:100%;background:${d.color};opacity:0.45;border-radius:7px;"></div>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctA}%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;color:#aaa;width:110px;flex-shrink:0;">Geo. mean</span>
+            <div style="flex:1;height:14px;background:var(--cream-dark);border-radius:7px;overflow:hidden;">
+              <div style="width:${pctG}%;height:100%;background:${d.color};border-radius:7px;"></div>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctG}%</span>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Gauge chart
+  const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
+  const gaugeVal = Math.min(total, 150);
+  const gaugeRem = 150 - gaugeVal;
+  // Couleur basée sur la moyenne géométrique globale
+  let gColor;
+  if (geoPctGlobal >= 90)      gColor = '#95c11f';
+  else if (geoPctGlobal >= 75) gColor = '#ffed00';
+  else if (geoPctGlobal >= 45) gColor = '#e06b00';
+  else                          gColor = '#e53e3e';
+  new Chart(gaugeCtx, {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [gaugeVal, gaugeRem],
+        backgroundColor: [gColor, '#e8ecf2'],
+        borderWidth: 0,
+        circumference: 180,
+        rotation: 270,
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { animateRotate: true, duration: 1200 }
+    }
+  });
+
+  // Scores des catégories — arithmétique + géométrique
+  const cat1Score = Math.round((s1 + s2) / 60 * 100);
+  const cat2Score = Math.round((s3 + s4 + s5) / 90 * 100);
+  const cat1Geo   = Math.round(geoMean([p.q1,p.q2,p.q3,p.q4,p.q5,p.q6]) / 10 * 100);
+  const cat2Geo   = Math.round(geoMean([p.q7,p.q8,p.q9,p.q10,p.q11,p.q12,p.q13,p.q14,p.q15]) / 10 * 100);
+  const cat1El = document.getElementById('catScore1');
+  const cat2El = document.getElementById('catScore2');
+  if (cat1El) cat1El.innerHTML = `
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Score}%</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Geo}%</span></div>
+    </div>`;
+  if (cat2El) cat2El.innerHTML = `
+    <div style="text-align:right;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Score}%</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Geo}%</span></div>
+    </div>`;
+
+  const sections1 = [
+    {
+      name: 'Superior Performance', color: '#1d71b8',
+      questions: [
+        { label: 'Quality of Work',       val: p.q1 },
+        { label: 'Value-added Work',      val: p.q2 },
+        { label: 'Teamwork',              val: p.q3 },
+      ], total: s1
+    },
+    {
+      name: "Energy Investment", color: '#95c11f',
+      questions: [
+        { label: 'Continuous Improvement Efforts',    val: p.q4 },
+        { label: 'Strategic Alignment Efforts',       val: p.q5 },
+        { label: 'Spontaneous Cooperation Efforts',   val: p.q6 },
+      ], total: s2
+    },
+  ];
+
+  const sections2 = [
+    {
+      name: "Psychological Anchoring", color: '#b8a800',
+      questions: [
+        { label: 'Commitment to Work',                val: p.q7  },
+        { label: 'Commitment towards Senior Leadership', val: p.q8  },
+        { label: 'Collective Attachment',             val: p.q9  },
+      ], total: s3
+    },
+    {
+      name: "Anchoring Foundations", color: '#002169',
+      questions: [
+        { label: 'Ideal Professional',                             val: p.q10 },
+        { label: 'Internalizing Priorities',                       val: p.q11 },
+        { label: 'Identification with Organizational Values',      val: p.q12 },
+      ], total: s4
+    },
+    {
+      name: "Overall Engagement", color: '#0090ac',
+      questions: [
+        { label: 'Commitment to Work',      val: p.q13 },
+        { label: 'Strategic Commitment',    val: p.q14 },
+        { label: 'Collective Engagement',   val: p.q15 },
+      ], total: s5
+    },
+  ];
+
+  function fillTable(tbodyId, sections) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    sections.forEach(sec => {
+      const txtCol = sec.color === '#b8a800' ? '#b8a800' : sec.color;
+      const barCol = sec.color === '#b8a800' ? '#ffed00' : sec.color;
+      sec.questions.forEach((q, i) => {
+        const pct = Math.round(q.val / 10 * 100);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${i === 0 ? `<span style="color:${txtCol};font-weight:600">${sec.name}</span>` : ''}</td>
+          <td>${q.label}</td>
+          <td class="td-score" style="color:${txtCol}">${q.val}</td>
+          <td class="td-bar">
+            <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${barCol}"></div></div>
+          </td>
+          <td class="td-pct">${pct}%</td>
+          <td></td>
+        `;
+        tbody.appendChild(row);
+      });
+      // Ligne sous-total avec moyenne géométrique de la dimension
+      const secGeo    = geoMean(sec.questions.map(q => q.val));
+      const secGeoPct = Math.round(secGeo / 10 * 100);
+      const trow = document.createElement('tr');
+      trow.className = 'section-total-row';
+      trow.innerHTML = `
+        <td colspan="2" style="text-align:right;color:${txtCol}">Sous-total – ${sec.name}</td>
+        <td class="td-score" style="color:${txtCol}">${sec.total}<span class="td-pct">/30</span></td>
+        <td class="td-bar">
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.round(sec.total/30*100)}%;background:${barCol}"></div></div>
+        </td>
+        <td class="td-pct">${Math.round(sec.total/30*100)}%</td>
+        <td class="td-pct" style="font-weight:700;color:${txtCol};">${secGeoPct}%</td>
+      `;
+      tbody.appendChild(trow);
+    });
+  }
+
+  fillTable('detailTable1', sections1);
+  fillTable('detailTable2', sections2);
+
+  // ── RADAR CHART ─────────────────────────────────────────────────────────────
+  const radarCtx = document.getElementById('radarChart').getContext('2d');
+
+  // Scores géométriques par dimension (sur 30)
+  const geoS1 = Math.pow([p.q1,  p.q2,  p.q3 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS2 = Math.pow([p.q4,  p.q5,  p.q6 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS3 = Math.pow([p.q7,  p.q8,  p.q9 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS4 = Math.pow([p.q10, p.q11, p.q12].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS5 = Math.pow([p.q13, p.q14, p.q15].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  // Ramener sur 30 : moyenne géo × 3
+  const radarVals = [geoS1*3, geoS2*3, geoS3*3, geoS4*3, geoS5*3].map(v => Math.round(v*10)/10);
+
+  const radarZonePlugin = {
+    id: 'radarZones',
+    beforeDraw(chart) {
+      const { ctx, scales } = chart;
+      const scale = scales.r;
+      if (!scale) return;
+      const center = { x: scale.xCenter, y: scale.yCenter };
+      const getR = val => scale.getDistanceFromCenterForValue(val);
+      const zones = [
+        { max: 30, color: 'rgba(149,193,31,0.34)' },
+        { max: 20, color: 'rgba(255,225,7,0.38)'  },
+        { max: 10, color: 'rgba(220,38,38,0.38)'  },
+      ];
+      zones.forEach(z => {
+        const r = getR(z.max);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = z.color;
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+  };
+
+  new Chart(radarCtx, {
+    type: 'radar',
+    plugins: [radarZonePlugin],
+    data: {
+      labels: ['Superior\nPerformance', 'Energy\nInvestment', 'Psychological\nAnchoring', 'Anchoring\nFoundations', 'Overall\nEngagement'],
+      datasets: [{
+        data: radarVals,
+        backgroundColor: 'rgba(29,113,184,0.18)',
+        borderColor: '#1d71b8',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#1d71b8',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 30,
+          ticks: { stepSize: 10, font: { size: 10 }, color: '#aaa', backdropColor: 'transparent', callback: v => v },
+          pointLabels: { font: { size: 11, family: "'DM Sans', sans-serif" }, color: '#002169' },
+          grid: { color: 'rgba(0,33,105,0.08)' },
+          angleLines: { color: 'rgba(0,33,105,0.1)' },
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' / 30 (geo.)' } }
+      },
+      animation: { duration: 1000 }
+    }
+  });
+
+  // ── ZONE DE MOBILISATION (basée sur la moyenne géométrique globale) ──────────
+  let zoneLabel, zoneBadgeColor, zoneBadgeText, zoneInterpretation, zoneInterventions;
+  if (geoPctGlobal >= 90) {
+    zoneLabel = 'Green Zone | Mobilized Team';
+    zoneBadgeColor = '#e8f5c0'; zoneBadgeText = '#3a7000';
+    zoneInterpretation = "The team demonstrates consistency between work quality, invested energy and adherence to organizational values. Employees identify with their work and actively contribute to collective success.";
+    zoneInterventions = ["Maintain favourable conditions for mobilization", "Support professional development", "Strengthen organizational culture"];
+  } else if (geoPctGlobal >= 75) {
+    zoneLabel = 'Yellow Zone | Fragile Mobilization';
+    zoneBadgeColor = '#fff3cd'; zoneBadgeText = '#7a4f00';
+    zoneInterpretation = "Results are present, but some dimensions show weaknesses. Attachment to the organization or strategic alignment may be fragile. Risk of deterioration if left unaddressed.";
+    zoneInterventions = ["Identify the weakest dimensions and intervene quickly", "Strengthen recognition and sense of purpose", "Consolidate the team's collective identity"];
+  } else if (geoPctGlobal >= 45) {
+    zoneLabel = 'Orange Zone | Weak Mobilization';
+    zoneBadgeColor = '#ffe8cc'; zoneBadgeText = '#8b3a00';
+    zoneInterpretation = "Employees complete their work without genuine commitment to organizational priorities or values. Engagement may be superficial or driven by external pressures rather than real team attachment.";
+    zoneInterventions = ["Clarify expectations and strategic priorities", "Strengthen individual accountability", "Improve organizational communication"];
+  } else {
+    zoneLabel = 'Red Zone | Demobilized Team';
+    zoneBadgeColor = '#fde8e8'; zoneBadgeText = '#8b0000';
+    zoneInterpretation = "Employees invest little energy in their work, no longer identify with organizational priorities, and maintain detachment from their team. Urgent interventions are needed to rebuild the foundations of mobilization.";
+    zoneInterventions = ["Rebuild the foundations of psychological anchoring", "Restore organizational trust", "Restore clear meaning to work and priorities"];
+  }
+
+  const zoneBadgeEl = document.getElementById('zoneBadgeRadar');
+  if (zoneBadgeEl) {
+    zoneBadgeEl.innerHTML =
+      '<span class="profile-badge" style="background:' + zoneBadgeColor + ';color:' + zoneBadgeText + ';font-size:12px;padding:6px 16px;">' +
+      zoneLabel + ' · ' + geoPctGlobal + '% (geo.)' +
+      '</span>';
+  }
+
+  // Ligne de total global
+  const globalEl = document.getElementById('globalTotalRow');
+  if (globalEl) {
+    const arithPct = Math.round(arith / 10 * 100);
+    const geoPct   = Math.round(geo   / 10 * 100);
+    globalEl.innerHTML = `
+      <div style="color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+        Overall Total
+      </div>
+      <div style="display:flex;gap:24px;align-items:center;">
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Score</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${total}<span style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:400;"> / 150</span></div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Arith.</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${arithPct}%</div>
+        </div>
+        <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
+        <div style="text-align:center;">
+          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Geo.</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${geoPct}%</div>
+        </div>
+      </div>`;
+  }
+});
+</script>
+</body>
+</html>
