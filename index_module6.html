@@ -354,19 +354,11 @@ tr:last-child td { border-bottom: none; }
       </div>
       <canvas id="radarChart" style="max-height:460px;width:100%;"></canvas>
       <div class="zone-legend">
-        <div class="zone-dot"><span style="background:#95c11f;"></span>  Élevé (21–30)</div>
-        <div class="zone-dot"><span style="background:#ffed00;"></span>  Moyen (11–20)</div>
-        <div class="zone-dot"><span style="background:#e53e3e;"></span>  Faible (0–10)</div>
+        <div class="zone-dot"><span style="background:#95c11f;"></span>  Élevé (≥ 9/10 géo.)</div>
+        <div class="zone-dot"><span style="background:#ffed00;"></span>  Moyen (5–8.9/10 géo.)</div>
+        <div class="zone-dot"><span style="background:#e53e3e;"></span>  Faible (&lt; 5/10 géo.)</div>
       </div>
-    </div>
-
-    <!-- Profil pleine largeur -->
-    <div class="profile-card">
-      <div class="radar-card-title">
-        <span class="radar-card-title-dot" style="background:#0090ac;"></span>
-        Profil de mobilisation de l'équipe
-      </div>
-      <div id="profileContent"></div>
+      <div id="zoneBadgeRadar" style="margin-top:16px;"></div>
     </div>
 
   </div>
@@ -374,26 +366,50 @@ tr:last-child td { border-bottom: none; }
   <div class="legend-wrap">
     <div class="legend-title">Guide d'Interprétation</div>
     <div class="legend-grid">
-      <div class="legend-item li-red">
-        <strong>0 - 59 pts | Équipe démobilisée</strong>
-        Des interventions urgentes sont nécessaires pour reconstruire les bases de l'ancrage psychologique et rétablir la confiance.
-      </div>
-      <div class="legend-item li-orange">
-        <strong>60 - 89 pts | Mobilisation faible</strong>
-        Le gestionnaire doit clarifier les attentes, renforcer l'organisation du travail et rétablir l'engagement des employés.
+      <div class="legend-item li-green">
+        <strong>Équipe mobilisée : 90 % – 100 %</strong>
+        L'équipe démontre une cohérence entre la qualité du travail, l'énergie investie et l'adhésion aux valeurs. Les employés s'identifient à leur travail et contribuent activement à la réussite collective.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#3a5a00;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Maintenir les conditions favorables à la mobilisation</li>
+          <li>Soutenir le développement professionnel</li>
+          <li>Renforcer la culture organisationnelle</li>
+        </ul>
       </div>
       <div class="legend-item li-yellow">
-        <strong>90 - 119 pts | Mobilisation fragile</strong>
-        Identifier les dimensions les plus faibles et intervenir rapidement afin d'éviter une détérioration de la mobilisation.
+        <strong>Mobilisation fragile : 75 % – 89 %</strong>
+        Les résultats sont présents, mais certaines dimensions montrent des failles. L'attachement à l'organisation ou l'alignement stratégique peut être fragilisé. Risque de détérioration si rien n'est fait.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#7a6200;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Identifier les dimensions les plus faibles et intervenir rapidement</li>
+          <li>Renforcer la reconnaissance et le sens du travail</li>
+          <li>Consolider l'identité collective de l'équipe</li>
+        </ul>
       </div>
-      <div class="legend-item li-green">
-        <strong>120 - 150 pts | Équipe mobilisée</strong>
-        Maintenir les conditions favorables : reconnaissance, développement des compétences et consolidation de la culture organisationnelle.
+      <div class="legend-item li-orange">
+        <strong>Mobilisation faible : 45 % – 74 %</strong>
+        Les employés accomplissent leur travail sans véritable adhésion aux priorités ou aux valeurs organisationnelles. L'engagement peut être superficiel ou motivé par des pressions externes.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b3a00;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Clarifier les attentes et les priorités stratégiques</li>
+          <li>Renforcer la responsabilisation individuelle</li>
+          <li>Améliorer la communication organisationnelle</li>
+        </ul>
+      </div>
+      <div class="legend-item li-red">
+        <strong>Équipe démobilisée : 0 % – 44 %</strong>
+        Les employés investissent peu d'énergie, ne se reconnaissent plus dans les priorités et entretiennent un détachement envers leur équipe. Des interventions urgentes sont nécessaires.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b1a1a;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Reconstruire les bases de l'ancrage psychologique</li>
+          <li>Restaurer la confiance organisationnelle</li>
+          <li>Redonner un sens clair au travail et aux priorités</li>
+        </ul>
       </div>
     </div>
     <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--cream-dark);">
       <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;margin-bottom:6px;">Moyenne géométrique</div>
-      <p style="font-size:12px;color:#555;line-height:1.6;">Contrairement à la moyenne arithmétique, la moyenne géométrique amplifie l'impact de vos scores les plus bas. Elle vous maintient responsable même lorsque la majorité de vos réponses sont élevées.</p>
+      <p style="font-size:12px;color:#555;line-height:1.6;">Contrairement à la moyenne arithmétique, la moyenne géométrique amplifie l'impact de vos scores les plus bas. Elle vous maintient responsable même lorsque la majorité de vos réponses sont élevées. C'est elle qui détermine votre zone de mobilisation.</p>
     </div>
   </div>
 
@@ -522,6 +538,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const allVals = [p.q1,p.q2,p.q3,p.q4,p.q5,p.q6,p.q7,p.q8,p.q9,p.q10,p.q11,p.q12,p.q13,p.q14,p.q15];
   const arith = allVals.reduce((a,b)=>a+b,0) / allVals.length;
   const geo   = geoMean(allVals);
+  const geoPctGlobal = Math.round(geo / 10 * 100);
 
   setText('totalScore',  total);
   setText('arithMean',   Math.round(arith / 10 * 100));
@@ -570,7 +587,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
   const gaugeVal = Math.min(total, 150);
   const gaugeRem = 150 - gaugeVal;
-  const gColor = scoreColor(totalPct);
+  // Couleur basée sur la moyenne géométrique globale
+  let gColor;
+  if (geoPctGlobal >= 90)      gColor = '#95c11f';
+  else if (geoPctGlobal >= 75) gColor = '#ffed00';
+  else if (geoPctGlobal >= 45) gColor = '#e06b00';
+  else                          gColor = '#e53e3e';
   new Chart(gaugeCtx, {
     type: 'doughnut',
     data: {
@@ -699,6 +721,15 @@ window.addEventListener('DOMContentLoaded', () => {
   // ── RADAR CHART ─────────────────────────────────────────────────────────────
   const radarCtx = document.getElementById('radarChart').getContext('2d');
 
+  // Scores géométriques par dimension (sur 30)
+  const geoS1 = Math.pow([p.q1,  p.q2,  p.q3 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS2 = Math.pow([p.q4,  p.q5,  p.q6 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS3 = Math.pow([p.q7,  p.q8,  p.q9 ].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS4 = Math.pow([p.q10, p.q11, p.q12].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  const geoS5 = Math.pow([p.q13, p.q14, p.q15].map(v => v===0?0.1:v).reduce((a,b)=>a*b,1), 1/3);
+  // Ramener sur 30 : moyenne géo × 3
+  const radarVals = [geoS1*3, geoS2*3, geoS3*3, geoS4*3, geoS5*3].map(v => Math.round(v*10)/10);
+
   const radarZonePlugin = {
     id: 'radarZones',
     beforeDraw(chart) {
@@ -730,7 +761,7 @@ window.addEventListener('DOMContentLoaded', () => {
     data: {
       labels: ['Performance\nsupérieure', "Investissement\nd'énergie", "Points d'ancrage\npsychologiques", "Bases de\nl'ancrage", 'Engagement\nglobal'],
       datasets: [{
-        data: [s1, s2, s3, s4, s5],
+        data: radarVals,
         backgroundColor: 'rgba(29,113,184,0.18)',
         borderColor: '#1d71b8',
         borderWidth: 2.5,
@@ -752,83 +783,43 @@ window.addEventListener('DOMContentLoaded', () => {
       },
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' / 30' } }
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' / 30 (géo.)' } }
       },
       animation: { duration: 1000 }
     }
   });
 
-  // ── PROFIL DE L'EQUIPE ───────────────────────────────────────────────────────
-  function zone(score) {
-    if (score <= 10) return 0; // Faible
-    if (score <= 20) return 1; // Moyen
-    return 2;                  // Eleve
-  }
-  const F = 0, M = 1, E = 2;
-  const zones5 = [s1, s2, s3, s4, s5].map(zone);
-
-  const PROFILES = [
-    { id:1, name:"Équipe pleinement mobilisée", criteria:[E,E,E,E,E], badgeColor:'#e8f5c0', badgeText:'#3a7000',
-      interpretation:"L'équipe démontre une cohérence entre la qualité du travail, l'énergie investie et l'adhésion aux priorités et aux valeurs organisationnelles. Les employés s'identifient à leur travail et contribuent activement à la réussite collective.",
-      interventions:["Maintenir les conditions favorables à la mobilisation","Soutenir le développement professionnel","Renforcer la culture organisationnelle"] },
-    { id:2, name:"Équipe performante mais fragile", criteria:[E,E,F,F,M], badgeColor:'#fff3cd', badgeText:'#7a4f00',
-      interpretation:"Les résultats sont bons et l'énergie est présente, mais l'attachement à l'organisation demeure limité. Les employés peuvent performer davantage par sens du devoir, pression opérationnelle ou exigences professionnelles. Risques : roulement du personnel, fatigue organisationnelle, tensions internes.",
-      interventions:["Renforcer la reconnaissance","Redonner du sens au travail","Renforcer l'identité collective de l'équipe"] },
-    { id:3, name:"Équipe attachée mais peu performante", criteria:[F,-1,E,E,M], criteriaExtra:{1:[0,1]}, badgeColor:'#d0e4f5', badgeText:'#1a4a7a',
-      interpretation:"Les employés apprécient leur milieu de travail et entretiennent des relations positives, mais l'effort collectif et la performance demeurent limités. Cette situation peut refléter une faible exigence organisationnelle ou un manque de rigueur opérationnelle.",
-      interventions:["Renforcer la responsabilisation individuelle","Clarifier les attentes","Renforcer la rigueur dans l'organisation du travail"] },
-    { id:4, name:"Équipe désalignée", criteria:[M,E,M,F,E], badgeColor:'#fde8e8', badgeText:'#8b1a1a',
-      interpretation:"Les employés travaillent activement et démontrent un engagement dans leur travail, mais les priorités organisationnelles ne sont pas pleinement intégrées. Les efforts peuvent être dispersés ou mal orientés.",
-      interventions:["Clarifier les priorités stratégiques","Améliorer la communication organisationnelle","Renforcer l'alignement des actions"] },
-    { id:5, name:"Équipe engagée mais désillusionnée", criteria:[M,M,F,F,-1], criteriaExtra:{4:[1,2]}, badgeColor:'#f3e8fd', badgeText:'#5a1a8b',
-      interpretation:"Les employés continuent d'accomplir leur travail et de contribuer aux activités de l'équipe, mais leur attachement psychologique à l'organisation s'est affaibli. Cette situation peut apparaître après des changements organisationnels difficiles, des conflits internes ou une perte de confiance envers la direction.",
-      interventions:["Rétablir la confiance","Réaffirmer les valeurs organisationnelles","Restaurer les bases de l'ancrage psychologique"] },
-    { id:6, name:"Équipe démobilisée", criteria:[F,F,F,F,F], badgeColor:'#fde8e8', badgeText:'#8b0000',
-      interpretation:"Les employés investissent peu d'énergie dans leur travail, ne se reconnaissent plus dans les priorités organisationnelles et entretiennent un détachement envers leur travail et leur équipe. La mobilisation collective est fortement affaiblie.",
-      interventions:["Reconstruire les bases de l'ancrage psychologique","Restaurer la confiance organisationnelle","Redonner un sens clair au travail et aux priorités"] },
-  ];
-
-  function profileDistance(profile) {
-    let dist = 0;
-    profile.criteria.forEach((expected, i) => {
-      if (expected === -1) {
-        const extra = profile.criteriaExtra && profile.criteriaExtra[i];
-        if (extra && !extra.includes(zones5[i])) dist += 1;
-      } else {
-        if (zones5[i] !== expected) dist += 1;
-      }
-    });
-    return dist;
-  }
-
-  let bestProfile = PROFILES[0];
-  let bestDist = profileDistance(PROFILES[0]);
-  PROFILES.forEach(p => { const d = profileDistance(p); if (d < bestDist) { bestDist = d; bestProfile = p; } });
-
-  // Zone globale basée sur le score /150
-  let zoneLabel, zoneBadgeColor, zoneBadgeText;
-  if (total >= 120) {
+  // ── ZONE DE MOBILISATION (basée sur la moyenne géométrique globale) ──────────
+  let zoneLabel, zoneBadgeColor, zoneBadgeText, zoneInterpretation, zoneInterventions;
+  if (geoPctGlobal >= 90) {
     zoneLabel = 'Zone verte | Équipe mobilisée';
     zoneBadgeColor = '#e8f5c0'; zoneBadgeText = '#3a7000';
-  } else if (total >= 90) {
+    zoneInterpretation = "L'équipe démontre une cohérence entre la qualité du travail, l'énergie investie et l'adhésion aux valeurs organisationnelles. Les employés s'identifient à leur travail et contribuent activement à la réussite collective.";
+    zoneInterventions = ["Maintenir les conditions favorables à la mobilisation", "Soutenir le développement professionnel", "Renforcer la culture organisationnelle"];
+  } else if (geoPctGlobal >= 75) {
     zoneLabel = 'Zone jaune | Mobilisation fragile';
     zoneBadgeColor = '#fff3cd'; zoneBadgeText = '#7a4f00';
-  } else if (total >= 60) {
+    zoneInterpretation = "Les résultats sont présents, mais certaines dimensions montrent des failles. L'attachement à l'organisation ou l'alignement stratégique peut être fragilisé. Risque de détérioration si rien n'est fait.";
+    zoneInterventions = ["Identifier les dimensions les plus faibles et intervenir rapidement", "Renforcer la reconnaissance et le sens du travail", "Consolider l'identité collective de l'équipe"];
+  } else if (geoPctGlobal >= 45) {
     zoneLabel = 'Zone orange | Mobilisation faible';
     zoneBadgeColor = '#ffe8cc'; zoneBadgeText = '#8b3a00';
+    zoneInterpretation = "Les employés accomplissent leur travail sans véritable adhésion aux priorités ou aux valeurs organisationnelles. L'engagement peut être superficiel ou motivé par des pressions externes plutôt que par un attachement réel à l'équipe.";
+    zoneInterventions = ["Clarifier les attentes et les priorités stratégiques", "Renforcer la responsabilisation individuelle", "Améliorer la communication organisationnelle"];
   } else {
     zoneLabel = 'Zone rouge | Équipe démobilisée';
     zoneBadgeColor = '#fde8e8'; zoneBadgeText = '#8b0000';
+    zoneInterpretation = "Les employés investissent peu d'énergie dans leur travail, ne se reconnaissent plus dans les priorités organisationnelles et entretiennent un détachement envers leur équipe. Des interventions urgentes sont nécessaires pour reconstruire les bases de la mobilisation.";
+    zoneInterventions = ["Reconstruire les bases de l'ancrage psychologique", "Restaurer la confiance organisationnelle", "Redonner un sens clair au travail et aux priorités"];
   }
-  document.getElementById('profileContent').innerHTML =
-    '<span class="profile-badge" style="background:' + zoneBadgeColor + ';color:' + zoneBadgeText + ';">' + zoneLabel + ' | ' + total + ' / 150</span>' +
-    '<div class="profile-name">' + bestProfile.name + '</div>' +
-    '<div class="profile-section-title">Interprétation</div>' +
-    '<div class="profile-text">' + bestProfile.interpretation + '</div>' +
-    '<div class="profile-section-title">Interventions de gestion recommandées</div>' +
-    '<div class="profile-interventions"><ul>' +
-    bestProfile.interventions.map(i => '<li>' + i + '</li>').join('') +
-    '</ul></div>';
+
+  const zoneBadgeEl = document.getElementById('zoneBadgeRadar');
+  if (zoneBadgeEl) {
+    zoneBadgeEl.innerHTML =
+      '<span class="profile-badge" style="background:' + zoneBadgeColor + ';color:' + zoneBadgeText + ';font-size:12px;padding:6px 16px;">' +
+      zoneLabel + ' · ' + geoPctGlobal + '% (géo.)' +
+      '</span>';
+  }
 
   // Ligne de total global
   const globalEl = document.getElementById('globalTotalRow');
