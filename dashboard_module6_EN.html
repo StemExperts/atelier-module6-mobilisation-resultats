@@ -187,12 +187,12 @@ tr:last-child td{border-bottom:none;}
   <div id="errorBanner" class="error-banner" style="display:none"></div>
   
   <div id="mainContent" style="display:none">
-    <div class="section-header"><h2>Vue d'ensemble</h2><p>Indicateurs globaux</p></div>
+    <div class="section-header"><h2>Overview</h2><p>Global Indicators</p></div>
     
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
       <label style="font-size:12px;font-weight:600;color:#888;">Filter by date:</label>
       <input type="date" id="dateFrom" onchange="applyDateFilter()" style="padding:6px 10px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;outline:none;"/>
-      <button onclick="clearDateFilter()" style="padding:6px 12px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;background:var(--white);color:#888;">✕ Effacer</button>
+      <button onclick="clearDateFilter()" style="padding:6px 12px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;background:var(--white);color:#888;">✕ Clear</button>
       <span id="dateFilterCount" style="font-size:11px;color:#aaa;"></span>
     </div>
 
@@ -243,7 +243,7 @@ tr:last-child td{border-bottom:none;}
         <canvas id="radarGroupChart" style="max-height:480px;width:100%;"></canvas>
         <div class="zone-legend-dash">
           <div class="zone-dot-dash"><span style="background:#95c11f;"></span> High (≥ 9/10 geo.)</div>
-          <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Medium (5–8.9/10 geo.)</div>
+          <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Medium (5-8.9/10 geo.)</div>
           <div class="zone-dot-dash"><span style="background:#e53e3e;"></span> Low (&lt; 5/10 geo.)</div>
         </div>
         <div id="radarZoneBadge" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--cream-dark);"></div>
@@ -253,7 +253,7 @@ tr:last-child td{border-bottom:none;}
           <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:14px;color:var(--ink);">Interpretation Guide</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
             <div style="background:#e8f5c0;color:#3a5a00;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.5;">
-              <strong style="display:block;font-size:13px;margin-bottom:4px;">Mobilized Team: 90% – 100%</strong>
+              <strong style="display:block;font-size:13px;margin-bottom:4px;">Mobilized Team: 90% - 100%</strong>
               The team demonstrates consistency between work quality, invested energy and adherence to values. Employees actively contribute to collective success.
               <div style="margin-top:8px;font-size:11px;font-weight:600;">Interventions recommandées :</div>
               <ul style="margin-left:14px;margin-top:4px;">
@@ -263,7 +263,7 @@ tr:last-child td{border-bottom:none;}
               </ul>
             </div>
             <div style="background:#fff3cd;color:#7a4f00;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.5;">
-              <strong style="display:block;font-size:13px;margin-bottom:4px;">Fragile Mobilization: 75% – 89%</strong>
+              <strong style="display:block;font-size:13px;margin-bottom:4px;">Fragile Mobilization: 75% - 89%</strong>
               Les résultats sont présents, mais certaines dimensions montrent des failles. L'attachement ou l'alignement stratégique peut être fragilisé. Risque de détérioration si rien n'est fait.
               <div style="margin-top:8px;font-size:11px;font-weight:600;">Interventions recommandées :</div>
               <ul style="margin-left:14px;margin-top:4px;">
@@ -273,7 +273,7 @@ tr:last-child td{border-bottom:none;}
               </ul>
             </div>
             <div style="background:#ffe8cc;color:#8b3a00;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.5;">
-              <strong style="display:block;font-size:13px;margin-bottom:4px;">Weak Mobilization: 45% – 74%</strong>
+              <strong style="display:block;font-size:13px;margin-bottom:4px;">Weak Mobilization: 45% - 74%</strong>
               Employees complete their work without genuine commitment to priorities or values. Engagement may be superficial or driven by external pressures.
               <div style="margin-top:8px;font-size:11px;font-weight:600;">Interventions recommandées :</div>
               <ul style="margin-left:14px;margin-top:4px;">
@@ -283,7 +283,7 @@ tr:last-child td{border-bottom:none;}
               </ul>
             </div>
             <div style="background:#fde8e8;color:#8b1a1a;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.5;">
-              <strong style="display:block;font-size:13px;margin-bottom:4px;">Demobilized Team: 0% – 44%</strong>
+              <strong style="display:block;font-size:13px;margin-bottom:4px;">Demobilized Team: 0% - 44%</strong>
               Employees invest little energy, no longer identify with priorities, and maintain detachment from their team. Urgent interventions are required.
               <div style="margin-top:8px;font-size:11px;font-weight:600;">Interventions recommandées :</div>
               <ul style="margin-left:14px;margin-top:4px;">
@@ -311,7 +311,7 @@ tr:last-child td{border-bottom:none;}
           <tr>
             <th>Dimension</th><th>Criterion</th><th>Average</th>
             <th>Geo. Mean</th><th>Min</th><th>Max</th>
-            <th style="width:120px">Niveau du groupe</th>
+            <th style="width:120px">Group Results</th>
           </tr>
         </thead>
         <tbody id="criteriaTable"></tbody>
@@ -338,13 +338,13 @@ tr:last-child td{border-bottom:none;}
           <th>Participant</th>
           <th>Pharmacy</th>
           <th>Dept.</th>
-          <th style="white-space:normal;min-width:72px;">Date<br>de l'atelier</th>
-          <th style="white-space:normal;min-width:72px;">Date<br>soumise</th>
+          <th style="white-space:normal;min-width:72px;">Workshop<br>date</th>
+          <th style="white-space:normal;min-width:72px;">Date<br>submitted</th>
           <th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th>
           <th>Total</th>
           <th>%<br>Arith.</th>
           <th>%<br>Geo.</th>
-          <th>Résultats</th>
+          <th>Results</th>
         </tr></thead>
         <tbody id="tableBody"></tbody>
       </table>
@@ -472,7 +472,7 @@ async function loadData() {
       return;
     }
   }
-  document.getElementById('loadingState').textContent = "⚠️ Erreur de chargement. Vérifiez Zoho.";
+  document.getElementById('loadingState').textContent = "⚠️ Erreur de chargement.";
 }
 
 function setText(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
@@ -491,10 +491,10 @@ function renderAll() {
   var countEl = document.getElementById('dateFilterCount');
   var dateVal = document.getElementById('dateFrom').value;
   if (!n) {
-    if(countEl) countEl.textContent = dateVal ? '0 reponse pour cette date' : '';
+    if(countEl) countEl.textContent = dateVal ? '0 responses for this date' : '';
     return;
   }
-  if(countEl) countEl.textContent = dateVal ? n + ' reponse' + (n>1?'s':'') + ' pour cette date' : '';
+  if(countEl) countEl.textContent = dateVal ? n + ' response' + (n>1?'s':'') + ' for this date' : '';
 
   var avgTotal = rows.reduce(function(a,r){return a+r.total;},0)/n;
   var avgArith = rows.reduce(function(a,r){return a+r.arith;},0)/n;
@@ -532,10 +532,10 @@ function renderDimBars(rows) {
   const n = rows.length;
   const dimDefs = [
     {key:'d1',label:"Superior Performance",             color:'#1d71b8',qs:['q1','q2','q3']},
-    {key:'d2',label:"Investissement d’Énergies",color:'#95c11f',qs:['q4','q5','q6']},
-    {key:'d3',label:"Points d'Ancrage Psychologique",           color:'#ffed00',qs:['q7','q8','q9']},
-    {key:'d4',label:"Bases de l’Ancrage",     color:'#002169',qs:['q10','q11','q12']},
-    {key:'d5',label:"Overall Engagement",       color:'#0090ac',qs:['q13','q14','q15']},
+    {key:'d2',label:"Energy Investment",color:'#95c11f',qs:['q4','q5','q6']},
+    {key:'d3',label:"Psychological anchor points",           color:'#ffed00',qs:['q7','q8','q9']},
+    {key:'d4',label:"Foundations of Commitment",     color:'#002169',qs:['q10','q11','q12']},
+    {key:'d5',label:"General Engagement",       color:'#0090ac',qs:['q13','q14','q15']},
   ];
   const wrap = document.getElementById('dimBarsChart');
   wrap.innerHTML = '';
@@ -853,7 +853,7 @@ loadData();
 
 <div class="emergency-wrap">
   <div class="emergency-card">
-    <div class="emergency-title">⚡ Plan B — Manual CSV Upload</div>
+    <div class="emergency-title">⚡ Plan B - Manual CSV Upload</div>
     <div class="emergency-subtitle">Si le rafraîchissement automatique ne fonctionne pas, suivez ces 2 étapes</div>
     <div class="emergency-steps">
 
