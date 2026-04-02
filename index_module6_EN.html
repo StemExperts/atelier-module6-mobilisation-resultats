@@ -61,11 +61,11 @@ body::before {
 }
 .header h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(26px,5vw,42px); font-weight: 700;
+  font-size: clamp(20px,4vw,32px); font-weight: 700;
   line-height: 1.2; margin-bottom: 10px;
 }
 .participant-line {
-  font-size: 14px; color: var(--ink-soft);
+  font-size: 21px; color: var(--ink-soft);
   margin-top: 6px;
 }
 .participant-line strong { color: var(--blue); font-weight: 600; }
@@ -96,6 +96,10 @@ body::before {
 .summary-card.total::before  { background: linear-gradient(90deg,var(--ink),var(--blue)); }
 .summary-card.arith::before  { background: linear-gradient(90deg,var(--green),#5aad87); }
 .summary-card.geo::before    { background: linear-gradient(90deg,var(--teal),#00b8d4); }
+.summary-card.geo { background: var(--ink); color: var(--white); box-shadow: 0 6px 32px rgba(0,144,172,0.35); transform: scale(1.04); z-index:2; }
+.summary-card.geo .sc-label { color: rgba(255,255,255,0.65); }
+.summary-card.geo .sc-score { color: #00d4f5; font-size: 52px; }
+.summary-card.geo .sc-sub   { color: rgba(255,255,255,0.5); }
 .sc-label {
   font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
   font-weight: 600; margin-bottom: 10px;
@@ -366,28 +370,18 @@ tr:last-child td { border-bottom: none; }
   <div class="legend-wrap">
     <div class="legend-title">Interpretation Guide</div>
     <div class="legend-grid">
-      <div class="legend-item li-green">
-        <strong>Mobilized Team: 90% – 100%</strong>
-        The team demonstrates consistency between work quality, invested energy and adherence to values. Employees identify with their work and actively contribute to collective success.
-        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#3a5a00;">Interventions recommandées :</div>
+      <div class="legend-item li-red">
+        <strong style="display:block;text-align:center;">Demobilized Team<br><span style="font-weight:400;display:block;text-align:center;margin-top:2px;">0% – 44%</span></strong>
+        Employees invest little energy, no longer identify with priorities, and maintain detachment from their team. Urgent interventions are required.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b1a1a;">Interventions recommandées :</div>
         <ul style="margin-left:14px;margin-top:4px;">
-          <li>Maintain favourable conditions for mobilization</li>
-          <li>Support professional development</li>
-          <li>Strengthen organizational culture</li>
-        </ul>
-      </div>
-      <div class="legend-item li-yellow">
-        <strong>Fragile Mobilization: 75% – 89%</strong>
-        Results are present, but some dimensions show weaknesses. Attachment to the organization or strategic alignment may be fragile. Risk of deterioration if left unaddressed.
-        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#7a6200;">Interventions recommandées :</div>
-        <ul style="margin-left:14px;margin-top:4px;">
-          <li>Identify the weakest dimensions and intervene quickly</li>
-          <li>Strengthen recognition and sense of purpose</li>
-          <li>Consolidate the team's collective identity</li>
+          <li>Rebuild the foundations of psychological anchoring</li>
+          <li>Restore organizational trust</li>
+          <li>Restore clear meaning to work and priorities</li>
         </ul>
       </div>
       <div class="legend-item li-orange">
-        <strong>Weak Mobilization: 45% – 74%</strong>
+        <strong style="display:block;text-align:center;">Weak Mobilization<br><span style="font-weight:400;display:block;text-align:center;margin-top:2px;">45% – 74%</span></strong>
         Employees complete their work without genuine commitment to organizational priorities or values. Engagement may be superficial or driven by external pressures.
         <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b3a00;">Interventions recommandées :</div>
         <ul style="margin-left:14px;margin-top:4px;">
@@ -396,14 +390,24 @@ tr:last-child td { border-bottom: none; }
           <li>Improve organizational communication</li>
         </ul>
       </div>
-      <div class="legend-item li-red">
-        <strong>Demobilized Team: 0% – 44%</strong>
-        Employees invest little energy, no longer identify with priorities, and maintain detachment from their team. Urgent interventions are required.
-        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#8b1a1a;">Interventions recommandées :</div>
+      <div class="legend-item li-yellow">
+        <strong style="display:block;text-align:center;">Fragile Mobilization<br><span style="font-weight:400;display:block;text-align:center;margin-top:2px;">75% – 89%</span></strong>
+        Results are present, but some dimensions show weaknesses. Attachment to the organization or strategic alignment may be fragile. Risk of deterioration if left unaddressed.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#7a6200;">Interventions recommandées :</div>
         <ul style="margin-left:14px;margin-top:4px;">
-          <li>Rebuild the foundations of psychological anchoring</li>
-          <li>Restore organizational trust</li>
-          <li>Restore clear meaning to work and priorities</li>
+          <li>Identify the weakest dimensions and intervene quickly</li>
+          <li>Strengthen recognition and sense of purpose</li>
+          <li>Consolidate the team's collective identity</li>
+        </ul>
+      </div>
+      <div class="legend-item li-green">
+        <strong style="display:block;text-align:center;">Mobilized Team<br><span style="font-weight:400;display:block;text-align:center;margin-top:2px;">90% – 100%</span></strong>
+        The team demonstrates consistency between work quality, invested energy and adherence to values. Employees identify with their work and actively contribute to collective success.
+        <div style="margin-top:8px;font-size:11px;font-weight:600;color:#3a5a00;">Interventions recommandées :</div>
+        <ul style="margin-left:14px;margin-top:4px;">
+          <li>Maintain favourable conditions for mobilization</li>
+          <li>Support professional development</li>
+          <li>Strengthen organizational culture</li>
         </ul>
       </div>
     </div>
@@ -792,22 +796,22 @@ window.addEventListener('DOMContentLoaded', () => {
   // ── ZONE DE MOBILISATION (basée sur la moyenne géométrique globale) ──────────
   let zoneLabel, zoneBadgeColor, zoneBadgeText, zoneInterpretation, zoneInterventions;
   if (geoPctGlobal >= 90) {
-    zoneLabel = 'Green Zone | Mobilized Team';
+    zoneLabel = 'Mobilized Team';
     zoneBadgeColor = '#e8f5c0'; zoneBadgeText = '#3a7000';
     zoneInterpretation = "The team demonstrates consistency between work quality, invested energy and adherence to organizational values. Employees identify with their work and actively contribute to collective success.";
     zoneInterventions = ["Maintain favourable conditions for mobilization", "Support professional development", "Strengthen organizational culture"];
   } else if (geoPctGlobal >= 75) {
-    zoneLabel = 'Yellow Zone | Fragile Mobilization';
+    zoneLabel = 'Fragile Mobilization';
     zoneBadgeColor = '#fff3cd'; zoneBadgeText = '#7a4f00';
     zoneInterpretation = "Results are present, but some dimensions show weaknesses. Attachment to the organization or strategic alignment may be fragile. Risk of deterioration if left unaddressed.";
     zoneInterventions = ["Identify the weakest dimensions and intervene quickly", "Strengthen recognition and sense of purpose", "Consolidate the team's collective identity"];
   } else if (geoPctGlobal >= 45) {
-    zoneLabel = 'Orange Zone | Weak Mobilization';
+    zoneLabel = 'Weak Mobilization';
     zoneBadgeColor = '#ffe8cc'; zoneBadgeText = '#8b3a00';
     zoneInterpretation = "Employees complete their work without genuine commitment to organizational priorities or values. Engagement may be superficial or driven by external pressures rather than real team attachment.";
     zoneInterventions = ["Clarify expectations and strategic priorities", "Strengthen individual accountability", "Improve organizational communication"];
   } else {
-    zoneLabel = 'Red Zone | Demobilized Team';
+    zoneLabel = 'Demobilized Team';
     zoneBadgeColor = '#fde8e8'; zoneBadgeText = '#8b0000';
     zoneInterpretation = "Employees invest little energy in their work, no longer identify with organizational priorities, and maintain detachment from their team. Urgent interventions are needed to rebuild the foundations of mobilization.";
     zoneInterventions = ["Rebuild the foundations of psychological anchoring", "Restore organizational trust", "Restore clear meaning to work and priorities"];
