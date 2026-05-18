@@ -80,18 +80,27 @@ body::before{content:'';position:fixed;top:-180px;right:-180px;width:520px;heigh
 .section-header h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;}
 .section-header p{font-size:12px;color:#888;margin-top:4px;}
 
-/* ── KPI row ─────────────────────────────────────────────── */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;animation:fadeUp .5s ease both;}
-@media(max-width:700px){.kpi-row{grid-template-columns:1fr 1fr;}}
-.kpi{background:var(--white);border-radius:14px;padding:22px 18px 18px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden;}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
-.kpi.k1::before{background:linear-gradient(90deg,var(--ink),var(--blue));}
-.kpi.k2::before{background:linear-gradient(90deg,var(--green),#5aad87);}
-.kpi.k3::before{background:linear-gradient(90deg,var(--teal),#00b8d4);}
-.kpi.k4::before{background:linear-gradient(90deg,var(--orange),#f5a040);}
-.kpi-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:#888;margin-bottom:8px;}
-.kpi-val{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;line-height:1;}
-.kpi-sub{font-size:12px;color:#aaa;margin-top:4px;}
+/* ── Hero KPI ──────────────────────────────────────────────── */
+.hero-dash-card{background:var(--white);border-radius:16px;padding:24px 20px 18px;box-shadow:var(--shadow);text-align:center;margin-bottom:24px;animation:fadeUp .5s ease both;}
+.hero-dash-gauge{width:340px;height:170px;margin:0 auto;}
+.hero-dash-center{text-align:center;line-height:1.25;margin-top:-4px;}
+.hero-dash-pct{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--ink);}
+.hero-dash-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.hero-dash-metrics{display:flex;justify-content:center;align-items:stretch;margin-top:16px;padding-top:16px;border-top:1px solid #eee;}
+.hero-dash-metric{flex:1;text-align:center;padding:0 8px;}
+.hero-dash-metric-sep{width:1px;background:#eee;flex-shrink:0;}
+.hero-dash-metric-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:5px;}
+.hero-dash-metric-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;line-height:1;}
+/* ── Distribution cards ────────────────────────────────────── */
+.dist-zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px;}
+@media(max-width:700px){.dist-zone-grid{grid-template-columns:1fr 1fr;}}
+.dist-zone-card{border-radius:14px;padding:22px 14px 18px;text-align:center;border:1.5px solid;}
+.dist-zone-bar-wrap{height:100px;display:flex;align-items:flex-end;justify-content:center;margin:10px 0 8px;}
+.dist-zone-bar{width:30px;border-radius:4px 4px 0 0;}
+.dist-zone-count{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;line-height:1;}
+.dist-zone-participants{font-size:10px;color:#aaa;margin-top:2px;}
+.dist-zone-label{font-size:12px;font-weight:700;line-height:1.2;margin-bottom:3px;}
+.dist-zone-range{font-size:11px;font-weight:500;color:#888;margin-top:2px;margin-bottom:4px;}
 
 /* ── Dimension summary cards ─────────────────────────────── */
 .dim-grid{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;animation:fadeUp .5s .08s ease both;justify-content:center;}
@@ -196,11 +205,39 @@ tr:last-child td{border-bottom:none;}
       <span id="dateFilterCount" style="font-size:11px;color:#aaa;"></span>
     </div>
 
-    <div class="kpi-row">
-      <div class="kpi k1"><div class="kpi-label">Score moyen global</div><div class="kpi-val"><span id="kpiAvgTotal">—</span> / 150</div></div>
-      <div class="kpi k2"><div class="kpi-label">Moy. arithmétique</div><div class="kpi-val"><span id="kpiArith">—</span>%</div></div>
-      <div class="kpi k3"><div class="kpi-label">Moy. géométrique</div><div class="kpi-val"><span id="kpiGeo">—</span>%</div></div>
-
+    <div class="hero-dash-card">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#aaa;margin-bottom:14px;">Niveau de Mobilisation · Moyenne du groupe</div>
+      <div class="hero-dash-gauge">
+        <svg id="dashGaugeSvg" viewBox="0 0 340 170" width="340" height="170" xmlns="http://www.w3.org/2000/svg">
+          <path id="dashGaugeTrack" fill="none" stroke="#e8ecf2" stroke-width="28" stroke-linecap="round"/>
+          <path id="dashGaugeFill"  fill="none" stroke="#0090ac" stroke-width="28" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="hero-dash-center">
+        <span class="hero-dash-pct"><span id="kpiGeo">—</span>%</span>
+        <div class="hero-dash-sub"><span id="kpiAvgTotal">—</span> / 150 points · moyenne géométrique du groupe</div>
+      </div>
+      <div class="hero-dash-metrics">
+        <div class="hero-dash-metric">
+          <div class="hero-dash-metric-label">Participants</div>
+          <div class="hero-dash-metric-val" style="color:var(--ink);" id="kpiCount">—</div>
+        </div>
+        <div class="hero-dash-metric-sep"></div>
+        <div class="hero-dash-metric">
+          <div class="hero-dash-metric-label">Score moyen</div>
+          <div class="hero-dash-metric-val" style="color:var(--ink);"><span id="kpiAvgTotal2">—</span> <span style="font-size:12px;font-weight:400;color:#aaa;">/ 150</span></div>
+        </div>
+        <div class="hero-dash-metric-sep"></div>
+        <div class="hero-dash-metric">
+          <div class="hero-dash-metric-label">Moy. géométrique</div>
+          <div class="hero-dash-metric-val" style="color:var(--teal);"><span id="kpiGeo2">—</span>%</div>
+        </div>
+        <div class="hero-dash-metric-sep"></div>
+        <div class="hero-dash-metric">
+          <div class="hero-dash-metric-label">Zone dominante</div>
+          <span id="kpiZoneBadge" style="display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;background:#eee;color:#555;margin-top:3px;">—</span>
+        </div>
+      </div>
     </div>
 
     <div class="section-header">
@@ -214,8 +251,8 @@ tr:last-child td{border-bottom:none;}
       <div style="color:rgba(255,255,255,0.5);font-size:11px;"></div>
     </div>
     <div class="dim-grid" style="margin-bottom:0;border-radius:0 0 10px 10px;background:rgba(0,33,105,0.04);padding:12px;border:1px solid rgba(0,33,105,0.1);border-top:none;">
-      <div class="dim-card dc1"><div class="dim-name">Performance Supérieure</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d1geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d1bar" style="background:var(--c1)"></div></div><div class="dim-pct" style="color:#aaa;">Arith. <span id="d1score" style="font-weight:500">—</span>%</div></div>
-      <div class="dim-card dc2"><div class="dim-name">Investissement d'Énergies</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d2geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d2bar" style="background:var(--c2)"></div></div><div class="dim-pct" style="color:#aaa;">Arith. <span id="d2score" style="font-weight:500">—</span>%</div></div>
+      <div class="dim-card dc1"><div class="dim-name">Performance Supérieure</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d1geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d1bar" style="background:var(--c1)"></div></div></div>
+      <div class="dim-card dc2"><div class="dim-name">Investissement d'Énergies</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d2geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d2bar" style="background:var(--c2)"></div></div></div>
     </div>
 
     <!-- Catégorie 2 : Dimension psychologique -->
@@ -224,16 +261,35 @@ tr:last-child td{border-bottom:none;}
       <div style="color:rgba(255,255,255,0.5);font-size:11px;"></div>
     </div>
     <div class="dim-grid" style="margin-bottom:24px;border-radius:0 0 10px 10px;background:rgba(0,144,172,0.04);padding:12px;border:1px solid rgba(0,144,172,0.15);border-top:none;">
-      <div class="dim-card dc3"><div class="dim-name">Points d'Ancrage Psychologique</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d3geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d3bar" style="background:var(--c3)"></div></div><div class="dim-pct" style="color:#aaa;">Arith. <span id="d3score" style="font-weight:500">—</span>%</div></div>
-      <div class="dim-card dc4"><div class="dim-name">Bases de l'Ancrage</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d4geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d4bar" style="background:var(--c4)"></div></div><div class="dim-pct" style="color:#aaa;">Arith. <span id="d4score" style="font-weight:500">—</span>%</div></div>
-      <div class="dim-card dc5"><div class="dim-name">Engagement Global</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d5geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div><div class="dim-pct" style="color:#aaa;">Arith. <span id="d5score" style="font-weight:500">—</span>%</div></div>
+      <div class="dim-card dc3"><div class="dim-name">Points d'Ancrage Psychologique</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d3geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d3bar" style="background:var(--c3)"></div></div></div>
+      <div class="dim-card dc4"><div class="dim-name">Bases de l'Ancrage</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d4geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d4bar" style="background:var(--c4)"></div></div></div>
+      <div class="dim-card dc5"><div class="dim-name">Engagement Global</div><div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-bottom:3px;">Géo.</div><div class="dim-score"><span id="d5geo" style="font-weight:700">—</span>%</div><div class="dim-bar-track"><div class="dim-bar-fill" id="d5bar" style="background:var(--c5)"></div></div></div>
     </div>
 
-    <div class="chart-card full" style="margin-bottom:24px;"><div class="chart-title">Forces et Faiblesses par Dimension</div><div class="chart-sub">Arithmétique (pâle) vs Géométrique (foncé)</div><div id="dimBarsChart" style="margin-top:12px;"></div></div>
+    <div class="chart-card full" style="margin-bottom:24px;">
+      <div class="chart-title">Forces et Faiblesses par Dimension</div>
+      <div class="chart-sub">Scores géométriques moyens du groupe</div>
+      <!-- En-tête colonnes -->
+      <div style="display:grid;grid-template-columns:190px 1fr 56px;gap:14px;margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid #eee;">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;">Dimension</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;display:flex;justify-content:space-between;padding:0 2px;"><span>0%</span><span>50%</span><span>100%</span></div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;text-align:right;">Géo.</div>
+      </div>
+      <div id="dimBarsChart"></div>
+      <div style="display:flex;margin-top:14px;padding-top:12px;border-top:1px solid #eee;">
+        <span style="font-size:10px;color:#bbb;margin-left:auto;">La ligne verticale indique 50%</span>
+      </div>
+    </div>
 
-    <div class="charts-row">
-      <div class="chart-card"><div class="chart-title">Distribution des Scores Totaux</div><div class="chart-sub">Participants par tranche · Moyenne arithmétique (/100)</div><canvas id="distChart" height="260"></canvas></div>
-      <div class="chart-card"><div class="chart-title">Distribution des Scores Géométriques</div><div class="chart-sub">Participants par tranche · Moyenne géométrique (/100)</div><canvas id="distGeoChart" height="260"></canvas></div>
+    <div class="chart-card full" style="margin-bottom:24px;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;">
+        <div>
+          <div class="chart-title" style="margin-bottom:2px;">Distribution des niveaux de mobilisation</div>
+          <div class="chart-sub">Répartition des participants par zone géométrique</div>
+        </div>
+        <span style="font-size:11px;color:#aaa;" id="distParticipantCount">— participants</span>
+      </div>
+      <div class="dist-zone-grid" id="distZoneGrid"></div>
     </div>
 
     <!-- Radar groupe -->
@@ -245,6 +301,8 @@ tr:last-child td{border-bottom:none;}
           <div class="zone-dot-dash"><span style="background:#95c11f;"></span> Élevé (≥ 9/10 géo.)</div>
           <div class="zone-dot-dash"><span style="background:#ffed00;"></span> Moyen (5–8.9/10 géo.)</div>
           <div class="zone-dot-dash"><span style="background:#e53e3e;"></span> Faible (&lt; 5/10 géo.)</div>
+          <div style="width:1px;height:14px;background:#ddd;"></div>
+          <div class="zone-dot-dash"><span style="width:18px;height:3px;border-radius:0;border-top:2px dashed rgba(226,75,74,0.8);background:none;display:inline-block;"></span> Score recalibré (−20%)</div>
         </div>
         <div id="radarZoneBadge" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--cream-dark);"></div>
 
@@ -342,7 +400,6 @@ tr:last-child td{border-bottom:none;}
           <th style="white-space:normal;min-width:72px;">Date<br>soumise</th>
           <th>D1</th><th>D2</th><th>D3</th><th>D4</th><th>D5</th>
           <th>Total</th>
-          <th>%<br>Arith.</th>
           <th>%<br>Géo.</th>
           <th>Résultats</th>
         </tr></thead>
@@ -499,11 +556,41 @@ function renderAll() {
   var avgTotal = rows.reduce(function(a,r){return a+r.total;},0)/n;
   var avgArith = rows.reduce(function(a,r){return a+r.arith;},0)/n;
   var avgGeo   = rows.reduce(function(a,r){return a+r.geo;},0)/n;
+  var avgGeoPct = Math.round(avgGeo/10*100);
   setText('kpiAvgTotal',      avgTotal.toFixed(1));
-  setText('kpiArith',         Math.round(avgArith/10*100));
-  setText('kpiGeo',           Math.round(avgGeo/10*100));
-  setText('kpiPct',           Math.round(avgTotal/150*100) + '%');
+  setText('kpiAvgTotal2',     avgTotal.toFixed(1));
+  setText('kpiGeo',           avgGeoPct);
+  setText('kpiGeo2',          avgGeoPct);
+  setText('kpiCount',         n);
+  setText('kpiPct',           avgGeoPct + '%');
   setText('participantCount', n + (n>1?' reponses':' reponse'));
+
+  // Zone dominante du groupe
+  (function(){
+    var z;
+    if(avgGeoPct>=90) z={label:'Équipe mobilisée',    bg:'#e8f5c0',col:'#3a7000',stroke:'#95c11f'};
+    else if(avgGeoPct>=75) z={label:'Mobilisation fragile',bg:'#fff3cd',col:'#7a4f00',stroke:'#e8a020'};
+    else if(avgGeoPct>=45) z={label:'Mobilisation faible', bg:'#ffe8cc',col:'#8b3a00',stroke:'#e06b00'};
+    else                   z={label:'Équipe démobilisée',  bg:'#fde8e8',col:'#8b0000',stroke:'#e53e3e'};
+    var badge=document.getElementById('kpiZoneBadge');
+    if(badge){badge.textContent=z.label;badge.style.background=z.bg;badge.style.color=z.col;}
+    // Jauge SVG
+    var cx=170,cy=160,r=124;
+    function pt(a){return{x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};}
+    function arc(f,t){var s=pt(f),e=pt(t),lg=(t-f)>Math.PI?1:0;return'M '+s.x.toFixed(2)+' '+s.y.toFixed(2)+' A '+r+' '+r+' 0 '+lg+' 1 '+e.x.toFixed(2)+' '+e.y.toFixed(2);}
+    var pi=Math.PI;
+    var track=document.getElementById('dashGaugeTrack');
+    var fill=document.getElementById('dashGaugeFill');
+    if(track&&fill){
+      track.setAttribute('d',arc(pi,2*pi));
+      fill.setAttribute('stroke',z.stroke);
+      fill.setAttribute('d',arc(pi,pi+(avgGeoPct/100)*pi));
+      var len=fill.getTotalLength?fill.getTotalLength():251;
+      fill.style.strokeDasharray=len;fill.style.strokeDashoffset=len;
+      fill.style.transition='stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
+      setTimeout(function(){fill.style.strokeDashoffset=0;},120);
+    }
+  })();
 
   var dimQCols = [['q1','q2','q3'],['q4','q5','q6'],['q7','q8','q9'],['q10','q11','q12'],['q13','q14','q15']];
   ['d1','d2','d3','d4','d5'].forEach(function(d,i) {
@@ -519,7 +606,7 @@ function renderAll() {
     if(bar) bar.style.width = geoPct + '%';
   });
 
-  renderDimBars(rows); renderBar(rows); renderDist(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect();
+  renderDimBars(rows); renderBar(rows); renderDistGeo(rows); renderCriteriaTable(rows); populateParticipantSelect();
   renderGroupRadarAndProfile(rows);
   // Réinitialiser la sélection à chaque actualisation
   var selEl = document.getElementById('searchInput');
@@ -531,76 +618,62 @@ function renderDimBars(rows) {
   rows = rows || allRows;
   const n = rows.length;
   const dimDefs = [
-    {key:'d1',label:"Performance Supérieure",            color:'#1d71b8',qs:['q1','q2','q3']},
-    {key:'d2',label:"Investissement d’Énergies",color:'#95c11f',qs:['q4','q5','q6']},
-    {key:'d3',label:"Points d'Ancrage Psychologique",           color:'#ffed00',qs:['q7','q8','q9']},
-    {key:'d4',label:"Bases de l’Ancrage",     color:'#002169',qs:['q10','q11','q12']},
-    {key:'d5',label:"Engagement Global",        color:'#0090ac',qs:['q13','q14','q15']},
+    {key:'d1', label:'Performance Supérieure',           color:'#1d71b8', qs:['q1','q2','q3']},
+    {key:'d2', label:"Investissement d'Énergies",        color:'#95c11f', qs:['q4','q5','q6']},
+    {key:'d3', label:"Points d'Ancrage Psychologique",   color:'#ffed00', qs:['q7','q8','q9']},
+    {key:'d4', label:"Bases de l'Ancrage",               color:'#002169', qs:['q10','q11','q12']},
+    {key:'d5', label:'Engagement Global',                color:'#0090ac', qs:['q13','q14','q15']},
   ];
+
+  function zoneChip(pct) {
+    if (pct >= 70) return {label:'Force',         bg:'#e8f4d4', col:'#4a7a10'};
+    if (pct >= 45) return {label:'À développer',  bg:'#fff3cd', col:'#7a4f00'};
+    return               {label:'Faiblesse',      bg:'#fde8e8', col:'#c0392b'};
+  }
+
   const wrap = document.getElementById('dimBarsChart');
   wrap.innerHTML = '';
 
-  const grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:end;height:220px;';
-
   dimDefs.forEach(d => {
-    const avg     = rows.reduce((a,r)=>a+r[d.key],0)/n;
-    const pctA    = Math.round(avg/30*100);
-    const geoVals = d.qs.map(q => rows.reduce((a,r)=>a+r[q],0)/n);
-    const geoPos  = geoVals.map(v=>v===0?0.1:v);
-    const geoDim  = Math.pow(geoPos.reduce((a,b)=>a*b,1), 1/3);
-    const pctG    = Math.round(geoDim/10*100);
-    const txtCol  = d.color==='#ffed00' ? '#7a6200' : d.color;
-    const labelCol = d.color==='#ffed00' ? '#7a6200' : d.color;
+    const geoVals = d.qs.map(q => rows.reduce((a,r) => a + (r[q]||0), 0) / n);
+    const geoPos  = geoVals.map(v => v === 0 ? 0.1 : v);
+    const geoDim  = Math.pow(geoPos.reduce((a,b) => a * b, 1), 1 / geoPos.length);
+    const pctG    = Math.round(geoDim / 10 * 100);
+    const txtCol  = d.color === '#95c11f' ? '#6a8a15' : d.color === '#ffed00' ? '#7a6200' : d.color;
+    const zone    = zoneChip(pctG);
 
-    const col = document.createElement('div');
-    col.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:grid;grid-template-columns:190px 1fr 56px;gap:14px;align-items:center;margin-bottom:18px;';
 
-    const vals = document.createElement('div');
-    vals.style.cssText = 'display:flex;gap:4px;align-items:flex-end;margin-bottom:4px;';
-    vals.innerHTML = '<span style="font-size:12px;font-weight:700;color:'+txtCol+';opacity:0.6;">'+pctA+'%</span>'
-      + '<span style="font-size:11px;color:#ccc;">·</span>'
-      + '<span style="font-size:13px;font-weight:700;color:'+txtCol+';">'+pctG+'%</span>';
+    // Colonne nom + badge
+    const nameCol = document.createElement('div');
+    nameCol.innerHTML = '<div style="font-size:13px;font-weight:600;color:#002169;line-height:1.3;">' + d.label + '</div>';
 
-    const barsWrap = document.createElement('div');
-    barsWrap.style.cssText = 'display:flex;gap:8px;align-items:flex-end;width:100%;justify-content:center;';
+    // Barre horizontale avec ligne 50%
+    const trackWrap = document.createElement('div');
+    trackWrap.style.cssText = 'position:relative;';
+    const track = document.createElement('div');
+    track.style.cssText = 'height:18px;background:#f0f2f7;border-radius:9px;overflow:hidden;position:relative;';
+    const fill = document.createElement('div');
+    fill.style.cssText = 'height:100%;width:0%;background:' + d.color + ';border-radius:9px;transition:width 1s cubic-bezier(.4,0,.2,1);';
+    track.appendChild(fill);
+    // Ligne 50%
+    const ref = document.createElement('div');
+    ref.style.cssText = 'position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:rgba(0,0,0,0.13);border-radius:1px;pointer-events:none;';
+    trackWrap.appendChild(track);
+    trackWrap.appendChild(ref);
+    setTimeout(() => { fill.style.width = pctG + '%'; }, 80);
 
-    const maxH = 160;
+    // Valeur
+    const val = document.createElement('div');
+    val.style.cssText = 'font-size:15px;font-weight:700;color:' + txtCol + ';text-align:right;';
+    val.textContent = pctG + '%';
 
-    const barA = document.createElement('div');
-    barA.style.cssText = 'width:44px;background:'+d.color+';opacity:0.4;border-radius:6px 6px 0 0;height:'+Math.max(4,Math.round(pctA/100*maxH))+'px;transition:height 1s ease;';
-    barA.title = 'Arithmétique : '+pctA+'%';
-
-    const barG = document.createElement('div');
-    barG.style.cssText = 'width:44px;background:'+d.color+';border-radius:6px 6px 0 0;height:'+Math.max(4,Math.round(pctG/100*maxH))+'px;transition:height 1s ease;';
-    barG.title = 'Géométrique : '+pctG+'%';
-
-    barsWrap.appendChild(barA);
-    barsWrap.appendChild(barG);
-
-    const baseline = document.createElement('div');
-    baseline.style.cssText = 'width:100%;height:2px;background:'+d.color+';opacity:0.25;border-radius:1px;';
-
-    const label = document.createElement('div');
-    label.style.cssText = 'font-size:10px;font-weight:600;text-align:center;color:'+labelCol+';line-height:1.3;margin-top:6px;';
-    label.textContent = d.label;
-
-    col.appendChild(vals);
-    col.appendChild(barsWrap);
-    col.appendChild(baseline);
-    col.appendChild(label);
-    grid.appendChild(col);
+    row.appendChild(nameCol);
+    row.appendChild(trackWrap);
+    row.appendChild(val);
+    wrap.appendChild(row);
   });
-
-  const legend = document.createElement('div');
-  legend.style.cssText = 'display:flex;gap:20px;justify-content:center;margin-top:14px;';
-  legend.innerHTML = '<span style="font-size:11px;color:#aaa;display:flex;align-items:center;gap:5px;">'
-    + '<span style="display:inline-block;width:14px;height:10px;background:#888;opacity:0.4;border-radius:2px;"></span>Arithmétique</span>'
-    + '<span style="font-size:11px;color:#aaa;display:flex;align-items:center;gap:5px;">'
-    + '<span style="display:inline-block;width:14px;height:10px;background:#888;border-radius:2px;"></span>Géométrique</span>';
-
-  wrap.appendChild(grid);
-  wrap.appendChild(legend);
 }
 
 function renderBar(rows) {
@@ -622,11 +695,50 @@ function renderDist(rows) {
 
 function renderDistGeo(rows) {
   rows = rows || allRows;
-  const ctx = document.getElementById('distGeoChart').getContext('2d');
-  if(distGeoChartInst) distGeoChartInst.destroy();
-  const buckets = [0,0,0,0,0];
-  rows.forEach(r => { const pct = r.geo / 10 * 100; const i = Math.min(4, Math.floor(pct / 20)); buckets[i]++; });
-  distGeoChartInst = new Chart(ctx, { type: 'bar', data: { labels: ['0-19%', '20-39%', '40-59%', '60-79%', '80-100%'], datasets: [{ data: buckets, backgroundColor: '#0090ac' }] }, options: { plugins: { legend: { display: false } } } });
+  var pWord = function(n){return n+' '+(n===1?'participant':'participants');};
+  var total = rows.length;
+  var setText2 = function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  setText2('distParticipantCount', pWord(total));
+
+  var zoneDefs = [
+    {label:'Équipe démobilisée',range:'0 – 44%',min:0,max:44,bg:'#fde8e8',border:'#f5c6c6',col:'#8b0000',bar:'#e53e3e'},
+    {label:'Mobilisation faible',range:'45 – 74%',min:45,max:74,bg:'#fff5eb',border:'#fde0bb',col:'#8b3a00',bar:'#e06b00'},
+    {label:'Mobilisation fragile',range:'75 – 89%',min:75,max:89,bg:'#fffbf0',border:'#fde9c0',col:'#7a4f00',bar:'#e8a020'},
+    {label:'Équipe mobilisée',range:'90 – 100%',min:90,max:100,bg:'#f0fff4',border:'#bbdfc8',col:'#3a7000',bar:'#95c11f'}
+  ];
+
+  // Compter participants par zone
+  zoneDefs.forEach(function(z){ z.count=0; });
+  rows.forEach(function(r){
+    var pct = Math.round(r.geo/10*100);
+    for(var zi=0;zi<zoneDefs.length;zi++){
+      if(pct>=zoneDefs[zi].min && pct<=zoneDefs[zi].max){ zoneDefs[zi].count++; break; }
+    }
+  });
+
+  var maxCount = Math.max(1, Math.max.apply(null, zoneDefs.map(function(z){return z.count;})));
+  var grid = document.getElementById('distZoneGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+
+  zoneDefs.forEach(function(z){
+    var card = document.createElement('div');
+    card.className = 'dist-zone-card';
+    card.style.cssText = 'background:'+z.bg+';border-color:'+z.border+';';
+    var barH = Math.max(6, Math.round((z.count/maxCount)*96));
+    card.innerHTML =
+      '<div class="dist-zone-label" style="color:'+z.col+';">'+z.label+'</div>'
+      +'<div class="dist-zone-range">'+z.range+'</div>'
+      +'<div class="dist-zone-bar-wrap"><div class="dist-zone-bar" style="height:0;background:'+z.bar+';transition:height .8s cubic-bezier(.4,0,.2,1);" data-h="'+barH+'px"></div></div>'
+      +'<div class="dist-zone-count" style="color:'+z.col+';">'+z.count+'</div>'
+      +'<div class="dist-zone-participants">'+(z.count===1?'participant':'participants')+'</div>';
+    grid.appendChild(card);
+  });
+
+  // Animer les barres
+  setTimeout(function(){
+    grid.querySelectorAll('.dist-zone-bar').forEach(function(b){ b.style.height=b.getAttribute('data-h'); });
+  }, 100);
 }
 
 function populateParticipantSelect() {
@@ -684,7 +796,7 @@ function renderTable() {
       '&date='    + encodeURIComponent(r.date);
     var geoPct = Math.round(r.geo / 10 * 100);
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td><b>' + r.name + '</b></td><td>' + r.company + '</td><td>' + r.dept + '</td><td style="font-size:12px;color:#555;">' + r.dateAtelier + '</td><td style="font-size:12px;color:#555;">' + r.dateSoumise + '</td><td>' + r.d1 + '</td><td>' + r.d2 + '</td><td>' + r.d3 + '</td><td>' + r.d4 + '</td><td>' + r.d5 + '</td><td><b style="color:#1d71b8">' + r.total + '</b></td><td>' + r.pct + '%</td><td>' + geoPct + '%</td><td class="td-link"><a href="' + resultURL + '" target="_blank">Voir résultats ↗</a></td>';
+    tr.innerHTML = '<td><b>' + r.name + '</b></td><td>' + r.company + '</td><td>' + r.dept + '</td><td style="font-size:12px;color:#555;">' + r.dateAtelier + '</td><td style="font-size:12px;color:#555;">' + r.dateSoumise + '</td><td>' + r.d1 + '</td><td>' + r.d2 + '</td><td>' + r.d3 + '</td><td>' + r.d4 + '</td><td>' + r.d5 + '</td><td><b style="color:#1d71b8">' + r.total + '</b></td><td>' + geoPct + '%</td><td class="td-link"><a href="' + resultURL + '" target="_blank">Voir résultats ↗</a></td>';
     tbody.appendChild(tr);
   });
 }
@@ -716,7 +828,6 @@ function renderCriteriaTable(rows) {
 
   const scoreBlockHTML = (arith, geo) =>
     '<div style="display:flex;gap:20px;align-items:center;">'
-    + '<div style="font-size:11px;color:rgba(255,255,255,0.65);">Arith. <span style="color:#ffed00;font-size:15px;font-weight:700;">' + arith + '%</span></div>'
     + '<div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:15px;font-weight:700;">' + geo + '%</span></div>'
     + '</div>';
 
@@ -812,13 +923,16 @@ function renderGroupRadarAndProfile(rows) {
     type: 'radar', plugins: [radarZonePlugin],
     data: {
       labels: [['Performance','superieure'],["Investissement","d'energie"],["Points d'ancrage","psychologiques"],["Bases de","l'ancrage"],['Engagement','global']],
-      datasets: [{ data:[geoD1,geoD2,geoD3,geoD4,geoD5].map(v=>Math.round(v*10)/10), backgroundColor:'rgba(29,113,184,0.18)', borderColor:'#1d71b8', borderWidth:2.5, pointBackgroundColor:'#1d71b8', pointRadius:5, pointHoverRadius:7 }]
+      datasets: [
+      { label: 'Groupe (géo.)', data:[geoD1,geoD2,geoD3,geoD4,geoD5].map(v=>Math.round(v*10)/10), backgroundColor:'rgba(29,113,184,0.18)', borderColor:'#1d71b8', borderWidth:2.5, pointBackgroundColor:'#1d71b8', pointRadius:5, pointHoverRadius:7 },
+      { label: 'Score recalibré (−20%)', data:[geoD1,geoD2,geoD3,geoD4,geoD5].map(v=>Math.round(v*0.8*10)/10), backgroundColor:'rgba(226,75,74,0.07)', borderColor:'rgba(226,75,74,0.8)', borderWidth:2, borderDash:[6,4], pointBackgroundColor:'rgba(226,75,74,1)', pointRadius:3, pointHoverRadius:5 }
+    ]
     },
     options: {
       responsive:true,
       scales: { r: { min:0, max:30, ticks:{stepSize:10,font:{size:9},color:'#aaa',backdropColor:'transparent'}, pointLabels:{font:{size:10,family:"'DM Sans',sans-serif"},color:'#002169',padding:18}, grid:{color:'rgba(0,33,105,0.08)'}, angleLines:{color:'rgba(0,33,105,0.1)'} } },
       layout:{padding:{top:10,bottom:10,left:16,right:16}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.raw.toFixed(1)+' / 30 (géo.)'}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+' : '+ctx.raw+' / 30'}}},
       animation:{duration:800}
     }
   });

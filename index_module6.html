@@ -74,65 +74,44 @@ body::before {
   background: linear-gradient(90deg, var(--gold), var(--gold-light));
   margin: 18px auto 0; border-radius: 2px;
 }
-.summary-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px; margin-bottom: 24px;
+.hero-card {
+  background: var(--white);
+  border-radius: 16px; padding: 28px 24px 22px;
+  box-shadow: var(--shadow); text-align: center;
+  margin-bottom: 24px;
   animation: fadeUp .65s .1s ease both;
 }
-@media(max-width:600px){ .summary-row { grid-template-columns: 1fr; } }
-.summary-card {
-  background: var(--white);
-  border-radius: 14px; padding: 24px 18px 20px;
-  box-shadow: var(--shadow); text-align: center;
-  position: relative; overflow: hidden;
-  transition: transform .2s, box-shadow .2s;
+.hero-gauge-wrap {
+  width: 260px; height: 130px;
+  margin: 0 auto 0;
 }
-.summary-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.summary-card::before {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 4px;
+.hero-gauge-center {
+  text-align: center; line-height: 1.25; margin-top: -8px;
 }
-.summary-card.total::before  { background: linear-gradient(90deg,var(--ink),var(--blue)); }
-.summary-card.arith::before  { background: linear-gradient(90deg,var(--green),#5aad87); }
-.summary-card.geo::before    { background: linear-gradient(90deg,var(--teal),#00b8d4); }
-.summary-card.geo { background: var(--ink); color: var(--white); box-shadow: 0 6px 32px rgba(0,144,172,0.35); transform: scale(1.04); z-index:2; }
-.summary-card.geo .sc-label { color: rgba(255,255,255,0.65); }
-.summary-card.geo .sc-score { color: #ffffff; font-size: 52px; }
-.summary-card.geo .sc-sub   { color: rgba(255,255,255,0.5); }
-.sc-label {
-  font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
-  font-weight: 600; margin-bottom: 10px;
-  color: var(--ink-soft);
-}
-.sc-score {
+.hero-score-val {
   font-family: 'Playfair Display', serif;
-  font-size: 42px; font-weight: 700; line-height: 1;
+  font-size: 38px; font-weight: 700; color: var(--ink);
 }
-.sc-denom { font-size: 14px; color: #777; margin-left: 2px; }
-.sc-sub   { font-size: 12px; color: #888; margin-top: 4px; }
-.gauge-wrap {
-  background: var(--white);
-  border-radius: 16px; padding: 30px 24px 20px;
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
-  text-align: center;
-  animation: fadeUp .65s .18s ease both;
+.hero-score-sub { font-size: 12px; color: #888; }
+.hero-metrics {
+  display: flex; justify-content: center; align-items: center;
+  gap: 0; margin-top: 18px;
+  padding-top: 18px; border-top: 1px solid #eee;
 }
-.gauge-title {
+.hero-metric { flex: 1; text-align: center; }
+.hero-metric-sep { width: 1px; height: 36px; background: #eee; flex-shrink: 0; }
+.hero-metric-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 5px;
+}
+.hero-metric-val {
   font-family: 'Playfair Display', serif;
-  font-size: 18px; font-weight: 700; margin-bottom: 20px;
+  font-size: 22px; font-weight: 700; line-height: 1;
 }
-.gauge-canvas-wrap { position: relative; max-width: 340px; margin: 0 auto; }
-.gauge-center-text {
-  position: absolute; bottom: 16px; left: 0; right: 0;
-  text-align: center;
+.hero-zone-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 4px 14px; border-radius: 20px; line-height: 1.6;
 }
-.gauge-pct {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px; font-weight: 700; color: var(--ink);
-}
-.gauge-pct-label { font-size: 12px; color: #888; }
 .sections-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -186,6 +165,14 @@ body::before {
   height: 100%; border-radius: 4px;
   transition: width 1s ease;
 }
+.chart-card {
+  background: var(--white);
+  border-radius: 16px; padding: 24px;
+  box-shadow: var(--shadow);
+}
+.chart-title { font-size: 13px; font-weight: 700; color: #002169; }
+.chart-sub   { font-size: 11px; color: #aaa; }
+
 .table-wrap {
   background: var(--white);
   border-radius: 16px; padding: 28px 24px;
@@ -320,29 +307,32 @@ tr:last-child td { border-bottom: none; }
     <div class="divider"></div>
   </div>
 
-  <div class="summary-row">
-    <div class="summary-card total">
-      <div class="sc-label">Score Total</div>
-      <div class="sc-score"><span id="totalScore">—</span> / 150</div>
+  <div class="hero-card">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:18px;">Niveau de Mobilisation Global</div>
+    <div class="hero-gauge-wrap">
+      <svg id="gaugeChart" viewBox="0 0 260 130" width="260" height="130" xmlns="http://www.w3.org/2000/svg">
+        <path id="gaugeTrack" d="" fill="none" stroke="#e8ecf2" stroke-width="22" stroke-linecap="round"/>
+        <path id="gaugeFill"  d="" fill="none" stroke="#e06b00" stroke-width="22" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="summary-card arith">
-      <div class="sc-label">Moyenne Arithmétique</div>
-      <div class="sc-score"><span id="arithMean">—</span>%</div>
+    <div class="hero-gauge-center">
+      <div class="hero-score-val"><span id="gaugePct">—</span><span style="font-size:22px;">%</span></div>
+      <div class="hero-score-sub"><span id="gaugeTotal">—</span> / 150 points</div>
     </div>
-    <div class="summary-card geo">
-      <div class="sc-label">Moyenne Géométrique</div>
-      <div class="sc-score"><span id="geoMean">—</span>%</div>
-    </div>
-  </div>
-
-  <div class="gauge-wrap">
-    <div class="gauge-title">Niveau de Mobilisation Global</div>
-    <div class="gauge-canvas-wrap">
-      <canvas id="gaugeChart" height="180"></canvas>
-      <div class="gauge-center-text">
-        <div class="gauge-pct" id="gaugePct">—</div>
-        <div class="gauge-pct-label">sur 150 points</div>
-        <div class="gauge-pct-label" id="gaugePctPct" style="font-size:15px;font-weight:600;color:var(--ink);margin-top:2px;">—%</div>
+    <div class="hero-metrics">
+      <div class="hero-metric">
+        <div class="hero-metric-label">Score total</div>
+        <div class="hero-metric-val" style="color:var(--ink);"><span id="totalScore">—</span> <span style="font-size:13px;color:#aaa;font-weight:400;">/ 150</span></div>
+      </div>
+      <div class="hero-metric-sep"></div>
+      <div class="hero-metric">
+        <div class="hero-metric-label">Moy. géométrique</div>
+        <div class="hero-metric-val" style="color:var(--teal);"><span id="geoMean">—</span>%</div>
+      </div>
+      <div class="hero-metric-sep"></div>
+      <div class="hero-metric">
+        <div class="hero-metric-label">Zone</div>
+        <span class="hero-zone-badge" id="heroZoneBadge">—</span>
       </div>
     </div>
   </div>
@@ -361,6 +351,8 @@ tr:last-child td { border-bottom: none; }
         <div class="zone-dot"><span style="background:#95c11f;"></span>  Élevé (≥ 9/10 géo.)</div>
         <div class="zone-dot"><span style="background:#ffed00;"></span>  Moyen (5–8.9/10 géo.)</div>
         <div class="zone-dot"><span style="background:#e53e3e;"></span>  Faible (&lt; 5/10 géo.)</div>
+        <div style="width:1px;height:14px;background:#ddd;"></div>
+        <div class="zone-dot"><span style="width:18px;height:3px;border-radius:0;border-top:2px dashed rgba(226,75,74,0.8);background:none;display:inline-block;"></span> Score recalibré (−20%)</div>
       </div>
       <div id="zoneBadgeRadar" style="margin-top:16px;"></div>
     </div>
@@ -417,10 +409,18 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
-  <div class="gauge-wrap" style="margin-bottom:24px;">
-    <div class="gauge-title">Moyenne Arithmétique vs Géométrique par Dimension</div>
-    <div style="font-size:12px;color:#888;margin-bottom:20px;">Comparaison /10 · La différence révèle l'impact de vos scores les plus bas</div>
-    <div id="dimCompBars" style="display:flex;flex-direction:column;gap:18px;"></div>
+  <div class="chart-card" style="margin-bottom:24px;">
+    <div class="chart-title" style="margin-bottom:4px;">Forces et Faiblesses par Dimension</div>
+    <div class="chart-sub" style="margin-bottom:0;">Scores géométriques par dimension · /10</div>
+    <div style="display:grid;grid-template-columns:190px 1fr 56px;gap:14px;margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid #eee;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;">Dimension</div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;display:flex;justify-content:space-between;padding:0 2px;"><span>0%</span><span>50%</span><span>100%</span></div>
+      <div style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aaa;text-align:right;">Géo.</div>
+    </div>
+    <div id="dimCompBars"></div>
+    <div style="display:flex;margin-top:14px;padding-top:12px;border-top:1px solid #eee;">
+      <span style="font-size:10px;color:#bbb;margin-left:auto;">La ligne verticale indique 50%</span>
+    </div>
   </div>
 
   <!-- Detailed table -->
@@ -545,12 +545,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const geoPctGlobal = Math.round(geo / 10 * 100);
 
   setText('totalScore',  total);
-  setText('arithMean',   Math.round(arith / 10 * 100));
   setText('geoMean',     Math.round(geo   / 10 * 100));
-  setText('gaugePct',    total);
-  setText('gaugePctPct', totalPct + '%');
+  setText('gaugePct',    geoPctGlobal);
+  setText('gaugeTotal',  total);
 
   // Arith vs Geo bars per dimension
+  // Forces et Faiblesses par Dimension
   const dimDefs = [
     { label:'Performance supérieure',          color:'#1d71b8', vals:[p.q1,  p.q2,  p.q3]  },
     { label:"Investissement d'énergies",        color:'#95c11f', vals:[p.q4,  p.q5,  p.q6]  },
@@ -559,62 +559,75 @@ window.addEventListener('DOMContentLoaded', () => {
     { label:"Engagement global",                color:'#0090ac', vals:[p.q13, p.q14, p.q15] },
   ];
   const wrap = document.getElementById('dimCompBars');
-  dimDefs.forEach(d => {
-    const avg   = d.vals.reduce((a,b)=>a+b,0) / d.vals.length;
-    const geo_d = geoMean(d.vals);
-    const pctA  = Math.round(avg   * 10);
-    const pctG  = Math.round(geo_d * 10);
-    const txtCol = d.color === '#ffed00' ? '#7a6200' : d.color;
-    wrap.innerHTML += `
-      <div style="display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center;">
-        <div style="font-size:12px;font-weight:600;color:${d.color};text-align:right;line-height:1.3;">${d.label}</div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:10px;color:#aaa;width:110px;flex-shrink:0;">Moy. arithmétique</span>
-            <div style="flex:1;height:14px;background:var(--cream-dark);border-radius:7px;overflow:hidden;">
-              <div style="width:${pctA}%;height:100%;background:${d.color};opacity:0.45;border-radius:7px;"></div>
-            </div>
-            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctA}%</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:10px;color:#aaa;width:110px;flex-shrink:0;">Moy. géométrique</span>
-            <div style="flex:1;height:14px;background:var(--cream-dark);border-radius:7px;overflow:hidden;">
-              <div style="width:${pctG}%;height:100%;background:${d.color};border-radius:7px;"></div>
-            </div>
-            <span style="font-size:12px;font-weight:600;color:${txtCol};width:40px;text-align:right;">${pctG}%</span>
-          </div>
-        </div>
-      </div>`;
-  });
+  if (wrap) {
+    wrap.innerHTML = '';
+    const maxH = 18;
+    dimDefs.forEach(d => {
+      const geo_d = geoMean(d.vals);
+      const pctG  = Math.round(geo_d * 10);
+      const txtCol = d.color === '#95c11f' ? '#6a8a15' : d.color === '#ffed00' ? '#7a6200' : d.color;
 
-  // Gauge chart
-  const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
-  const gaugeVal = Math.min(total, 150);
-  const gaugeRem = 150 - gaugeVal;
-  // Couleur basée sur la moyenne géométrique globale
+      const row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:190px 1fr 56px;gap:14px;align-items:center;margin-bottom:16px;';
+
+      const nameCol = document.createElement('div');
+      nameCol.innerHTML = '<div style="font-size:13px;font-weight:600;color:#002169;line-height:1.3;">' + d.label + '</div>';
+
+      const trackWrap = document.createElement('div');
+      trackWrap.style.cssText = 'position:relative;';
+      const track = document.createElement('div');
+      track.style.cssText = 'height:' + maxH + 'px;background:#f0f2f7;border-radius:9px;overflow:hidden;position:relative;';
+      const fill = document.createElement('div');
+      fill.style.cssText = 'height:100%;width:0%;background:' + d.color + ';border-radius:9px;transition:width 1s cubic-bezier(.4,0,.2,1);';
+      track.appendChild(fill);
+      const ref = document.createElement('div');
+      ref.style.cssText = 'position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:rgba(0,0,0,0.13);border-radius:1px;pointer-events:none;';
+      trackWrap.appendChild(track);
+      trackWrap.appendChild(ref);
+      setTimeout(() => { fill.style.width = pctG + '%'; }, 80);
+
+      const val = document.createElement('div');
+      val.style.cssText = 'font-size:15px;font-weight:700;color:' + txtCol + ';text-align:right;';
+      val.textContent = pctG + '%';
+
+      row.appendChild(nameCol);
+      row.appendChild(trackWrap);
+      row.appendChild(val);
+      wrap.appendChild(row);
+    });
+  }
+
+  // Gauge SVG
   let gColor;
   if (geoPctGlobal >= 90)      gColor = '#95c11f';
   else if (geoPctGlobal >= 75) gColor = '#ffed00';
   else if (geoPctGlobal >= 45) gColor = '#e06b00';
   else                          gColor = '#e53e3e';
-  new Chart(gaugeCtx, {
-    type: 'doughnut',
-    data: {
-      datasets: [{
-        data: [gaugeVal, gaugeRem],
-        backgroundColor: [gColor, '#e8ecf2'],
-        borderWidth: 0,
-        circumference: 180,
-        rotation: 270,
-      }]
-    },
-    options: {
-      responsive: true,
-      cutout: '72%',
-      plugins: { legend: { display: false }, tooltip: { enabled: false } },
-      animation: { animateRotate: true, duration: 1200 }
+  (function() {
+    const cx = 130, cy = 120, r = 96;
+    const startAngle = Math.PI;       // gauche (180°)
+    const endAngle   = 2 * Math.PI;   // droite (360°)
+    function polarToXY(angle) {
+      return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
     }
-  });
+    function arcPath(from, to) {
+      const s = polarToXY(from), e = polarToXY(to);
+      const large = (to - from) > Math.PI ? 1 : 0;
+      return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`;
+    }
+    document.getElementById('gaugeTrack').setAttribute('d', arcPath(startAngle, endAngle));
+    document.getElementById('gaugeFill').setAttribute('stroke', gColor);
+    const gaugeVal = Math.min(geoPctGlobal, 100);
+    const fillAngle = startAngle + (gaugeVal / 100) * Math.PI;
+    document.getElementById('gaugeFill').setAttribute('d', arcPath(startAngle, fillAngle));
+    // Animation
+    const fillEl = document.getElementById('gaugeFill');
+    const len = fillEl.getTotalLength ? fillEl.getTotalLength() : 300;
+    fillEl.style.strokeDasharray = len;
+    fillEl.style.strokeDashoffset = len;
+    fillEl.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)';
+    setTimeout(() => { fillEl.style.strokeDashoffset = 0; }, 80);
+  })();
 
   // Scores des catégories — arithmétique + géométrique
   const cat1Score = Math.round((s1 + s2) / 60 * 100);
@@ -625,12 +638,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const cat2El = document.getElementById('catScore2');
   if (cat1El) cat1El.innerHTML = `
     <div style="text-align:right;">
-      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Score}%</span></div>
       <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat1Geo}%</span></div>
     </div>`;
   if (cat2El) cat2El.innerHTML = `
     <div style="text-align:right;">
-      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:2px;">Arith. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Score}%</span></div>
       <div style="font-size:11px;color:rgba(255,255,255,0.65);">Géo. <span style="color:#ffed00;font-size:16px;font-weight:700;">${cat2Geo}%</span></div>
     </div>`;
 
@@ -765,6 +776,7 @@ window.addEventListener('DOMContentLoaded', () => {
     data: {
       labels: ['Performance\nsupérieure', "Investissement\nd'énergie", "Points d'ancrage\npsychologiques", "Bases de\nl'ancrage", 'Engagement\nglobal'],
       datasets: [{
+        label: 'Compétences (géo.)',
         data: radarVals,
         backgroundColor: 'rgba(29,113,184,0.18)',
         borderColor: '#1d71b8',
@@ -772,6 +784,17 @@ window.addEventListener('DOMContentLoaded', () => {
         pointBackgroundColor: '#1d71b8',
         pointRadius: 5,
         pointHoverRadius: 7,
+      },
+      {
+        label: 'Score recalibré (−20%)',
+        data: radarVals.map(v => Math.round(v * 0.8 * 10) / 10),
+        backgroundColor: 'rgba(226,75,74,0.07)',
+        borderColor: 'rgba(226,75,74,0.8)',
+        borderWidth: 2,
+        borderDash: [6, 4],
+        pointBackgroundColor: 'rgba(226,75,74,1)',
+        pointRadius: 3,
+        pointHoverRadius: 5,
       }]
     },
     options: {
@@ -787,7 +810,7 @@ window.addEventListener('DOMContentLoaded', () => {
       },
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' / 30 (géo.)' } }
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ' : ' + ctx.raw + ' / 30' } }
       },
       animation: { duration: 1000 }
     }
@@ -824,6 +847,12 @@ window.addEventListener('DOMContentLoaded', () => {
       zoneLabel + ' · ' + geoPctGlobal + '% (géo.)' +
       '</span>';
   }
+  const heroZoneBadgeEl = document.getElementById('heroZoneBadge');
+  if (heroZoneBadgeEl) {
+    heroZoneBadgeEl.textContent = zoneLabel;
+    heroZoneBadgeEl.style.background = zoneBadgeColor;
+    heroZoneBadgeEl.style.color = zoneBadgeText;
+  }
 
   // Ligne de total global
   const globalEl = document.getElementById('globalTotalRow');
@@ -838,11 +867,6 @@ window.addEventListener('DOMContentLoaded', () => {
         <div style="text-align:center;">
           <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Score</div>
           <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${total}<span style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:400;"> / 150</span></div>
-        </div>
-        <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
-        <div style="text-align:center;">
-          <div style="color:rgba(255,255,255,0.6);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Arith.</div>
-          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#ffed00;line-height:1;">${arithPct}%</div>
         </div>
         <div style="width:1px;height:36px;background:rgba(255,255,255,0.2);"></div>
         <div style="text-align:center;">
