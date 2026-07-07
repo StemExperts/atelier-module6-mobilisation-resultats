@@ -214,7 +214,6 @@ tr:last-child td{border-bottom:none;}
       <input type="date" id="dateFrom" onchange="applyDateFilter()" style="padding:6px 10px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;outline:none;"/>
       <button onclick="clearDateFilter()" style="padding:6px 12px;border:1px solid var(--cream-dark);border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;background:var(--white);color:#888;">✕ Effacer</button>
       <span id="dateFilterCount" style="font-size:11px;color:#aaa;"></span>
-      <div id="debugInfo" style="font-size:11px;color:#c0392b;background:#fff3f0;padding:6px 10px;border-radius:6px;margin-top:6px;font-family:monospace;"></div>
     </div>
 
     <div class="hero-dash-card">
@@ -597,13 +596,6 @@ function renderAll() {
   var n = rows.length;
   var countEl = document.getElementById('dateFilterCount');
   var dateVal = document.getElementById('dateFrom').value;
-  var debugEl = document.getElementById('debugInfo');
-  if (debugEl) {
-    var sample = allRows.slice(0, 3).map(function(r){
-      return 'brut="' + r.dateAtelier + '" -> converti="' + parseAtelierDate(r.dateAtelier) + '"';
-    }).join(' | ');
-    debugEl.textContent = 'DEBUG — date sélectionnée: "' + dateVal + '" | total participants: ' + allRows.length + ' | exemples: ' + sample;
-  }
   if (!n) {
     if(countEl) countEl.textContent = dateVal ? '0 reponse pour cette date' : '';
     setText('kpiAvgTotal', '—');
