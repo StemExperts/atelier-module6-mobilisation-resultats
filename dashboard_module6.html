@@ -513,11 +513,11 @@ function parseAtelierDate(val) {
   const str = String(val).trim();
   if (!str) return null;
 
-  // AAAA/MM/JJ (année à 4 chiffres en premier)
+  // AAAA/JJ/MM (année à 4 chiffres en premier, puis jour, puis mois)
   let m = str.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/);
   if (m) {
-    const month = m[2].padStart(2, '0');
-    const day   = m[3].padStart(2, '0');
+    const day   = m[2].padStart(2, '0');
+    const month = m[3].padStart(2, '0');
     return `${m[1]}-${month}-${day}`;
   }
 
