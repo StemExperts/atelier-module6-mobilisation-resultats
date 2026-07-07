@@ -502,6 +502,35 @@ function zohoDateToISO(dateStr) {
   return year + '-' + month + '-' + day;
 }
 
+/**
+ * Convertit la "Date de l'atelier" (colonne E, question obligatoire du sondage)
+ * vers ISO YYYY-MM-DD. Gère les formats MM/DD/YYYY et YYYY/MM/DD, avec ou
+ * sans suffixe (heure, espace, etc.) après la date.
+ */
+function parseAtelierDate(val) {
+  if (!val) return null;
+  const str = String(val).trim();
+  if (!str) return null;
+
+  // AAAA/MM/JJ (année à 4 chiffres en premier)
+  let m = str.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+  if (m) {
+    const month = m[2].padStart(2, '0');
+    const day   = m[3].padStart(2, '0');
+    return `${m[1]}-${month}-${day}`;
+  }
+
+  // MM/JJ/AAAA (année à 4 chiffres en dernier)
+  m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) {
+    const month = m[1].padStart(2, '0');
+    const day   = m[2].padStart(2, '0');
+    return `${m[3]}-${month}-${day}`;
+  }
+
+  return null;
+}
+
 function rowToParticipant(r) {
   const q = k => { const v = parseFloat(r[COL[k]]); return isNaN(v)?0:Math.min(10,Math.max(0,v)); };
   const d1=q('q1')+q('q2')+q('q3'), d2=q('q4')+q('q5')+q('q6'), d3=q('q7')+q('q8')+q('q9'), d4=q('q10')+q('q11')+q('q12'), d5=q('q13')+q('q14')+q('q15');
@@ -558,7 +587,7 @@ function setText(id,val){var el=document.getElementById(id);if(el)el.textContent
 function getFilteredRows() {
   var dateVal = document.getElementById('dateFrom').value;
   if (!dateVal) return allRows;
-  var result = allRows.filter(function(r){ return zohoDateToISO(r.date) === dateVal; });
+  var result = allRows.filter(function(r){ return parseAtelierDate(r.dateAtelier) === dateVal; });
   return result;
 }
 
@@ -569,6 +598,21 @@ function renderAll() {
   var dateVal = document.getElementById('dateFrom').value;
   if (!n) {
     if(countEl) countEl.textContent = dateVal ? '0 reponse pour cette date' : '';
+    setText('kpiAvgTotal', '—');
+    setText('kpiAvgTotal2', '—');
+    setText('kpiGeo', '—');
+    setText('kpiGeo2', '—');
+    setText('kpiCount', '0');
+    setText('kpiPct', '—');
+    setText('participantCount', '0 reponse');
+    var badgeEmpty = document.getElementById('kpiZoneBadge');
+    if (badgeEmpty) { badgeEmpty.textContent = 'Aucune donnée'; badgeEmpty.style.background = '#eee'; badgeEmpty.style.color = '#888'; }
+    ['d1','d2','d3','d4','d5'].forEach(function(d){
+      setText(d+'score', '—'); setText(d+'geo', '—');
+      var bar = document.getElementById(d+'bar');
+      if (bar) bar.style.width = '0%';
+    });
+    renderDimBars([]); renderBar([]); renderDistGeo([]); renderCriteriaTable([]);
     return;
   }
   if(countEl) countEl.textContent = dateVal ? n + ' reponse' + (n>1?'s':'') + ' pour cette date' : '';
@@ -1143,12 +1187,9 @@ function processCSVFileM6(file) {
     showUploadStatusM6('✓ ' + allRows.length + ' participant' + (allRows.length>1?'s':'') + ' chargé' + (allRows.length>1?'s':'') + ' depuis le fichier CSV', true);
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('mainContent').style.display  = 'block';
-    // Sélectionner la date la plus récente présente dans le fichier
     const nowFallback = new Date();
     const todayISO = nowFallback.getFullYear() + '-' + String(nowFallback.getMonth()+1).padStart(2,'0') + '-' + String(nowFallback.getDate()).padStart(2,'0');
-    const datesInFile = rows.map(r => zohoDateToISO(r[COL_DATE_SOUMISE])).filter(Boolean);
-    const mostRecent = datesInFile.sort().pop();
-    document.getElementById('dateFrom').value = mostRecent || todayISO;
+    document.getElementById('dateFrom').value = todayISO;
     renderAll();
   };
   reader.readAsText(file, 'UTF-8');
